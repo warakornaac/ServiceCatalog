@@ -1,0 +1,359 @@
+﻿@using ServiceCatalog.Models;
+@{
+    List<SelectListItem> getListBrand = ViewBag.listBrand;
+    string currentDate = DateTime.Now.ToString("dd-MM-yy");
+}
+
+
+<div class="page-header">
+    <h1 class="page-title my-auto">
+        Call item automate
+    </h1>
+    <div>
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Home")">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Call item automate</li>
+        </ol>
+    </div>
+</div>
+@*form search*@
+@*<div class="row">
+        <div class="col-xl-12">
+            <div class="card custom-card">
+                <div class="card-header justify-content-between"> <div class="card-title"> PartNo Specific (0242135553 | 30), (39070 | 101)</div> <div class="prism-toggle"> </div> </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="form-text" class="form-label fs-14 text-dark">PartNo</label>
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <i class="ri-settings-5-fill"></i>
+                                </div>
+                                <input type="text" class="form-control" id="txtPartNo" value="0242135553" placeholder="39070">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="form-text" class="form-label fs-14 text-dark">Brand</label>
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <i class="ri-roadster-fill"></i>
+                                </div>
+                                <select class="form-control selectpicker" id="txtBrandId" name="txtBrandId" style="width: 100%;" data-live-search="true" title="SELECT BRAND">
+                                    <option value="ALL">SELECT BRAND</option>
+                                    @for (var i = 0; i < getListBrand.Count; i++)
+                                    {
+                                        <option value="@getListBrand[i].Value" @(getListBrand[i].Value == "30" ? "selected" : "")> @getListBrand[i].Text </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row text-right">
+                        <div class="col-xs-12 col-md-12 text-end">
+                            <button class="btn btn-primary" onclick="getArticlesByPartno();">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xxl-3">
+        <div class="card overflow-hidden">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mt-2">
+                        <h6 class="fw-normal">Item ทั้งหมด</h6>
+                        <h2 class="mb-0 text-dark fw-semibold">20,000</h2>
+                    </div>
+                    <div class="ms-auto">
+                        <div class="chart-wrapper mt-1">
+                            <canvas id="saleschart" class="chart-dropshadow"></canvas>
+                        </div>
+                    </div>
+                </div>
+                @*<span class="text-muted fs-12">
+                    <span class="text-secondary">
+                        <i class="fe fe-arrow-up-circle text-secondary"></i> 5%
+                    </span>
+                    Last week
+                </span>*@
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xxl-3">
+        <div class="card overflow-hidden">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mt-2">
+                        <h6 class="fw-normal">Call Api แล้ว</h6>
+                        <h2 class="mb-0 text-dark fw-semibold">5,000</h2>
+                    </div>
+                    <div class="ms-auto">
+                        <div class="chart-wrapper mt-1">
+                            <canvas id="leadschart"
+                                    class="chart-dropshadow"></canvas>
+                        </div>
+                    </div>
+                </div>
+                @*<span class="text-muted fs-12">
+                    <span class="text-pink">
+                        <i class="fe fe-arrow-down-circle text-pink"></i> 0.75%
+                    </span>
+                    Last 6 days
+                </span>*@
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xxl-3">
+        <div class="card overflow-hidden">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mt-2">
+                        <h6 class="fw-normal">Call Item วันนี้</h6>
+                        <h2 class="mb-0 text-dark fw-semibold">1,000</h2>
+                    </div>
+                    <div class="ms-auto">
+                        <div class="chart-wrapper mt-1">
+                            <canvas id="profitchart"
+                                    class="chart-dropshadow"></canvas>
+                        </div>
+                    </div>
+                </div>
+                @*<span class="text-muted fs-12">
+                    <span class="text-green">
+                        <i class="fe fe-arrow-up-circle text-green"></i> 0.9%
+                    </span>
+                    Last 9 days
+                </span>*@
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xxl-3">
+        <div class="card overflow-hidden">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mt-2">
+                        <h6 class="fw-normal">คงเหลือ Call Api วันนี้</h6>
+                        <h2 class="mb-0 text-dark fw-semibold">900</h2>
+                    </div>
+                    <div class="ms-auto">
+                        <div class="chart-wrapper mt-1">
+                            <canvas id="costchart"
+                                    class="chart-dropshadow"></canvas>
+                        </div>
+                    </div>
+                </div>
+                @*<span class="text-muted fs-12">
+                    <span class="text-warning">
+                        <i class="fe fe-arrow-up-circle text-warning"></i> 0.6%
+                    </span>
+                    Last year
+                </span>*@
+            </div>
+        </div>
+    </div>
+</div>
+@*List Item*@
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-body p-0">
+                <div class="d-flex p-3 align-items-center justify-content-between">
+                    <div>
+                        <h6 class="fw-semibold mb-0">รายการ Item  <span class="badge bg-secondary">@currentDate</span> </h6>
+                    </div>
+                    <div>
+                        <ul class="nav nav-tabs nav-tabs-header mb-0 d-sm-flex d-block" role="tablist">
+                            <li class="nav-item m-1">
+                                <a class="nav-link position-relative active" data-bs-toggle="tab" role="tab" aria-current="page" href="#pending" aria-selected="true">
+                                    Pending
+                                    <span class="badge bg-secondary rounded-pill position-absolute top-0 start-100 translate-middle" id="cart-icon-badge">1</span>
+                                </a>
+                            </li>
+                            <li class="nav-item m-1">
+                                <a class="nav-link position-relative" data-bs-toggle="tab" role="tab" aria-current="page" href="#in-progress" aria-selected="true">
+                                    In Progress
+                                    <span class="badge bg-warning rounded-pill position-absolute top-0 start-100 translate-middle" id="cart-icon-badge">0</span>
+                                </a>
+                            </li>
+                            <li class="nav-item m-1">
+                                <a class="nav-link position-relative" data-bs-toggle="tab" role="tab" aria-current="page" href="#completed" aria-selected="true">
+                                    Completed
+                                    <span class="badge bg-success rounded-pill position-absolute top-0 start-100 translate-middle" id="cart-icon-badge">1</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <!-- Create Task Button -->
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-primary d-flex align-items-center justify-content-center" onclick="runTaskCallApi();" @*data-bs-toggle="modal" data-bs-target="#addtask"*@>
+                                <i class="ri-send-backward fs-16 align-middle me-1"></i>
+                                Run Task
+                            </button>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="addtask" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h6 class="modal-title" id="mail-ComposeLabel">Run Task</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+                                    <!-- Modal Body -->
+                                    <div class="modal-body px-4">
+                                        <div class="row gy-2">
+
+                                            <!-- Task Name -->
+                                            <div class="col-xl-12">
+                                                <label for="task-name" class="form-label">Task Date</label>
+                                                <input type="text" class="form-control" id="task-name" placeholder="Task Date">
+                                            </div>
+                                            <!-- Assigned Date -->
+                                            <!--<div class="col-xl-6">
+                                                <label class="form-label">Start Date</label>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text text-muted">
+                                                            <i class="ri-calendar-line"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control flatpickr-input" id="addignedDate" placeholder="Choose date and time" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>-->
+                                            <!-- Target Date -->
+                                            <!--<div class="col-xl-6">
+                                                <label class="form-label">End Date</label>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text text-muted">
+                                                            <i class="ri-calendar-line"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control flatpickr-input" id="targetDate" placeholder="Choose date and time" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>-->
+                                            <!-- Priority -->
+                                            <div class="col-xl-12">
+                                                <label class="form-label">Number</label>
+                                                <div class="choices" data-type="select-one" tabindex="0" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false">
+                                                    <div class="choices__inner">
+                                                        <select class="form-control choices__input" name="choices-single-default" id="choices-single-default" hidden tabindex="-1" data-choice="active">
+                                                            <option value="">Select</option>
+                                                        </select>
+                                                        <div class="choices__list choices__list--single">
+                                                            <div class="choices__item choices__placeholder choices__item--selectable" data-id="1" data-value="" aria-selected="true">Select</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Priority Dropdown -->
+                                                    <div class="choices__list choices__list--dropdown" aria-expanded="false">
+                                                        <input type="text" class="choices__input choices__input--cloned" autocomplete="off" role="textbox" aria-autocomplete="list" placeholder="Search">
+                                                        <div class="choices__list" role="listbox">
+                                                            <div class="choices__item choices__item--choice is-selected choices__placeholder is-highlighted" data-id="5" data-value="" role="option" aria-selected="true">Select</div>
+                                                            <div class="choices__item choices__item--choice" data-id="1" data-value="Critical" role="option">Critical</div>
+                                                            <div class="choices__item choices__item--choice" data-id="2" data-value="High" role="option">High</div>
+                                                            <div class="choices__item choices__item--choice" data-id="3" data-value="Low" role="option">Low</div>
+                                                            <div class="choices__item choices__item--choice" data-id="4" data-value="Medium" role="option">Medium</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div> <!-- End of row -->
+                                    </div> <!-- End of modal-body -->
+                                    <!-- Modal Footer -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-primary" onclick="runTaskCallApi();">Run</button>
+                                    </div>
+
+                                </div> <!-- End of modal-content -->
+                            </div> <!-- End of modal-dialog -->
+                        </div> <!-- End of modal -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content task-tabs-container">
+        @*<div class="tab-pane show active p-0" id="all-tasks" role="tabpanel"> </div>*@
+        <div class="tab-pane show active p-0" id="pending" role="tabpanel"> </div>
+        <div class="tab-pane p-0" id="in-progress" role="tabpanel"> </div>
+        <div class="tab-pane p-0" id="completed" role="tabpanel"> </div>
+    </div>
+</div>
+
+
+<script defer>
+    //get first all task
+    if (document.readyState == "loading") {
+        setTimeout(function () {
+            GetListItemAutomateByStatus("", "", "", "pending");
+        }, 1000);
+    }
+    //ดึง list task
+    function GetListItemAutomateByStatus(Stkcode, BrandId, apiStatus, nameTask) {
+        //var promotionCode = $("#promotionCode").val();
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("GetListItemAutomate", "ApiProductAutomate")',
+            data: {
+                Stkcode: "",
+                BrandId: "161",
+                apiStatus: apiStatus
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                $('#' + nameTask).empty();
+                $('#' + nameTask).html('<div style="padding: 30px; font-size: 14px;"> <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i> กำลังโหลดข้อมูล... </div>');
+                // LoadingShow();
+            },
+            success: function (res) {
+                // LoadingHide();
+                $('#' + nameTask).html(res);
+            },
+            error: function (er) {
+                alert(er.error);
+            }
+        }).fail(function (error) {
+            Swal.fire({
+                icon: 'error',
+                title: error.status,
+                html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>GetListItemAutomateByStatus<br><br>',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+        });
+    }
+    //click link tab
+    $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var targetTab = $(e.target).attr("href");
+        console.log("Tab clicked: " + targetTab);
+        switch (targetTab) {
+            case "#pending":
+                GetListItemAutomateByStatus("", "", "", "pending");
+                break;
+            case "#in-progress":
+                GetListItemAutomateByStatus("", "", "D", "in-progress");
+                break;
+            case "#completed":
+                GetListItemAutomateByStatus("", "", "Y", "completed");
+                break;
+        }
+    });
+
+</script>

@@ -1,0 +1,532 @@
+﻿@using System.Linq
+@using ServiceCatalog.Models;
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-header justify-content-between">
+                <div class="card-title" id="titleResultPartNo"> Result </div>
+            </div>
+            <div class="card-body">
+                @{
+                    if (ViewBag.mfrName.Count == 0)
+                    {
+                        <div class="row">
+                            <div class="alert alert-danger text-center mt-2" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล PartNo Specific </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row ">
+                            <div class="col-xxl-6 col-xl-12">
+                                <div class="row">
+                                    @{
+                                        if (ViewBag.dataResponse.Images != null && (ViewBag.dataResponse.Images).Count > 0)
+                                        {
+                                            <div class="col-xxl-10 col-xl-4 col-lg-4 col-md-4 col-sm-8 mb-md-5 mb-3">
+                                                <div class="">
+                                                    <div class="swiper swiper-preview-details bd-gray-100 product-details-page">
+                                                        <div class="swiper-wrapper">
+                                                            @foreach (var rowDataImage in ViewBag.dataResponse.Images)
+                                                            {
+                                                                <div class="swiper-slide" id="img-container">
+                                                                    <img class="img-fluid" src="@rowDataImage.imageURL800" alt="@rowDataImage.fileName">
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <div class="swiper-button-next"></div>
+                                                        <div class="swiper-button-prev"></div>
+                                                    </div>
+                                                    <div class="swiper swiper-view-details mt-2 swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-watch-progress swiper-backface-hidden swiper-thumbs">
+                                                        <div class="swiper-wrapper" id="swiper-wrapper-aa9f59d1069c0c416" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
+                                                            @foreach (var rowDataImage in ViewBag.dataResponse.Images)
+                                                            {
+                                                                <div class="swiper-slide swiper-slide-visible swiper-slide-active" role="group" aria-label="1 / 4" style="width: 82px; margin-right: 10px;">
+                                                                    <img class="img-fluid" src="@rowDataImage.imageURL100" alt="img">
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    <div class="col-xxl-12 col-xl-6 col-lg-8 col-md-6 col-sm-12 mb-md-8 mb-3">
+                                        @*Specifications*@
+                                        <div class="mb-3 border p-3 rounded-3 ">
+                                            <p class="fs-15 fw-semibold mb-2">Product Specifications :</p>
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <ul class="ps-3 mb-0 list-unstyled">
+                                                        @{
+                                                            var criteriaList = ViewBag.dataResponse?.ArticleCriteria as List<ArticleCriteria>;
+                                                            if (criteriaList != null && criteriaList.Any())
+                                                            {
+                                                                var grouped = criteriaList
+                                                                    .GroupBy(c => new
+                                                                    {
+                                                                        c.criteriaId,
+                                                                        c.criteriaAbbrDescription,
+                                                                        c.criteriaUnitDescription
+                                                                    });
+                                                                foreach (var group in grouped)
+                                                                {
+                                                                    var formattedValues = string.Join(" | ", group.Select(g => g.formattedValue));
+                                                                    <li class="text-muted mb-2">
+                                                                        <i class="bx bxs-circle fs-7 me-2 op-5"></i>
+                                                                        <b>@group.Key.criteriaAbbrDescription</b> : @formattedValues
+                                                                        @if (!string.IsNullOrWhiteSpace(group.Key.criteriaUnitDescription))
+                                                                        {
+                                                                            @($" {group.Key.criteriaUnitDescription}")
+                                                                        }
+                                                                    </li>
+                                                                }
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*OEM*@
+                                        <div class="mb-3 border p-3 rounded-3 ">
+                                            <p class="fs-15 fw-semibold mb-2">OEM Number :</p>
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <ul class="ps-3 mb-0 list-unstyled">
+                                                        @{
+                                                            if (ViewBag.dataResponse.OemNumbers != null && (ViewBag.dataResponse.OemNumbers).Count > 0)
+
+                                                            {
+                                                                foreach (var rowDataOem in ViewBag.dataResponse.OemNumbers)
+                                                                {
+                                                                    <li class="text-muted mb-2">
+                                                                        <i class="bx bxs-circle fs-7 me-2 op-5"></i>
+                                                                        <b>@rowDataOem.articleNumber </b> &nbsp; : &nbsp; @rowDataOem.mfrName
+                                                                    </li>
+                                                                }
+                                                            }
+
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @{
+                                if (ViewBag.mfrName.Count != 0)
+                                {
+                                    <div class="col-xxl-6 col-xl-12">
+                                        <div class="row product-scroll  rounded-3 border p-3">
+                                            <div class="col-xl-12 mt-xxl-0 mt-6">
+                                                <div>
+                                                    <p class="fs-18 fw-semibold mb-0">
+                                                        @ViewBag.mfrName[0]
+                                                        @if (ViewBag.dataResponse.GenericArticles != null)
+                                                        {
+                                                            foreach (var rowDataImage in ViewBag.dataResponse.GenericArticles)
+                                                            {
+                                                                @rowDataImage.genericArticleDescription @rowDataImage.assemblyGroupName
+                                                            }
+                                                        }
+
+                                                    </p>
+                                                    <p class="fs-18 mb-4">
+                                                        <i class="ri-star-s-fill text-warning align-middle"></i>
+                                                        <i class="ri-star-s-fill text-warning align-middle"></i>
+                                                        <i class="ri-star-s-fill text-warning align-middle"></i>
+                                                        <i class="ri-star-s-fill text-warning align-middle"></i>
+                                                        <i class="ri-star-half-s-fill text-warning align-middle"></i>
+                                                        <span class="fw-semibold text-muted ms-1">4.3<a class="text-info" href="javascript:void(0);">(2.4k Reviews)</a></span>
+                                                    </p>
+                                                    <div class="row mb-4">
+                                                        <div class="col-xxl-3 col-xl-12">
+                                                            <p class="mb-1 lh-1 fs-14 text-success fw-semibold">
+                                                                <input type="text" readonly class="form-control" id="txtArticleId" value="@ViewBag.articleId[0]" />
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    @*Button save to db*@
+                                                    <div class="mb-4">
+                                                        <button type="button" class="btn btn-secondary me-2 mb-2" onclick="SaveProductApiToDb();"> Save To DB </button>
+                                                        <button type="button" class="btn btn-success me-2 mb-2">Remove From DB </button>
+                                                    </div>
+                                                    @*Product detail*@
+                                                    <div class="col-xxl-12 col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-md-5 mb-3">
+                                                        <p class="fs-15 fw-semibold mb-1">@*<i class="ti ti-discount-2 fs-17 me-1 text-success"></i>*@ Product Details : </p>
+                                                        @if (ViewBag.mfrName.Count != 0)
+                                                        {
+                                                            <div class="row">
+                                                                <div class="col-xl-3 col-sm-12">
+                                                                    <span class="fs-14 fw-semibold">แบรนด์</span>
+                                                                </div>
+                                                                <div class="col-xl-9 col-sm-12">
+                                                                    <p class="text-muted fs-14">@ViewBag.mfrName[0]</p>
+                                                                    @*set hidden*@
+                                                                    @*<input data-table="description" data-seq="1" type="text" class="form-control mask vright description_seq_1" name="description_1" id="description_seq_1" value="@ViewBag.mfrName[0]" />*@
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        <div class="row">
+                                                            <div class="col-xl-3 col-sm-12">
+                                                                <span class="fs-14 fw-semibold">หมายเลขสินค้า</span>
+                                                            </div>
+                                                            <div class="col-xl-9 col-sm-12">
+                                                                <p class="text-muted fs-14"> @ViewBag.articleNumber[0] </p>
+                                                                @*set hidden*@
+                                                                @*<input data-table="description" data-seq="1" type="text" class="form-control mask vright description_seq_2" name="description_2" id="description_seq_2" value="@ViewBag.articleNumber[0]" />*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-3">
+                                                                <span class="fs-14 fw-semibold">กลุ่มผลิตภัณฑ์</span>
+                                                            </div>
+                                                            <div class="col-xl-9">
+                                                                @foreach (var rowDataGene in ViewBag.dataResponse.GenericArticles)
+                                                                {
+                                                                    <p class="text-muted fs-14"> @rowDataGene.genericArticleDescription </p>
+                                                                    @*set hidden*@
+                                                                    @*<input data-table="description" data-seq="1" type="text" class="form-control mask vright description_seq_1" name="description_1" id="description_seq_1" value="@ViewBag.articleNumber[0]" />*@
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-3 col-sm-12">
+                                                                <span class="fs-14 fw-semibold">หน่วยบรรจุภัณฑ์</span>
+                                                            </div>
+                                                            <div class="col-xl-9 col-sm-12">
+                                                                <p class="text-muted fs-14">
+                                                                    @if (ViewBag.quantityPerPackage[0] != null)
+                                                                    {
+                                                                        @ViewBag.quantityPerPackage[0]
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @: -
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-3 col-sm-12">
+                                                                <span class="fs-14 fw-semibold">คำอธิบายเพิ่มเติม</span>
+                                                            </div>
+                                                            <div class="col-xl-9 col-sm-12">
+                                                                <p class="text-muted fs-14">
+                                                                    @if (ViewBag.additionalDescriptions[0] != null)
+                                                                    {
+                                                                        @ViewBag.additionalDescriptions[0]
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @: -
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-3 col-sm-12">
+                                                                <span class="fs-14 fw-semibold">หมายเลขการใช้งาน </span>
+                                                            </div>
+                                                            <div class="col-xl-9 col-sm-12">
+                                                                <p class="text-muted fs-14">
+                                                                    @if (ViewBag.dataResponse.TradeNumberDetail != null && (ViewBag.dataResponse.TradeNumberDetail).Count > 0)
+                                                                    {
+                                                                        var tradeNumbers = ViewBag.dataResponse.TradeNumberDetail;
+                                                                        for (int i = 0; i < tradeNumbers.Count; i++)
+                                                                        {
+                                                                            @tradeNumbers[i].tradeNumber
+                                                                            if (i < tradeNumbers.Count - 1)
+                                                                            {
+                                                                                @:|
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @{ var partNumberNearbyDetails = ViewBag.dataCompetitor as List<ServiceCatalog.Models.PartNumberNearby>; }
+                                                    <div class="border p-3 rounded-3 mb-0">
+                                                        <p class="fs-15 fw-semibold mb-3">Competitor number :</p>
+                                                        <div class="row">
+                                                            <div class="col-xl-12">
+                                                                <ul class="ps-3 mb-0 list-unstyled">
+                                                                    @{
+                                                                        if (partNumberNearbyDetails != null)
+                                                                        {
+                                                                            foreach (var rowDataCompe in partNumberNearbyDetails)
+                                                                            {
+                                                                                <li class="text-muted mb-2">
+                                                                                    <i class="bx bxs-circle fs-7 me-2 op-5"></i>
+                                                                                    <b>@rowDataCompe.articleNo </b> &nbsp; : &nbsp; @rowDataCompe.brandName
+                                                                                </li>
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @: -
+                                                                        }
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+    @{
+        var linkageDetails = ViewBag.DataLinkage as List<ServiceCatalog.Models.LinkageDetails>;
+    }
+    @*content K-Type*@
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-header">
+                <div class="card-title">List K-Type</div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @{
+                        if (linkageDetails == null)
+                        {
+                            <div class="alert alert-danger text-center mt-2" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล PartNo Specific </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table text-nowrap table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">KType</th>
+                                            <th scope="col">ยานพาหนะ</th>
+                                            <th scope="col">รุ่น/ปีที่ผลิต</th>
+                                            <th scope="col">DriveType </th>
+                                            <th scope="col">BodyStyle </th>
+                                            <th scope="col">FuelMixtureFormationType  </th>
+                                            <th scope="col">FuelType </th>
+                                            <th scope="col">EngineType   </th>
+                                            <th scope="col">Engines    </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var rowData in linkageDetails)
+                                        {
+                                            <tr>
+                                                <th scope="row">@rowData.LinkageTargetId</th>
+                                                <th scope="row">@rowData.MfrName</th>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar avatar-md">
+                                                            <img src="@rowData.ImageURL" alt="img">
+                                                        </div>
+                                                        <div>
+                                                            <div class="lh-1">
+                                                                <span>@rowData.VehicleModelSeriesName </span>
+                                                            </div>
+                                                            <div class="lh-1">
+                                                                <span class="fs-11 text-muted">
+                                                                    @(!string.IsNullOrEmpty(rowData.BeginYearMonth) ? rowData.BeginYearMonth : "-") /
+                                                                    @(!string.IsNullOrEmpty(rowData.EndYearMonth) ? rowData.EndYearMonth : "-")
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>@rowData.DriveType</td>
+                                                <td>@rowData.BodyStyle</td>
+                                                <td>@rowData.FuelMixtureFormationType</td>
+                                                <td>
+                                                    <span class="badge bg-success-transparent">
+                                                        <i class="ri-check-fill align-middle me-1"></i>@rowData.FuelType
+                                                    </span>
+                                                </td>
+                                                <td>@rowData.EngineType</td>
+                                                <td>@rowData.Engines</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            @*<div class="col-xl-2 col-12 my-2">
+                                    <div class="text-center">
+                                        <div class="similar-products-image me-2">
+                                            <img src="../assets/images/ecommerce/6.png" alt="">
+                                        </div>
+                                        <h6 class="my-2 fs-14 fw-semibold">@rowData.MfrName </h6>
+                                        <div class="d-flex align-items-center justify-content-center mb-2">
+                                            <h5 class="mb-0 fw-semibold">
+                                                @rowData.VehicleModelSeriesName
+                                            </h5>
+                                            <p class="mb-0 text-muted">
+                                                <span class="text-success fs-11 ms-1">25% off</span>
+                                            </p>
+                                        </div>
+                                        <div class="flex-fill">
+                                            <span class="badge bg-success rounded-1">4.4<i class="ri-star-s-fill ms-1"></i></span>
+                                            <span class="text-muted ms-1">(13,256)</span>
+                                        </div>
+                                    </div>
+                                </div>*@
+                        }
+                    }
+                </div>
+                @*End row*@
+            </div>
+        </div>
+    </div>
+
+    @* Start จัดเรียงข้อมูลลง Array*@
+    @*<div class="col-xl-12">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <div class="card-title">Sort data</div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table text-nowrap table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No </th>
+                                        <th scope="col">Stkcod </th>
+                                        <th scope="col">BrandId </th>
+                                        <th scope="col">SeqDescription </th>
+                                        <th scope="col">Title </th>
+                                        <th scope="col">Description </th>
+                                        <th scope="col">Type </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    @* End จัดเรียงข้อมูลลง Array*@
+</div>
+
+<script type="text/javascript" src="~/Scripts/product-details.js"></script>
+<script defer>
+    //btn save
+    SaveProductApiToDb = async () => {
+        var msg = '';
+        var error = 0;
+        var txtPartNo = $("#txtPartNo").val();
+        var txtBrandId = $("#txtBrandId option:selected").val();
+        if (txtPartNo == "" || txtBrandId == "") {
+            ++error;
+            msg += '<br>' + error + '. กรุณากรอก Partno';
+        }
+        console.log("txtPartNo = " + txtPartNo);
+        console.log("txtBrandId = " + txtBrandId);
+        //return false;
+
+        if (error) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
+                html: msg,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Close',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+            return false;
+        } else {
+            Swal.fire({
+                title: 'Do you confirm save to db',
+               // html: html,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00a65a',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '<i class="fa fa-check"></i> Yes',
+                cancelButtonText: '<i class="fa fa-times"></i> No',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        url: '@Url.Action("SaveProductApiToDb", "ApiProduct")',
+                        data: {
+                            PartNo: txtPartNo,
+                            BrandId: txtBrandId
+                        },
+                        //contentType: "application/json; charset=utf-8",
+                        //enctype: 'multipart/form-data',
+                        beforeSend: function () {
+                            LoadingShow();
+                        },
+                        success: function (result) {
+                            if (result != null) {
+                                Swal.fire({
+                                    title: 'Saved successfully',
+                                    //html: '',
+                                    icon: 'success',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Close',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                    timer: 6000,
+                                    timerProgressBar: true,
+                                    onClose: () => {
+                                        //$(window).unbind('beforeunload');
+                                        //LoadingHide();
+                                        //$('form[id="budgetPmForm"]').submit();
+                                        ////location.reload();
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    //title: res.msg,
+                                    html: 'Error not saved',
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'Close',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                });
+                            }
+                        },
+                        error: function (ex) {
+                            //notify(ex, 'danger');
+                        },
+                        complete: function (res) {
+                            LoadingHide();
+                        }
+                    }).fail(function (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error not saved',
+                            html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveExcess<br><br>',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'ปิด',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
+                    });
+                }
+            });
+        }
+
+    }
+</script>

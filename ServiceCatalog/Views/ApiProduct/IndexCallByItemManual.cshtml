@@ -1,0 +1,173 @@
+﻿@using ServiceCatalog.Models;
+@{
+    List<SelectListItem> getListBrand = ViewBag.listBrand;
+}
+
+
+<div class="page-header">
+    <h1 class="page-title my-auto">Call item manual</h1>
+    <div>
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","Home")">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Call item manual</li>
+        </ol>
+    </div>
+</div>
+@*form search*@
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-header justify-content-between"> <div class="card-title"> PartNo Specific (0242135553 | 30 | JAR134), (39070 | 101)</div> <div class="prism-toggle"> </div> </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="form-text" class="form-label fs-14 text-dark">PartNo</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-settings-5-fill"></i>
+                            </div>
+                            <input type="text" class="form-control" id="txtPartNo" value="0242135553" placeholder="39070">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="form-text" class="form-label fs-14 text-dark">Brand</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-roadster-fill"></i>
+                            </div>
+                            <select class="form-control selectpicker" id="txtBrandId" name="txtBrandId" style="width: 100%;" data-live-search="true" title="SELECT BRAND">
+                                <option value="ALL">SELECT BRAND</option>
+                                @for (var i = 0; i < getListBrand.Count; i++)
+                                {
+                                    @*<option value="@getListBrand[i].Value">@getListBrand[i].Text</option>*@
+                                    <option value="@getListBrand[i].Value" @(getListBrand[i].Value == "30" ? "selected" : "")> @getListBrand[i].Text </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row text-right">
+                    <div class="col-xs-12 col-md-12 text-end">
+                        <button class="btn btn-primary" onclick="getArticlesByPartno();">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*content responsd api*@
+<div id="showResultArticlesByPartno" class="pt-1 pb-1"></div>
+
+@*@Scripts.Render("~/Scripts/scriptApiProduct.js")*@
+
+<script defer>
+    //call api
+    function getArticlesByPartno() {
+        var txtPartNo = $("#txtPartNo").val();
+        var txtBrandId = $("#txtBrandId option:selected").val();
+        var msg = '';
+        var error = 0;
+        if (txtPartNo == "" || txtBrandId == "") {
+            ++error;
+            msg += '<br>' + error + '. กรุณากรอก Partno';
+        }
+        if (error) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
+                html: msg,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Close',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+            return false;
+        } else {
+            //check call api
+            $.ajax({
+                url: '@Url.Action("checkApiDataByPartno", "ApiProduct")',
+                data: {
+                    PartNo: txtPartNo.trim(),
+                    BrandId: txtBrandId
+                },
+                type: "POST",
+                dataType: "JSON",
+                beforeSend: function () {
+                    $('#showResultArticlesByPartno').empty();
+                    Swal.fire({
+                        title: 'Searching...',
+                        text: 'Please wait while we search for the product.',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function (data) {
+                    //console.log(data);
+                    //return false;
+                    if (data.statusCallApi) { //call success
+                        if (data.MfrNames[0] != null) { //call find data
+                            $.ajax({
+                                url: '@Url.Action("getArticlesByPartno", "ApiProduct")',
+                                type: 'POST',
+                                data: {
+                                    PartNo: txtPartNo.trim(),
+                                    BrandId: txtBrandId
+                                },
+                                dataType: 'html',
+                                cache: false,
+                                Async: true,
+                                beforeSend: function () {
+                                    $('#showResultArticlesByPartno').empty();
+                                    //$('#showResultArticlesByPartno').html('<div style="padding: 30px; font-size: 14px;"> <i class="fa fa-spinner fa-spin" style="font-size: 24px;" aria-hidden="true"></i> กำลังโหลดข้อมูล Api Product ... </div>');
+                                    //LoadingShow();
+                                    Swal.fire({
+                                        title: 'Searching...',
+                                        text: 'Please wait while we search for the product.',
+                                        allowOutsideClick: false,
+                                        didOpen: () => {
+                                            Swal.showLoading();
+                                        }
+                                    });
+                                },
+                                success: function (res) {
+                                    Swal.close();
+                                    $('#showResultArticlesByPartno').html(res);
+                                   
+                                    //LoadingHide();
+                                }
+                            });
+                        } else {    ////call not find data
+                            Swal.fire({
+                                icon: 'warning',
+                                //title: res.msg,
+                                html: 'Product information not found',
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'Close',
+                                allowOutsideClick: false,
+                                focusConfirm: false,
+                            });
+                        }
+                    } else { //call fail api | not run
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'API service not run',
+                            html: data.statusCode,
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'Close',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
+                    }
+                }
+            });
+        }
+    }
+</script>

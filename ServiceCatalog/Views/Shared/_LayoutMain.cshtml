@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta Data -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Service Catalog &amp; Tru@Aac </title>
+
+    @Styles.Render("~/Content/css")
+
+    <!-- Favicon -->
+    @*<link rel="icon" href="../assets/images/brand-logos/favicon.ico" type="image/x-icon">*@
+
+    <!-- Choices JS -->
+    <script type="text/javascript" src="~/Scripts/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <!-- Main Theme Js -->
+    <script type="text/javascript" src="~/Scripts/main.js"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Css -->
+    <link rel="stylesheet" src="~/Scripts/libs/bootstrap/css/bootstrap.min.css" />
+
+    <!-- Style Css -->
+    <link rel="stylesheet" href="~/Content/styles.css" />
+
+    <!-- Icons Css -->
+    <link rel="stylesheet" href="~/Content/icons.css" />
+
+    <!-- Node Waves Css -->
+    <link rel="stylesheet" href="~/Scripts/libs/node-waves/waves.min.css" />
+
+    <!-- Simplebar Css -->
+    <link rel="stylesheet" href="~/Scripts/libs/simplebar/simplebar.min.css" />
+
+    <!-- Color Picker Css -->
+    <link rel="stylesheet" href="~/Scripts/libs/flatpickr/flatpickr.min.css" />
+    <link rel="stylesheet" href="~/Scripts/libs/simonwep/pickr/themes/nano.min.css" />
+
+    <!-- Choices Css -->
+    <link rel="stylesheet" href="~/Scripts/libs/choices.js/public/assets/styles/choices.min.css" />
+
+    <!-- Jsvector Css -->
+    <link rel="stylesheet" href="~/Scripts/libs/jsvectormap/css/jsvectormap.min.css" />
+
+    <!-- Swiper Css -->
+    <link rel="stylesheet" href="~/Scripts/libs/swiper/swiper-bundle.min.css" />
+
+    <!-- Grid Css -->
+    <link rel="stylesheet" href="~/Scripts/libs/gridjs/theme/mermaid.min.css" />
+
+    <script type="text/javascript" src="~/Scripts/LoadingOverlay.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.min.js")"></script>
+     @*Bootstrap JS*@ 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/libs/popperjs/core/umd/popper.min.js")"></script>
+   
+</head>
+
+<body>
+
+    <!-- Start Switcher -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="switcher-canvas" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title text-default" id="offcanvasRightLabel">Switcher</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+    </div>
+    <!-- End Switcher -->
+    <!-- Loader -->
+    <div id="loader">
+        <img src="../assets/images/media/loader.svg" alt="">
+    </div>
+    <!-- Loader -->
+
+    <div class="page">
+        <!-- app-header -->
+        @{
+            @Html.Partial("../Include/Header");
+        }
+        <!-- /app-header -->
+        <!-- Start::app-sidebar -->
+        <aside class="app-sidebar sticky" id="sidebar">
+
+            <!-- Start::main-sidebar-header -->
+            <div class="main-sidebar-header">
+                <a href="index.html" class="header-logo">
+                    <img src="../images/logo/logo_tru.png" alt="logo" class="desktop-logo">
+                    <img src="../images/brand-logos/toggle-logo.png" alt="logo" class="toggle-logo">
+                    <img src="../images/brand-logos/desktop-dark.png" alt="logo" class="desktop-dark">
+                    <img src="../images/brand-logos/toggle-dark.png" alt="logo" class="toggle-dark">
+                    <img src="../images/brand-logos/desktop-white.png" alt="logo" class="desktop-white">
+                    <img src="../images/brand-logos/toggle-white.png" alt="logo" class="toggle-white">
+                </a>
+            </div>
+            <!-- End::main-sidebar-header -->
+            <!-- Start::main-sidebar -->
+            @*Menu left*@
+            <div class="main-sidebar" id="sidebar-scroll">
+                <!-- Start::nav -->
+                @{
+                    @Html.Partial("../Include/MenuSuper");
+                }
+                <!-- End::nav -->
+
+            </div>
+            <!-- End::main-sidebar -->
+
+        </aside>
+        <!-- End::app-sidebar -->
+        <!-- Start::app-content -->
+        <div class="main-content app-content">
+            <div class="container-fluid">
+
+                @RenderBody()
+                @RenderSection("scripts", required: false)
+
+            </div>
+        </div>
+        <!-- End::app-content -->
+        <!-- Footer Start -->
+        @{
+            @Html.Partial("../Include/Footer");
+        }
+        <!-- Footer End -->
+
+    </div>
+
+
+    <!-- Scroll To Top -->
+    <div class="scrollToTop">
+        <span class="arrow"><i class="ri-arrow-up-s-fill fs-20"></i></span>
+    </div>
+    <div id="responsive-overlay"></div>
+
+
+    @*Defaultmenu JS*@
+    <script type="text/javascript" src="~/Scripts/defaultmenu.min.js"></script>
+    @*Node Waves JS*@
+    <script type="text/javascript" src="~/Scripts/libs/node-waves/waves.min.js"></script>
+    @*Sticky JS*@
+    <script type="text/javascript" src="~/Scripts/sticky.js"></script>
+    @*Simplebar JS*@
+    <script type="text/javascript" src="~/Scripts/libs/simplebar/simplebar.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/simplebar.js"></script>
+    @*Color Picker JS*@
+    <script type="text/javascript" src="~/Scripts/libs/simonwep/pickr/pickr.es5.min.js"></script>
+    @*JSVector Maps JS*@
+    <script type="text/javascript" src="~/Scripts/libs/jsvectormap/js/jsvectormap.min.js"></script>
+    @*JSVector Maps MapsJS*@
+    <script type="text/javascript" src="~/Scripts/libs/jsvectormap/maps/world-merc.js"></script>
+    @*Apex Chakrts JS*@
+    <script type="text/javascript" src="~/Scripts/libs/apexcharts/apexcharts.min.js"></script>
+    @*Chartjs Chart JS*@
+    <script type="text/javascript" src="~/Scripts/libs/chart.js/chart.min.js"></script>
+    @*index*@
+    <script type="text/javascript" src="~/Scripts/index.js"></script>
+    @*Custom-Switcher JS*@
+    <script type="text/javascript" src="~/Scripts/custom-switcher.min.js"></script>
+    @*Custom JS*@
+    <script type="text/javascript" src="~/Scripts/custom.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/libs/swiper/swiper-bundle.min.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/product-details.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+
+</html>
+<script defer>
+    function LoadingShow() {
+        JsLoadingOverlay.show();
+    }
+    function LoadingHide() {
+        JsLoadingOverlay.hide();
+    }
+
+</script>

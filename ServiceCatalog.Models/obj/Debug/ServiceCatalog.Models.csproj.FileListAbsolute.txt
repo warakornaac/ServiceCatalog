@@ -1,0 +1,9 @@
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\bin\Debug\ServiceCatalog.Models.dll
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\bin\Debug\ServiceCatalog.Models.pdb
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.csproj.AssemblyReference.cache
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.csproj.CoreCompileInputs.cache
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.dll
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.pdb
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\bin\Debug\Newtonsoft.Json.dll
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\bin\Debug\Newtonsoft.Json.xml
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.csproj.CopyComplete

@@ -1,0 +1,651 @@
+﻿@using System.Linq
+@using ServiceCatalog.Models;
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-header justify-content-between">
+                <div class="card-title" id="titleResultPartNo"> Result </div>
+            </div>
+            <div class="card-body">
+                @{
+                    if (ViewBag.mfrName.Count == 0)
+                    {
+                        <div class="row">
+                            <div class="alert alert-danger text-center mt-2" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล PartNo Specific </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row ">
+                            <div class="col-xxl-6 col-xl-12">
+                                <div class="row">
+                                    @{
+                                        if (ViewBag.dataResponse.Images != null && (ViewBag.dataResponse.Images).Count > 0)
+                                        {
+                                            <div class="col-xxl-10 col-xl-4 col-lg-4 col-md-4 col-sm-8 mb-md-5 mb-3">
+                                                <div class="">
+                                                    <div class="swiper swiper-preview-details bd-gray-100 product-details-page">
+                                                        <div class="swiper-wrapper">
+                                                            @foreach (var rowDataImage in ViewBag.dataResponse.Images)
+                                                            {
+                                                                <div class="swiper-slide" id="img-container">
+                                                                    <img class="img-fluid" src="@rowDataImage.imageURL800" alt="@rowDataImage.fileName">
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <div class="swiper-button-next"></div>
+                                                        <div class="swiper-button-prev"></div>
+                                                    </div>
+                                                    <div class="swiper swiper-view-details mt-2 swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-watch-progress swiper-backface-hidden swiper-thumbs">
+                                                        <div class="swiper-wrapper" id="swiper-wrapper-aa9f59d1069c0c416" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
+                                                            @foreach (var rowDataImage in ViewBag.dataResponse.Images)
+                                                            {
+                                                                <div class="swiper-slide swiper-slide-visible swiper-slide-active" role="group" aria-label="1 / 4" style="width: 82px; margin-right: 10px;">
+                                                                    <img class="img-fluid" src="@rowDataImage.imageURL100" alt="img">
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    <div class="col-xxl-12 col-xl-6 col-lg-8 col-md-6 col-sm-12 mb-md-8 mb-3">
+                                        @*Product Details*@
+                                        @*<div class="border p-3 rounded-3 mb-3">
+                                                <p class="fs-16 fw-semibold mb-2">Product Details :</p>
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        @if (ViewBag.mfrName.Count != 0)
+                                                        {
+                                                            <div class="row">
+                                                                <div class="col-xl-5">
+                                                                    <span class="fs-14 fw-semibold">แบรนด์</span>
+                                                                </div>
+                                                                <div class="col-xl-7">
+                                                                    <p class="text-muted fs-14">@ViewBag.mfrName[0]</p>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        <div class="row">
+                                                            <div class="col-xl-5">
+                                                                <span class="fs-14 fw-semibold">หมายเลขสินค้า</span>
+                                                            </div>
+                                                            <div class="col-xl-7">
+                                                                <p class="text-muted fs-14"> @ViewBag.articleNumber[0] </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-5">
+                                                                <span class="fs-14 fw-semibold">กลุ่มผลิตภัณฑ์</span>
+                                                            </div>
+                                                            <div class="col-xl-7">
+                                                                @foreach (var rowDataImage in ViewBag.dataResponse.GenericArticles)
+                                                                {
+                                                                    <p class="text-muted fs-14"> @rowDataImage.genericArticleDescription </p>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-5">
+                                                                <span class="fs-14 fw-semibold">คำอธิบายเพิ่มเติม</span>
+                                                            </div>
+                                                            <div class="col-xl-7">
+                                                                <p class="text-muted fs-14">
+                                                                    @if (ViewBag.additionalDescriptions[0] != null)
+                                                                    {
+                                                                        @ViewBag.additionalDescriptions[0]
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @: -
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-5">
+                                                                <span class="fs-14 fw-semibold">หมายเลขการใช้งาน </span>
+                                                            </div>
+                                                            <div class="col-xl-7">
+                                                                <p class="text-muted fs-14">
+                                                                    @if (ViewBag.dataResponse.TradeNumberDetail != null && (ViewBag.dataResponse.TradeNumberDetail).Count > 0)
+                                                                    {
+                                                                        var tradeNumbers = ViewBag.dataResponse.TradeNumberDetail;
+                                                                        for (int i = 0; i < tradeNumbers.Count; i++)
+                                                                        {
+                                                                            @tradeNumbers[i].tradeNumber
+                                                                            if (i < tradeNumbers.Count - 1)
+                                                                            {
+                                                                                @:|
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+                                        @*Specifications*@
+                                        <div class="mb-3 border p-3 rounded-3 ">
+                                            <p class="fs-15 fw-semibold mb-2">Product Specifications :</p>
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <ul class="ps-3 mb-0 list-unstyled">
+                                                        @{
+                                                            var criteriaList = ViewBag.dataResponse?.ArticleCriteria as List<ArticleCriteria>;
+                                                            if (criteriaList != null && criteriaList.Any())
+                                                            {
+                                                                var grouped = criteriaList
+                                                                    .GroupBy(c => new
+                                                                    {
+                                                                        c.criteriaId,
+                                                                        c.criteriaAbbrDescription,
+                                                                        c.criteriaUnitDescription
+                                                                    });
+                                                                foreach (var group in grouped)
+                                                                {
+                                                                    var formattedValues = string.Join(" | ", group.Select(g => g.formattedValue));
+                                                                    <li class="text-muted mb-2">
+                                                                        <i class="bx bxs-circle fs-7 me-2 op-5"></i>
+                                                                        <b>@group.Key.criteriaAbbrDescription</b> : @formattedValues
+                                                                        @if (!string.IsNullOrWhiteSpace(group.Key.criteriaUnitDescription))
+                                                                        {
+                                                                            @($" {group.Key.criteriaUnitDescription}")
+                                                                        }
+                                                                    </li>
+                                                                }
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*OEM*@
+                                        <div class="mb-3 border p-3 rounded-3 ">
+                                            <p class="fs-15 fw-semibold mb-2">OEM Number :</p>
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <ul class="ps-3 mb-0 list-unstyled">
+                                                        @{
+                                                            if (ViewBag.dataResponse.OemNumbers != null && (ViewBag.dataResponse.OemNumbers).Count > 0)
+
+                                                            {
+                                                                foreach (var rowDataOem in ViewBag.dataResponse.OemNumbers)
+                                                                {
+                                                                    <li class="text-muted mb-2">
+                                                                        <i class="bx bxs-circle fs-7 me-2 op-5"></i>
+                                                                        <b>@rowDataOem.articleNumber </b> &nbsp; : &nbsp; @rowDataOem.mfrName
+                                                                    </li>
+                                                                }
+                                                            }
+
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @{
+                                if (ViewBag.mfrName.Count != 0)
+                                {
+                                    <div class="col-xxl-6 col-xl-12">
+                                        <div class="row product-scroll  rounded-3 border p-3">
+                                            <div class="col-xl-12 mt-xxl-0 mt-6">
+                                                                            <div>
+                                                                                <p class="fs-18 fw-semibold mb-0">
+                                                                                    @ViewBag.mfrName[0]
+                                                                                    @if (ViewBag.dataResponse.GenericArticles != null)
+                                                                                    {
+                                                                                        foreach (var rowDataImage in ViewBag.dataResponse.GenericArticles)
+                                                                                        {
+                                                                                            @rowDataImage.genericArticleDescription @rowDataImage.assemblyGroupName
+                                                                                        }
+                                                                                    }
+
+                                                                                </p>
+                                                                                <p class="fs-18 mb-4">
+                                                                                    <i class="ri-star-s-fill text-warning align-middle"></i>
+                                                                                    <i class="ri-star-s-fill text-warning align-middle"></i>
+                                                                                    <i class="ri-star-s-fill text-warning align-middle"></i>
+                                                                                    <i class="ri-star-s-fill text-warning align-middle"></i>
+                                                                                    <i class="ri-star-half-s-fill text-warning align-middle"></i>
+                                                                                    <span class="fw-semibold text-muted ms-1">4.3<a class="text-info" href="javascript:void(0);">(2.4k Reviews)</a></span>
+                                                                                </p>
+                                                                                <div class="row mb-4">
+                                                                                    <div class="col-xxl-3 col-xl-12">
+                                                                                        <p class="mb-1 lh-1 fs-14 text-success fw-semibold">
+                                                                                            <input type="text" readonly class="form-control" id="txtArticleId" value="@ViewBag.articleId[0]" />
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                @*Button save to db*@
+                                                                                <div class="mb-4">
+                                                                                    <button type="button" class="btn btn-secondary me-2 mb-2" onclick="SaveProductApiToDb();"> Save To DB </button>
+                                                                                    <button type="button" class="btn btn-success me-2 mb-2">Remove From DB </button>
+                                                                                </div>
+                                                                                @*Product detail*@
+                                                                                <div class="col-xxl-12 col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-md-5 mb-3">
+                                                                                    <p class="fs-15 fw-semibold mb-1">@*<i class="ti ti-discount-2 fs-17 me-1 text-success"></i>*@ Product Details : </p>
+                                                                                    @if (ViewBag.mfrName.Count != 0)
+                                                                                    {
+                                                                                        <div class="row">
+                                                                                            <div class="col-xl-3 col-sm-12">
+                                                                                                <span class="fs-14 fw-semibold">แบรนด์</span>
+                                                                                            </div>
+                                                                                            <div class="col-xl-9 col-sm-12">
+                                                                                                <p class="text-muted fs-14">@ViewBag.mfrName[0]</p>
+                                                                                                @*set hidden*@
+                                                                                                @*<input data-table="description" data-seq="1" type="text" class="form-control mask vright description_seq_1" name="description_1" id="description_seq_1" value="@ViewBag.mfrName[0]" />*@
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    }
+                                                                                    <div class="row">
+                                                                                        <div class="col-xl-3 col-sm-12">
+                                                                                            <span class="fs-14 fw-semibold">หมายเลขสินค้า</span>
+                                                                                        </div>
+                                                                                        <div class="col-xl-9 col-sm-12">
+                                                                                            <p class="text-muted fs-14"> @ViewBag.articleNumber[0] </p>
+                                                                                            @*set hidden*@
+                                                                                            @*<input data-table="description" data-seq="1" type="text" class="form-control mask vright description_seq_2" name="description_2" id="description_seq_2" value="@ViewBag.articleNumber[0]" />*@
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-xl-3">
+                                                                                            <span class="fs-14 fw-semibold">กลุ่มผลิตภัณฑ์</span>
+                                                                                        </div>
+                                                                                        <div class="col-xl-9">
+                                                                                            @foreach (var rowDataGene in ViewBag.dataResponse.GenericArticles)
+                                                                                            {
+                                                                                                <p class="text-muted fs-14"> @rowDataGene.genericArticleDescription </p>
+                                                                                                @*set hidden*@
+                                                                                                @*<input data-table="description" data-seq="1" type="text" class="form-control mask vright description_seq_1" name="description_1" id="description_seq_1" value="@ViewBag.articleNumber[0]" />*@
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-xl-3 col-sm-12">
+                                                                                            <span class="fs-14 fw-semibold">หน่วยบรรจุภัณฑ์</span>
+                                                                                        </div>
+                                                                                        <div class="col-xl-9 col-sm-12">
+                                                                                            <p class="text-muted fs-14">
+                                                                                                @if (ViewBag.quantityPerPackage[0] != null)
+                                                                                                {
+                                                                                                    @ViewBag.quantityPerPackage[0]
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    @: -
+                                                                                                }
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-xl-3 col-sm-12">
+                                                                                            <span class="fs-14 fw-semibold">คำอธิบายเพิ่มเติม</span>
+                                                                                        </div>
+                                                                                        <div class="col-xl-9 col-sm-12">
+                                                                                            <p class="text-muted fs-14">
+                                                                                                @if (ViewBag.additionalDescriptions[0] != null)
+                                                                                                {
+                                                                                                    @ViewBag.additionalDescriptions[0]
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    @: -
+                                                                                                }
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-xl-3 col-sm-12">
+                                                                                            <span class="fs-14 fw-semibold">หมายเลขการใช้งาน </span>
+                                                                                        </div>
+                                                                                        <div class="col-xl-9 col-sm-12">
+                                                                                            <p class="text-muted fs-14">
+                                                                                                @if (ViewBag.dataResponse.TradeNumberDetail != null && (ViewBag.dataResponse.TradeNumberDetail).Count > 0)
+                                                                                                {
+                                                                                                    var tradeNumbers = ViewBag.dataResponse.TradeNumberDetail;
+                                                                                                    for (int i = 0; i < tradeNumbers.Count; i++)
+                                                                                                    {
+                                                                                                        @tradeNumbers[i].tradeNumber
+                                                                                                        if (i < tradeNumbers.Count - 1)
+                                                                                                        {
+                                                                                                            @:|
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                @{ var partNumberNearbyDetails = ViewBag.dataCompetitor as List<ServiceCatalog.Models.PartNumberNearby>; }
+                                                                                <div class="border p-3 rounded-3 mb-0">
+                                                                                    <p class="fs-15 fw-semibold mb-3">Competitor number :</p>
+                                                                                    <div class="row">
+                                                                                        <div class="col-xl-12">
+                                                                                            <ul class="ps-3 mb-0 list-unstyled">
+                                                                                                @{
+                                                                                                    if (partNumberNearbyDetails != null)
+                                                                                                    {
+                                                                                                        foreach (var rowDataCompe in partNumberNearbyDetails)
+                                                                                                        {
+                                                                                                            <li class="text-muted mb-2">
+                                                                                                                <i class="bx bxs-circle fs-7 me-2 op-5"></i>
+                                                                                                                <b>@rowDataCompe.articleNo </b> &nbsp; : &nbsp; @rowDataCompe.brandName
+                                                                                                            </li>
+                                                                                                        }
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        @: -
+                                                                                                    }
+                                                                                                }
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                            </div>
+                                            @*<div class="col-xl-4 mt-xxl-0 mt-3">
+                                                    <div class="border rounded-3 p-3 mb-3">
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div class="avatar avatar-lg bg-light p-2">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-primary" viewBox="0 0 64 64" id="free-shipping"><g data-name="21"><path fill="#546e7a" d="m61.79 32.39-7-9A1 1 0 0 0 54 23h-9v-4a5 5 0 0 0-5-5H7a5 5 0 0 0-5 5v21a5 5 0 0 0 5 5 1 1 0 0 0 0-2 3 3 0 0 1-3-3v-4h39v7H22.91a6 6 0 1 0 0 2h23.18a6 6 0 0 0 11.82 0H61a1 1 0 0 0 1-1V33a1 1 0 0 0-.21-.61Z"></path><path fill="#e7f5f3" d="M4 34V19a3 3 0 0 1 3-3h33a3 3 0 0 1 3 3v15Z"></path><circle cx="17" cy="44" r="4" fill="#09ad95"></circle><circle cx="52" cy="44" r="4" fill="#09ad95"></circle><path fill="#e7f5f3" d="M60 43h-2.09a6 6 0 0 0-11.82 0H45V25h8.51L60 33.34Z"></path><path fill="#546e7a" d="M52 27h-4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h9a1 1 0 0 0 .77-1.64l-5-6A1 1 0 0 0 52 27Z"></path><path fill="#09ad95" d="M49 33v-4h2.53l3.34 4H49z"></path><path fill="#546e7a" d="M23 23.5a3.5 3.5 0 0 0-3.5-3.5H17a1 1 0 0 0-1 1v8a1 1 0 0 0 2 0v-2h1.46l1.71 2.55A1 1 0 0 0 22 30a.94.94 0 0 0 .55-.17 1 1 0 0 0 .28-1.38l-1.37-2.06A3.49 3.49 0 0 0 23 23.5zM18 22h1.5a1.5 1.5 0 0 1 0 3H18zm-5 0a1 1 0 0 0 0-2H9a1 1 0 0 0-1 1v8a1 1 0 0 0 2 0v-3h3a1 1 0 0 0 0-2h-3v-2zm17 0a1 1 0 0 0 0-2h-4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4a1 1 0 0 0 0-2h-3v-2h3a1 1 0 0 0 0-2h-3v-2zm8 0a1 1 0 0 0 0-2h-4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4a1 1 0 0 0 0-2h-3v-2h3a1 1 0 0 0 0-2h-3v-2z"></path></g></svg>
+                                                            </div>
+                                                            <div class="ms-3">
+                                                                <span class="fs-14 fw-semibold mb-0">Free Shipping</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div class="avatar avatar-lg bg-light p-2">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-primary" viewBox="0 0 64 64" id="guarantee"><g data-name="3"><path fill="#546e7a" d="M32 60a1 1 0 0 1-.45-.11l-9.15-4.57A27.86 27.86 0 0 1 7 30.4V8a1 1 0 0 1 .49-.86 1 1 0 0 1 1 0l.51.24a20.18 20.18 0 0 0 22.37-2.15 1 1 0 0 1 1.26 0A20.18 20.18 0 0 0 55 7.38l.49-.26A1 1 0 0 1 57 8v22.4a27.86 27.86 0 0 1-15.4 24.92l-9.15 4.57A1 1 0 0 1 32 60Z"></path><path fill="#e7f5f3" d="M9 9.64V30.4a25.88 25.88 0 0 0 14.3 23.13l8.7 4.35 8.7-4.35A25.88 25.88 0 0 0 55 30.4V9.64a22.13 22.13 0 0 1-23-2.37A22.13 22.13 0 0 1 9 9.64Z"></path><path fill="#546e7a" d="M28 40a1 1 0 0 1-.71-.29l-12-12a1 1 0 0 1 1.42-1.42l11.35 11.35 19.29-16.4a1 1 0 1 1 1.3 1.52l-20 17A1 1 0 0 1 28 40Z"></path></g></svg>
+                                                            </div>
+                                                            <div class="ms-3">
+                                                                <span class="fs-14 fw-semibold mb-0">3 Years warranty</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div class="avatar avatar-lg bg-light p-2">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-primary" viewBox="0 0 64 64" id="refund"><g data-name="7"><path fill="#546e7a" d="M59 5.94a.78.78 0 0 0 0-.16v-.19a.35.35 0 0 0 0-.08l-.07-.12-.11-.11-.1-.09-.15-.08-.08-.05h-.17L58 5H22a1 1 0 0 0-.71.29l-16 16a1.32 1.32 0 0 0-.19.29v.09a1.31 1.31 0 0 0-.06.27S5 22 5 22v32a5 5 0 0 0 5 5h30a5 5 0 0 0 5-5V22.38L57 8.66v29.47a7 7 0 0 1-1.6 4.45L47 52.85a1 1 0 0 0 1.54 1.27L57 43.85a9 9 0 0 0 2-5.72V5.94Z"></path><path fill="#09ad95" d="M38.34 7H55.8L43.55 21H27.18l11.1-13.88a.45.45 0 0 0 .06-.12zM22.41 7h13.41l-11.1 13.88a.45.45 0 0 0-.06.12H8.41z"></path><path fill="#e7f5f3" d="M43 54a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3V23h36v31Z"></path><path fill="#546e7a" d="m50.21 25.21 4-4a1 1 0 0 0-1.42-1.42l-4 4a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0zM31 30H11a1 1 0 0 0 0 2h20a7 7 0 0 1 0 14H13.41l2.3-2.29a1 1 0 0 0-1.42-1.42l-4 4a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l4 4a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 48H31a9 9 0 0 0 0-18z"></path></g></svg>
+                                                            </div>
+                                                            <div class="ms-3">
+                                                                <span class="fs-14 fw-semibold mb-0">7 days  returnable</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar avatar-lg bg-light p-2">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-primary" viewBox="0 0 64 64" id="verified-payment"><g data-name="23"><rect width="58" height="32" x="3" y="22" fill="#e7f5f3" rx="1"></rect><path fill="#546e7a" d="M61 21h-3.29a16 16 0 1 0 .29 3v-1h2v30H4V23h18.76a1 1 0 1 0 0-2H3a1 1 0 0 0-1 1v32a1 1 0 0 0 1 1h58a1 1 0 0 0 1-1V22a1 1 0 0 0-1-1Z"></path><circle cx="42" cy="24" r="14" fill="#09ad95"></circle><path fill="#546e7a" d="m39.47 28.64-7.12-7.11a1 1 0 0 0-1.41 1.41l7.77 7.77a1 1 0 0 0 1.35.05l12.94-11a1 1 0 0 0 .11-1.41 1 1 0 0 0-1.4-.11zM21 30a1 1 0 0 0 0-2h-4v-2a1 1 0 0 0-2 0v2a5 5 0 0 0-5 5v1a5 5 0 0 0 5 5v7h-4a1 1 0 0 0 0 2h4v2a1 1 0 0 0 2 0v-2a5 5 0 0 0 5-5v-1a5 5 0 0 0-5-5v-7zm-1 12v1a3 3 0 0 1-3 3v-7a3 3 0 0 1 3 3zm-5-5a3 3 0 0 1-3-3v-1a3 3 0 0 1 3-3z"></path></g></svg>
+                                                            </div>
+                                                            <div class="ms-3">
+                                                                <span class="fs-14 fw-semibold mb-0">Cash on  Delivery</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="border rounded-3 p-3">
+                                                            <p class="fs-15 fw-semibold mb-2">Returns:</p>
+                                                            <p class="fs-12 text-muted">
+                                                                Min 7 days return and exchange policy. Return Policies may vary based on products and promotions.
+                                                                For full details on our Returns Policies, please
+                                                                <a href="javascript:void(0);" class="text-primary">click here</a>․
+                                                            </p>
+                                                        </div>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+    @{
+        var linkageDetails = ViewBag.DataLinkage as List<ServiceCatalog.Models.LinkageDetails>;
+    }
+    @*content K-Type*@
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-header">
+                <div class="card-title">List K-Type</div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @{
+                        if (linkageDetails == null)
+                        {
+                            <div class="alert alert-danger text-center mt-2" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล PartNo Specific </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table text-nowrap table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">KType</th>
+                                            <th scope="col">ยานพาหนะ</th>
+                                            <th scope="col">รุ่น/ปีที่ผลิต</th>
+                                            <th scope="col">DriveType </th>
+                                            <th scope="col">BodyStyle </th>
+                                            <th scope="col">FuelMixtureFormationType  </th>
+                                            <th scope="col">FuelType </th>
+                                            <th scope="col">EngineType   </th>
+                                            <th scope="col">Engines    </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var rowData in linkageDetails)
+                                        {
+                                            <tr>
+                                                <th scope="row">@rowData.LinkageTargetId</th>
+                                                <th scope="row">@rowData.MfrName</th>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar avatar-md">
+                                                            <img src="@rowData.ImageURL" alt="img">
+                                                        </div>
+                                                        <div>
+                                                            <div class="lh-1">
+                                                                <span>@rowData.VehicleModelSeriesName </span>
+                                                            </div>
+                                                            <div class="lh-1">
+                                                                <span class="fs-11 text-muted">
+                                                                    @(!string.IsNullOrEmpty(rowData.BeginYearMonth) ? rowData.BeginYearMonth : "-") /
+                                                                    @(!string.IsNullOrEmpty(rowData.EndYearMonth) ? rowData.EndYearMonth : "-")
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>@rowData.DriveType</td>
+                                                <td>@rowData.BodyStyle</td>
+                                                <td>@rowData.FuelMixtureFormationType</td>
+                                                <td>
+                                                    <span class="badge bg-success-transparent">
+                                                        <i class="ri-check-fill align-middle me-1"></i>@rowData.FuelType
+                                                    </span>
+                                                </td>
+                                                <td>@rowData.EngineType</td>
+                                                <td>@rowData.Engines</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            @*<div class="col-xl-2 col-12 my-2">
+                                    <div class="text-center">
+                                        <div class="similar-products-image me-2">
+                                            <img src="../assets/images/ecommerce/6.png" alt="">
+                                        </div>
+                                        <h6 class="my-2 fs-14 fw-semibold">@rowData.MfrName </h6>
+                                        <div class="d-flex align-items-center justify-content-center mb-2">
+                                            <h5 class="mb-0 fw-semibold">
+                                                @rowData.VehicleModelSeriesName
+                                            </h5>
+                                            <p class="mb-0 text-muted">
+                                                <span class="text-success fs-11 ms-1">25% off</span>
+                                            </p>
+                                        </div>
+                                        <div class="flex-fill">
+                                            <span class="badge bg-success rounded-1">4.4<i class="ri-star-s-fill ms-1"></i></span>
+                                            <span class="text-muted ms-1">(13,256)</span>
+                                        </div>
+                                    </div>
+                                </div>*@
+                        }
+                    }
+                </div>
+                @*End row*@
+            </div>
+        </div>
+    </div>
+
+    @* Start จัดเรียงข้อมูลลง Array*@
+    @*<div class="col-xl-12">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <div class="card-title">Sort data</div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table text-nowrap table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No </th>
+                                        <th scope="col">Stkcod </th>
+                                        <th scope="col">BrandId </th>
+                                        <th scope="col">SeqDescription </th>
+                                        <th scope="col">Title </th>
+                                        <th scope="col">Description </th>
+                                        <th scope="col">Type </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    @* End จัดเรียงข้อมูลลง Array*@
+</div>
+
+<script type="text/javascript" src="~/Scripts/product-details.js"></script>
+<script defer>
+    //btn save
+    SaveProductApiToDb = async () => {
+        var msg = '';
+        var error = 0;
+        var txtPartNo = $("#txtPartNo").val();
+        var txtBrandId = $("#txtBrandId option:selected").val();
+        if (txtPartNo == "" || txtBrandId == "") {
+            ++error;
+            msg += '<br>' + error + '. กรุณากรอก Partno';
+        }
+        console.log("txtPartNo = " + txtPartNo);
+        console.log("txtBrandId = " + txtBrandId);
+        //return false;
+
+        if (error) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
+                html: msg,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Close',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+            return false;
+        } else {
+            Swal.fire({
+                title: 'Do you confirm save to db',
+               // html: html,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00a65a',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '<i class="fa fa-check"></i> Yes',
+                cancelButtonText: '<i class="fa fa-times"></i> No',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        url: '@Url.Action("SaveProductApiToDb", "ApiProduct")',
+                        data: {
+                            PartNo: txtPartNo,
+                            BrandId: txtBrandId
+                        },
+                        //contentType: "application/json; charset=utf-8",
+                        //enctype: 'multipart/form-data',
+                        beforeSend: function () {
+                            LoadingShow();
+                        },
+                        success: function (result) {
+                            if (result != null) {
+                                Swal.fire({
+                                    title: 'Saved successfully',
+                                    //html: '',
+                                    icon: 'success',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Close',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                    timer: 6000,
+                                    timerProgressBar: true,
+                                    onClose: () => {
+                                        //$(window).unbind('beforeunload');
+                                        //LoadingHide();
+                                        //$('form[id="budgetPmForm"]').submit();
+                                        ////location.reload();
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    //title: res.msg,
+                                    html: 'Error not saved',
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'Close',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                });
+                            }
+                        },
+                        error: function (ex) {
+                            //notify(ex, 'danger');
+                        },
+                        complete: function (res) {
+                            LoadingHide();
+                        }
+                    }).fail(function (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error not saved',
+                            html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveExcess<br><br>',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'ปิด',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
+                    });
+                }
+            });
+        }
+
+    }
+</script>
