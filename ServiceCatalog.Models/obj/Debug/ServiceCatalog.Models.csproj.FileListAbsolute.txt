@@ -7,3 +7,12 @@ D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Model
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\bin\Debug\Newtonsoft.Json.dll
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\bin\Debug\Newtonsoft.Json.xml
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.csproj.CopyComplete
+D:\.net\ServiceCatalog\ServiceCatalog.Models\bin\Debug\ServiceCatalog.Models.dll
+D:\.net\ServiceCatalog\ServiceCatalog.Models\bin\Debug\ServiceCatalog.Models.pdb
+D:\.net\ServiceCatalog\ServiceCatalog.Models\bin\Debug\Newtonsoft.Json.dll
+D:\.net\ServiceCatalog\ServiceCatalog.Models\bin\Debug\Newtonsoft.Json.xml
+D:\.net\ServiceCatalog\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.csproj.AssemblyReference.cache
+D:\.net\ServiceCatalog\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.csproj.CoreCompileInputs.cache
+D:\.net\ServiceCatalog\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.csproj.CopyComplete
+D:\.net\ServiceCatalog\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.dll
+D:\.net\ServiceCatalog\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.pdb
