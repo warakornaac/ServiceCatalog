@@ -91,7 +91,7 @@
                                     }
                                     @*<i class="ri-lock-fill"></i>*@
                                     <div class="btn-list">
-                                        <button class="btn btn-sm btn-primary-light" type="button" id="task_btn_status_@rowProductTru.Stkcode" @disabledButton>
+                                        <button class="btn btn-sm btn-primary-light" type="button" onclick="getItemProductDeatil('@rowProductTru.Stkcode')" id="task_btn_status_@rowProductTru.Stkcode" @disabledButton>
                                             <span>@Html.Raw(iconBtnStatus)</span>
                                         </button>
                                     </div>
@@ -126,7 +126,75 @@
     }
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="itemProductDeatilModal" aria-labelledby="itemProductDeatilModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pb-2">
+                <div class="col-sm-10 col-md-10">
+                    <h4 class="modal-title" id="ModalLabel">รายละเอียด</h4>
+                </div>
+                <div class="col-sm-2 col-md-2 text-right">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <i class="fa fa-times"></i> ปิด
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script defer>
+    //get detail modal
+    function getItemProductDeatils(Stkcode) {
+        $.ajax({
+            url: '@Url.Action("getItemProductDeatil", "ItemProduct")',
+            type: 'POST',
+            dataType: 'HTML',
+            data: {
+                Stkcode: Stkcode
+            },
+            beforeSend: function () {
+                //LoadingShow();
+                $('#itemProductDeatilModal').find('.modal-body').html("");
+            },
+            success: function (data) {
+                $('#itemProductDeatilModal').find('.modal-body').html(data);
+                $('#itemProductDeatilModal').modal('show');
+            },
+            complete: function () {
+                //LoadingHide();
+            },
+            error: function (er) {
+                Swal.fire({
+                    icon: 'error',
+                    html: '<p>getItemProductDeatil :</p><p>' + er.error + '</p>',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'ปิด',
+                    allowOutsideClick: false,
+                    focusConfirm: false,
+                });
+            }
+        }).fail(function (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด กรุณาแจ้งผู้ดูแลระบบ (' + error.status + ')',
+                html: '<p>getItemProductDeatil :</p><p>' + error.responseText + '</p>',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+        });
+    }
     //reload call
     async function reloadTaskCallApi(rowNumber) {
         //const runTaskCallApi = await runTaskCallApi();
@@ -156,7 +224,7 @@
         console.log("txtNumberEnd = " + txtNumberEnd);
         return Math.floor(Math.random() * (parseInt(txtNumberEnd) - parseInt(txtNumberStart) + 1)) + parseInt(txtNumberStart);
     }
-    //Par callApiStop false = run, true = stop
+    //Para callApiStop false = run, true = stop
     let callApiStop = false;
     //stop call api
     function stopTaskCallApi() {
@@ -190,7 +258,7 @@
         var textMsgRun = '<form id="form-add-pack" style="text-align: left;">';
         textMsgRun += '<label class="text-primary"> <div class="input-group mb-3">' +
                                         '<span class="input-group-text">Start</span>' +
-                                        '<input type="number" name="numberStart" id="numberStart" class="form-control" placeholder="NumberStart" aria-label="Username">' +
+                                        '<input type="number" name="numberStart" id="numberStart" value="" class="form-control" placeholder="NumberStart" aria-label="Username">' +
                                         '<span class="input-group-text">To</span>' +
                                         '<input type="number" name="numberEnd" id="numberEnd" class="form-control" placeholder="NumberEnd" aria-label="Server">' +
                                     '</div> </label>';
@@ -245,7 +313,7 @@
             callApiStop = true;
             GetProductApiAutomateCount();  // reload
         }
-       
+
     }
     //ajax call api
     async function ajaxTaskCallApi() {

@@ -11388,6 +11388,7 @@
     <Content Include="Views\ApiProductAutomate\_ListItemAutomate.cshtml" />
     <Content Include="Views\ItemProduct\_ListItemProduct.cshtml" />
     <Content Include="Views\ItemProduct\IndexItemProduct.cshtml" />
+    <Content Include="Views\ItemProduct\_DeatilItemProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

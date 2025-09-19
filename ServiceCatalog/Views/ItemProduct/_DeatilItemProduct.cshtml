@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "_DeatilItemProduct";
+}
+
+<div class="row">
+    <div class="col-sm-6 col-md-6 text-left">
+        <span class="badge badge-light-secondary" style="font-size: 16px;"> ProductDescription </span>
+    </div>
+</div>
+<div class="row pt-2">
+    <div class="col-md-12">
+        <ol class="list-group list-group-numbered">
+            @if (ViewBag.ListProductDescription.Count > 0)
+            {
+                int countDes = 0;
+                foreach (var rowDes in ViewBag.ListProductDescription)
+                {
+                    @*<li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto text-muted">
+                            <div class="fw-semibold fs-14 text-default">What Happened?</div>
+                            Many experts have recently suggested may exist.
+                        </div>
+                        <span class="badge bg-primary-transparent">32 Views</span>
+                    </li>*@
+                }
+            }
+            else
+            {
+                <li class="list-group-item">No data.</li>
+            }
+        </ol>
+
+    </div>
+</div>
+
