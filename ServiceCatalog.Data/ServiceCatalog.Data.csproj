@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchItemProduct.cs" />
     <Compile Include="SearchProductTruByStatus.cs" />
     <Compile Include="UpdateProductApi.cs" />
   </ItemGroup>

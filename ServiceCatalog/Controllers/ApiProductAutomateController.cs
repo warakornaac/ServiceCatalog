@@ -52,7 +52,7 @@ namespace ServiceCatalog.Controllers
                 }
             }
             var SearchProductTru = new  List<StoredSearchProductTruByStatusModel>();
-            SearchProductTru = new SearchProductTruByStatus().SearchProductTru("", "161", "");
+            SearchProductTru = new SearchProductTruByStatus().SearchProductTru("", "", "", "");
          
             @ViewBag.listBrand = listBrandMaster;
             @ViewBag.listSearchProductTru = SearchProductTru;
@@ -63,18 +63,56 @@ namespace ServiceCatalog.Controllers
                 @ViewBag.listSearchProductTru
             });
         }
-        public ActionResult GetListItemAutomate(string Stkcode, string BrandId, string apiStatus)
+        public ActionResult GetListItemAutomate(string Stkcode, string BrandId, string RowNumber, string ApiStatus)
         {
             var SearchProductTru = new List<StoredSearchProductTruByStatusModel>();
             //if (!string.IsNullOrEmpty(apiStatus))
             //{
-                SearchProductTru = new SearchProductTruByStatus().SearchProductTru(Stkcode, BrandId, apiStatus);
+                SearchProductTru = new SearchProductTruByStatus().SearchProductTru(Stkcode, BrandId, RowNumber, ApiStatus);
             //}
             @ViewBag.listSearchProductTru = SearchProductTru;
             return PartialView("_ListItemAutomate", new
             {
                 @ViewBag.listSearchProductTru
             });
+        }
+        public JsonResult GetProductApiAutomateCount()
+        {
+            List<ListProductApiAutomateCount> ListProductApiAutomateCount = new List<ListProductApiAutomateCount>();
+            var connectionString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            SqlConnection Connection = new SqlConnection(connectionString);
+            var command = new SqlCommand("P_Product_Api_Automate_Count", Connection);
+            command.CommandType = CommandType.StoredProcedure;
+            Connection.Open();
+            SqlDataReader dr = command.ExecuteReader();
+            while (dr.Read())
+            {
+                ListProductApiAutomateCount.Add(new ListProductApiAutomateCount()
+                {
+                    sumItemAll = dr["sumItemAll"].ToString(),
+                    sumItemAllSuccess = dr["sumItemAllSuccess"].ToString(),
+                    sumItemCurrentAll = dr["sumItemCurrentAll"].ToString(),
+                    sumItemCurrentAllSuccess = dr["sumItemCurrentAllSuccess"].ToString(),
+                    sumItemCurrentTaskPendding = dr["sumItemCurrentTaskPendding"].ToString(),
+                    sumItemCurrentTaskProcess = dr["sumItemCurrentTaskProcess"].ToString(),
+                    sumItemCurrentTaskComplete = dr["sumItemCurrentTaskComplete"].ToString(),
+                });
+            }
+            dr.Close();
+            dr.Dispose();
+            command.Dispose();
+            Connection.Close();
+            return Json(ListProductApiAutomateCount, JsonRequestBehavior.AllowGet);
+        }
+        public class ListProductApiAutomateCount
+        {
+            public string sumItemAll { get; set; }
+            public string sumItemAllSuccess { get; set; }
+            public string sumItemCurrentAll { get; set; }
+            public string sumItemCurrentAllSuccess { get; set; }
+            public string sumItemCurrentTaskPendding { get; set; }
+            public string sumItemCurrentTaskProcess { get; set; }
+            public string sumItemCurrentTaskComplete { get; set; }
         }
     }
 }

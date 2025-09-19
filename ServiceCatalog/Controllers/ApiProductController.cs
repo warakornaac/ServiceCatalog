@@ -665,7 +665,7 @@ namespace ServiceCatalog.Controllers
             //Save to DB
             var saveProductRowSuccess = new List<ProductDataToArray>();
             var saveProductRowFail = new List<FailedSaveRecord>();
-            if (setArrayByTable.Count == 0) //Call api เจอข้อมูล
+            if (setArrayByTable.Count == 0) //Call api ไม่พบข้อมูล
             {
                 var UpdateProductApiModel = new UpdateProductApi().SaveProductApi(
                           "",
@@ -679,7 +679,7 @@ namespace ServiceCatalog.Controllers
                           "SystemAdmin"
                       );
             }
-            else //Call api ไม่พบข้อมูล
+            else //Call api เจอข้อมูล
             {
                 foreach (var rowData in setArrayByTable)
                 {

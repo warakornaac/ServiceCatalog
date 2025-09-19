@@ -129,6 +129,7 @@
     <Compile Include="Controllers\ApiProductAutomateController.cs" />
     <Compile Include="Controllers\ApiProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ItemProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -11385,6 +11386,8 @@
     <Content Include="Views\ApiProduct\_listCallByItemManual_2.cshtml" />
     <Content Include="Views\ApiProductAutomate\IndexCallItemAutomate.cshtml" />
     <Content Include="Views\ApiProductAutomate\_ListItemAutomate.cshtml" />
+    <Content Include="Views\ItemProduct\_ListItemProduct.cshtml" />
+    <Content Include="Views\ItemProduct\IndexItemProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

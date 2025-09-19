@@ -69,7 +69,7 @@
                 <div class="d-flex">
                     <div class="mt-2">
                         <h6 class="fw-normal">Item ทั้งหมด</h6>
-                        <h2 class="mb-0 text-dark fw-semibold">20,000</h2>
+                        <h2 class="mb-0 text-dark fw-semibold" id="sumItemAll"> <div class="spinner-border text-secondary"></div> </h2>
                     </div>
                     <div class="ms-auto">
                         <div class="chart-wrapper mt-1">
@@ -78,11 +78,11 @@
                     </div>
                 </div>
                 @*<span class="text-muted fs-12">
-                    <span class="text-secondary">
-                        <i class="fe fe-arrow-up-circle text-secondary"></i> 5%
-                    </span>
-                    Last week
-                </span>*@
+                        <span class="text-secondary">
+                            <i class="fe fe-arrow-up-circle text-secondary"></i> 5%
+                        </span>
+                        Last week
+                    </span>*@
             </div>
         </div>
     </div>
@@ -91,22 +91,21 @@
             <div class="card-body">
                 <div class="d-flex">
                     <div class="mt-2">
-                        <h6 class="fw-normal">Call Api แล้ว</h6>
-                        <h2 class="mb-0 text-dark fw-semibold">5,000</h2>
+                        <h6 class="fw-normal">Call Api ทั้งหมดแล้ว</h6>
+                        <h2 class="mb-0 text-dark fw-semibold" id="sumItemAllSuccess"> <div class="spinner-border text-secondary"></div> </h2>
                     </div>
                     <div class="ms-auto">
                         <div class="chart-wrapper mt-1">
-                            <canvas id="leadschart"
-                                    class="chart-dropshadow"></canvas>
+                            <canvas id="leadschart" class="chart-dropshadow"></canvas>
                         </div>
                     </div>
                 </div>
                 @*<span class="text-muted fs-12">
-                    <span class="text-pink">
-                        <i class="fe fe-arrow-down-circle text-pink"></i> 0.75%
-                    </span>
-                    Last 6 days
-                </span>*@
+                        <span class="text-pink">
+                            <i class="fe fe-arrow-down-circle text-pink"></i> 0.75%
+                        </span>
+                        Last 6 days
+                    </span>*@
             </div>
         </div>
     </div>
@@ -115,8 +114,8 @@
             <div class="card-body">
                 <div class="d-flex">
                     <div class="mt-2">
-                        <h6 class="fw-normal">Call Item วันนี้</h6>
-                        <h2 class="mb-0 text-dark fw-semibold">1,000</h2>
+                        <h6 class="fw-normal">Call Item วันนี้ทั้งหมด</h6>
+                        <h2 class="mb-0 text-dark fw-semibold" id="sumItemCurrentAll"> <div class="spinner-border text-secondary"></div> </h2>
                     </div>
                     <div class="ms-auto">
                         <div class="chart-wrapper mt-1">
@@ -126,11 +125,11 @@
                     </div>
                 </div>
                 @*<span class="text-muted fs-12">
-                    <span class="text-green">
-                        <i class="fe fe-arrow-up-circle text-green"></i> 0.9%
-                    </span>
-                    Last 9 days
-                </span>*@
+                        <span class="text-green">
+                            <i class="fe fe-arrow-up-circle text-green"></i> 0.9%
+                        </span>
+                        Last 9 days
+                    </span>*@
             </div>
         </div>
     </div>
@@ -139,22 +138,21 @@
             <div class="card-body">
                 <div class="d-flex">
                     <div class="mt-2">
-                        <h6 class="fw-normal">คงเหลือ Call Api วันนี้</h6>
-                        <h2 class="mb-0 text-dark fw-semibold">900</h2>
+                        <h6 class="fw-normal">Call Api วันนี้ไปแล้ว</h6>
+                        <h2 class="mb-0 text-dark fw-semibold" id="sumItemCurrentAllSuccess"> <div class="spinner-border text-secondary"></div> </h2>
                     </div>
                     <div class="ms-auto">
                         <div class="chart-wrapper mt-1">
-                            <canvas id="costchart"
-                                    class="chart-dropshadow"></canvas>
+                            <canvas id="costchart" class="chart-dropshadow"></canvas>
                         </div>
                     </div>
                 </div>
                 @*<span class="text-muted fs-12">
-                    <span class="text-warning">
-                        <i class="fe fe-arrow-up-circle text-warning"></i> 0.6%
-                    </span>
-                    Last year
-                </span>*@
+                        <span class="text-warning">
+                            <i class="fe fe-arrow-up-circle text-warning"></i> 0.6%
+                        </span>
+                        Last year
+                    </span>*@
             </div>
         </div>
     </div>
@@ -166,84 +164,60 @@
             <div class="card-body p-0">
                 <div class="d-flex p-3 align-items-center justify-content-between">
                     <div>
-                        <h6 class="fw-semibold mb-0">รายการ Item  <span class="badge bg-secondary">@currentDate</span> </h6>
+                        <h6 class="fw-semibold mb-0">รายการ Item วันนี้ <span class="badge bg-secondary fs-15">@currentDate</span> </h6>
                     </div>
                     <div>
                         <ul class="nav nav-tabs nav-tabs-header mb-0 d-sm-flex d-block" role="tablist">
                             <li class="nav-item m-1">
                                 <a class="nav-link position-relative active" data-bs-toggle="tab" role="tab" aria-current="page" href="#pending" aria-selected="true">
                                     Pending
-                                    <span class="badge bg-secondary rounded-pill position-absolute top-0 start-100 translate-middle" id="cart-icon-badge">1</span>
+                                    <span class="badge bg-secondary rounded-pill position-absolute top-0 start-100 translate-middle fs-15" id="cart-icon-badge"><div id="sumItemCurrentTaskPendding">0</div></span>
                                 </a>
                             </li>
                             <li class="nav-item m-1">
                                 <a class="nav-link position-relative" data-bs-toggle="tab" role="tab" aria-current="page" href="#in-progress" aria-selected="true">
                                     In Progress
-                                    <span class="badge bg-warning rounded-pill position-absolute top-0 start-100 translate-middle" id="cart-icon-badge">0</span>
+                                    <span class="badge bg-warning rounded-pill position-absolute top-0 start-100 translate-middle fs-15" id="cart-icon-badge sumItemCurrentTaskProcess"><div id="sumItemCurrentTaskProcess">0</div></span>
                                 </a>
                             </li>
                             <li class="nav-item m-1">
                                 <a class="nav-link position-relative" data-bs-toggle="tab" role="tab" aria-current="page" href="#completed" aria-selected="true">
                                     Completed
-                                    <span class="badge bg-success rounded-pill position-absolute top-0 start-100 translate-middle" id="cart-icon-badge">1</span>
+                                    <span class="badge bg-success rounded-pill position-absolute top-0 start-100 translate-middle fs-15" id="cart-icon-badge sumItemCurrentTaskComplete"><div id="sumItemCurrentTaskComplete">0</div></span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                    <div class="prism-toggle">
+                        <div class="text-sm-center"> <p class="fs-14 fw-semibold mb-0">RowCall</p><span class="badge bg-danger fs-11 rounded-1" id="txtResNumberRandom">0</span> </div>
+                    </div>
                     <div>
                         <!-- Create Task Button -->
-                        <div class="d-grid">
-                            <button type="button" class="btn btn-primary d-flex align-items-center justify-content-center" onclick="runTaskCallApi();" @*data-bs-toggle="modal" data-bs-target="#addtask"*@>
-                                <i class="ri-send-backward fs-16 align-middle me-1"></i>
-                                Run Task
+                        <div class="">
+                            <button type="button" class="btn btn-primary" onclick="runTaskCallApi();" id="btnRunTask">
+                                <i class="ri-play-mini-fill fs-16 align-middle me-1"></i> Run Task
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="stopTaskCallApi();" id="btnStopTask">
+                                <i class="ri-stop-mini-fill fs-16 align-middle me-1"></i> Stop Task
                             </button>
                         </div>
-
                         <!-- Modal -->
                         <div class="modal fade" id="addtask" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
-
                                     <!-- Modal Header -->
                                     <div class="modal-header">
                                         <h6 class="modal-title" id="mail-ComposeLabel">Run Task</h6>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-
                                     <!-- Modal Body -->
                                     <div class="modal-body px-4">
                                         <div class="row gy-2">
-
                                             <!-- Task Name -->
                                             <div class="col-xl-12">
                                                 <label for="task-name" class="form-label">Task Date</label>
                                                 <input type="text" class="form-control" id="task-name" placeholder="Task Date">
                                             </div>
-                                            <!-- Assigned Date -->
-                                            <!--<div class="col-xl-6">
-                                                <label class="form-label">Start Date</label>
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <div class="input-group-text text-muted">
-                                                            <i class="ri-calendar-line"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control flatpickr-input" id="addignedDate" placeholder="Choose date and time" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>-->
-                                            <!-- Target Date -->
-                                            <!--<div class="col-xl-6">
-                                                <label class="form-label">End Date</label>
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <div class="input-group-text text-muted">
-                                                            <i class="ri-calendar-line"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control flatpickr-input" id="targetDate" placeholder="Choose date and time" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>-->
-                                            <!-- Priority -->
                                             <div class="col-xl-12">
                                                 <label class="form-label">Number</label>
                                                 <div class="choices" data-type="select-one" tabindex="0" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false">
@@ -282,8 +256,14 @@
                             </div> <!-- End of modal-dialog -->
                         </div> <!-- End of modal -->
                     </div>
-
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xxl-2 col-md-3 task-card">
+                <input type="hidden" name="resNumberStart" id="resNumberStart" class="form-control" placeholder="NumberStart">
+                <input type="hidden" name="resNnumberEnd" id="resNnumberEnd" class="form-control" placeholder="NumberEnd">
+                <input type="hidden" name="resNumberRandom" id="resNumberRandom" class="form-control" placeholder="numberResult">
             </div>
         </div>
     </div>
@@ -300,19 +280,23 @@
     //get first all task
     if (document.readyState == "loading") {
         setTimeout(function () {
-            GetListItemAutomateByStatus("", "", "", "pending");
+            GetListItemAutomateByStatus("", "", "", "0", "pending");
+            GetProductApiAutomateCount();
+            //ปิดปุ่ม stop
+            $("#btnStopTask").prop("disabled", true);
         }, 1000);
     }
     //ดึง list task
-    function GetListItemAutomateByStatus(Stkcode, BrandId, apiStatus, nameTask) {
-        //var promotionCode = $("#promotionCode").val();
+    function GetListItemAutomateByStatus(Stkcode, BrandId, apiStatus, RowNumber, nameTask) {
         $.ajax({
             type: 'post',
             url: '@Url.Action("GetListItemAutomate", "ApiProductAutomate")',
             data: {
                 Stkcode: "",
-                BrandId: "161",
-                apiStatus: apiStatus
+                BrandId: "",
+                ApiStatus: apiStatus,
+                RowNumber: RowNumber
+
             },
             dataType: 'html',
             beforeSend: function () {
@@ -345,15 +329,56 @@
         console.log("Tab clicked: " + targetTab);
         switch (targetTab) {
             case "#pending":
-                GetListItemAutomateByStatus("", "", "", "pending");
+                GetListItemAutomateByStatus("", "", "", "0", "pending");
                 break;
             case "#in-progress":
-                GetListItemAutomateByStatus("", "", "D", "in-progress");
+                GetListItemAutomateByStatus("", "", "D", "0", "in-progress");
                 break;
             case "#completed":
-                GetListItemAutomateByStatus("", "", "Y", "completed");
+                GetListItemAutomateByStatus("", "", "Y", "0", "completed");
                 break;
         }
     });
+    //count item
+    async function GetProductApiAutomateCount() {
+        console.log("GetProductApiAutomateCount");
+        try {
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("GetProductApiAutomateCount", "ApiProductAutomate")',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    $('#sumItemAll').text(Number(data[0].sumItemAll).toLocaleString());
+                    $('#sumItemAllSuccess').text(Number(data[0].sumItemAllSuccess).toLocaleString());
+                    $('#sumItemCurrentAll').text(Number(data[0].sumItemCurrentAll).toLocaleString());
+                    $('#sumItemCurrentAllSuccess').text(Number(data[0].sumItemCurrentAllSuccess).toLocaleString());
+                    $('#sumItemCurrentTaskPendding').text(Number(data[0].sumItemCurrentTaskPendding).toLocaleString());
+                    $('#sumItemCurrentTaskProcess').text(Number(data[0].sumItemCurrentTaskProcess).toLocaleString());
+                    $('#sumItemCurrentTaskComplete').text(Number(data[0].sumItemCurrentTaskComplete).toLocaleString());
+                }
+            }).fail(function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ระบบทำงานผิดพลาด()',
+                    html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>GetProductApiAutomateCount<br>' + error.responseText + '<br><br>',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'ปิด',
+                    allowOutsideClick: false,
+                    focusConfirm: false
+                });
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ระบบทำงานผิดพลาด()',
+                html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>GetProductApiAutomateCount<br>' + erroพ + '<br><br>',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false
+            });
+        }
+    }
 
 </script>

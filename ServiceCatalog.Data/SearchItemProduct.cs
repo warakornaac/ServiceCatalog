@@ -9,13 +9,13 @@ using ServiceCatalog.Library;
 
 namespace ServiceCatalog.Data
 {
-    public class SearchProductTruByStatus : MsSQL
+    public class SearchItemProduct : MsSQL
     {
-        public SearchProductTruByStatus() : base(Utils.GetConfig("ServiceCatalogDB"))
+        public SearchItemProduct() : base(Utils.GetConfig("ServiceCatalogDB"))
         {
 
         }
-        public List<StoredSearchProductTruByStatusModel> SearchProductTru(string Stkcode, string BrandId, string RowNumber, string ApiStatus)
+        public List<StoredSearchItemProductsModel> SearchItem(string Stkcode, string BrandId, string RowNumber, string ApiStatus)
         {
             var p = new SqlParameters();
             p.AddParams("@inStkcode", Stkcode);
@@ -23,8 +23,8 @@ namespace ServiceCatalog.Data
             p.AddParams("@inStatus", ApiStatus.ToTrim());
             p.AddParams("@inRowNumber", RowNumber);
 
-            var table = GetData(CmdStore("P_Search_Product_Tru_By_Status", p));
-            return ConvertExtension.ConvertDataTable<StoredSearchProductTruByStatusModel>(GetData(CmdStore("P_Search_Product_Tru_By_Status", p)));
+            var table = GetData(CmdStore("P_Search_Item_Product", p));
+            return ConvertExtension.ConvertDataTable<StoredSearchItemProductsModel>(GetData(CmdStore("P_Search_Item_Product", p)));
         }
     }
 }
