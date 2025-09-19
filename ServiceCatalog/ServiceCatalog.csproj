@@ -139,8 +139,12 @@
     <Compile Include="Controllers\ApiProductAutomateController.cs" />
     <Compile Include="Controllers\ApiProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+<<<<<<< HEAD
     <Compile Include="Controllers\ManagementController.cs" />
     <Compile Include="Controllers\UpLoadDataVIOController.cs" />
+=======
+    <Compile Include="Controllers\ItemProductController.cs" />
+>>>>>>> 3b7bca7dce4aed9042f86116314ff7508a8b43ff
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -11397,8 +11401,13 @@
     <Content Include="Views\ApiProduct\_listCallByItemManual_2.cshtml" />
     <Content Include="Views\ApiProductAutomate\IndexCallItemAutomate.cshtml" />
     <Content Include="Views\ApiProductAutomate\_ListItemAutomate.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Management\Index.cshtml" />
     <Content Include="Views\UpLoadDataVIO\Index.cshtml" />
+=======
+    <Content Include="Views\ItemProduct\_ListItemProduct.cshtml" />
+    <Content Include="Views\ItemProduct\IndexItemProduct.cshtml" />
+>>>>>>> 3b7bca7dce4aed9042f86116314ff7508a8b43ff
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -49,6 +49,7 @@
     <Compile Include="LinkageDataModels.cs" />
     <Compile Include="PartNumberNearbyModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoredSearchItemProductsModel.cs" />
     <Compile Include="StoredSearchProductDescriptionModel.cs" />
     <Compile Include="StoredSearchProductTruByStatusModel.cs" />
     <Compile Include="StoredUpdateProductApiModel.cs" />

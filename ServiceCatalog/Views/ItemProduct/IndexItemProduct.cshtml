@@ -1,0 +1,98 @@
+﻿<div class="page-header">
+    <h1 class="page-title my-auto">Item tru</h1>
+    <div>
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","Home")">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Item tru</li>
+        </ol>
+    </div>
+</div>
+@*form search*@
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-header justify-content-between"> <div class="card-title"> PartNo</div> <div class="prism-toggle"> </div> </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="form-text" class="form-label fs-14 text-dark">PartNo</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-settings-5-fill"></i>
+                            </div>
+                            <input type="text" class="form-control" id="txtPartNo" value="" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="form-text" class="form-label fs-14 text-dark">Api Status</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-roadster-fill"></i>
+                            </div>
+                            <select class="form-control selectpicker" id="txtStatusId" name="txtStatusId" style="width: 100%;" data-live-search="true" title="SELECT Status">
+                                @*<option value="ALL">SELECT STATUS</option>*@
+                                <option value="" selected>Pending</option>
+                                <option value="D">In Process</option>
+                                <option value="Y">Complete</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row text-right">
+                    <div class="col-xs-12 col-md-12 text-end">
+                        <button class="btn btn-primary" onclick="getItemProduct();">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*content responsd list*@
+<div id="getItemProduct" class="pt-1 pb-1"></div>
+
+<script defer>
+    //call api
+    function getItemProduct () {
+        var txtPartNo = $("#txtPartNo").val();
+        var txtStatusId = $("#txtStatusId option:selected").val();
+        var msg = '';
+        var error = 0;
+        $.ajax({
+            url: '@Url.Action("GetListItemProduct", "ItemProduct")',
+            type: 'POST',
+            data: {
+                Stkcode: txtPartNo.trim(),
+                BrandId: "",
+                RowNumber: "",
+                ApiStatus: txtStatusId
+            },
+            dataType: 'html',
+            cache: false,
+            Async: true,
+            beforeSend: function () {
+                $('#showResultItemProduct').empty();
+                //$('#showResultItemProduct').html('<div style="padding: 30px; font-size: 14px;"> <i class="fa fa-spinner fa-spin" style="font-size: 24px;" aria-hidden="true"></i> กำลังโหลดข้อมูล Api Product ... </div>');
+                //LoadingShow();
+                Swal.fire({
+                    title: 'Searching...',
+                    text: 'Please wait while we search for the product.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function (res) {
+                Swal.close();
+                $('#showResultItemProduct').html(res);
+                //LoadingHide();
+            }
+        });
+    }
+</script>
