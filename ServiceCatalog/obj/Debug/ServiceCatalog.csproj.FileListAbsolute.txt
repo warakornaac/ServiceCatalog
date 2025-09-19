@@ -90,6 +90,8 @@ D:\.net\ServiceCatalog\ServiceCatalog\bin\roslyn\vbc.rsp
 D:\.net\ServiceCatalog\ServiceCatalog\bin\roslyn\VBCSCompiler.exe
 D:\.net\ServiceCatalog\ServiceCatalog\bin\roslyn\VBCSCompiler.exe.config
 D:\.net\ServiceCatalog\ServiceCatalog\bin\Antlr3.Runtime.dll
+D:\.net\ServiceCatalog\ServiceCatalog\bin\EPPlus.dll
+D:\.net\ServiceCatalog\ServiceCatalog\bin\EPPlus.Interfaces.dll
 D:\.net\ServiceCatalog\ServiceCatalog\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 D:\.net\ServiceCatalog\ServiceCatalog\bin\Microsoft.Web.Infrastructure.dll
 D:\.net\ServiceCatalog\ServiceCatalog\bin\Newtonsoft.Json.dll
@@ -107,6 +109,7 @@ D:\.net\ServiceCatalog\ServiceCatalog\bin\WebGrease.dll
 D:\.net\ServiceCatalog\ServiceCatalog\bin\ServiceCatalog.Data.pdb
 D:\.net\ServiceCatalog\ServiceCatalog\bin\ServiceCatalog.Library.pdb
 D:\.net\ServiceCatalog\ServiceCatalog\bin\ServiceCatalog.Models.pdb
+D:\.net\ServiceCatalog\ServiceCatalog\bin\EPPlus.xml
 D:\.net\ServiceCatalog\ServiceCatalog\bin\Newtonsoft.Json.xml
 D:\.net\ServiceCatalog\ServiceCatalog\bin\System.Web.Helpers.xml
 D:\.net\ServiceCatalog\ServiceCatalog\bin\System.Web.Mvc.xml

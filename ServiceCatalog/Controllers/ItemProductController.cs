@@ -18,14 +18,14 @@ namespace ServiceCatalog.Controllers
         {
             return View("IndexItemProduct", new
             {
-               // @ViewBag.listBrand
+                // @ViewBag.listBrand
             });
         }
-        public ActionResult GetListItemProduct(string Stkcode, string BrandId, string RowNumber, string ApiStatus)
+        public ActionResult GetListItemProduct(string Stkcode, string BrandId, string RowNumber, string ApiStatus, string Calldate)
         {
             var SearchItemProduct = new List<StoredSearchItemProductsModel>();
 
-            SearchItemProduct = new SearchItemProduct().SearchItem(Stkcode, BrandId, RowNumber, ApiStatus);
+            SearchItemProduct = new SearchItemProduct().SearchItem(Stkcode, BrandId, RowNumber, ApiStatus, Calldate);
             @ViewBag.listSearchItemProduct = SearchItemProduct;
             return PartialView("_ListItemProduct", new
             {

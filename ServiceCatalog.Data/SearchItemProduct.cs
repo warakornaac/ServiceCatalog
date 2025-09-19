@@ -15,13 +15,14 @@ namespace ServiceCatalog.Data
         {
 
         }
-        public List<StoredSearchItemProductsModel> SearchItem(string Stkcode, string BrandId, string RowNumber, string ApiStatus)
+        public List<StoredSearchItemProductsModel> SearchItem(string Stkcode, string BrandId, string RowNumber, string ApiStatus, string CallDate)
         {
             var p = new SqlParameters();
             p.AddParams("@inStkcode", Stkcode);
             p.AddParams("@inBrandId", BrandId);
             p.AddParams("@inStatus", ApiStatus.ToTrim());
             p.AddParams("@inRowNumber", RowNumber);
+            p.AddParams("@inDateCall", CallDate);
 
             var table = GetData(CmdStore("P_Search_Item_Product", p));
             return ConvertExtension.ConvertDataTable<StoredSearchItemProductsModel>(GetData(CmdStore("P_Search_Item_Product", p)));

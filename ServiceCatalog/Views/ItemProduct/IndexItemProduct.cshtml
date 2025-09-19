@@ -16,7 +16,7 @@
             <div class="card-header justify-content-between"> <div class="card-title"> PartNo</div> <div class="prism-toggle"> </div> </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="form-text" class="form-label fs-14 text-dark">PartNo</label>
                         <div class="input-group">
                             <div class="input-group-text">
@@ -25,7 +25,7 @@
                             <input type="text" class="form-control" id="txtPartNo" value="" placeholder="">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="form-text" class="form-label fs-14 text-dark">Api Status</label>
                         <div class="input-group">
                             <div class="input-group-text">
@@ -37,6 +37,15 @@
                                 <option value="D">In Process</option>
                                 <option value="Y">Complete</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="form-text" class="form-label fs-14 text-dark">ApiCallDate</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-calendar-fill"></i>
+                            </div>
+                            <input type="text" class="form-control datepicker" id="txtCalldate" value="" placeholder="">
                         </div>
                     </div>
                 </div>
@@ -51,16 +60,24 @@
         </div>
     </div>
 </div>
+<div id="showResultItemProduct"></div>
 
 
 @*content responsd list*@
 <div id="getItemProduct" class="pt-1 pb-1"></div>
 
 <script defer>
+    //datepicker
+    $('.datepicker').datepicker('destroy');
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
+
     //call api
     function getItemProduct () {
         var txtPartNo = $("#txtPartNo").val();
         var txtStatusId = $("#txtStatusId option:selected").val();
+        var txtCalldate = $("#txtCalldate").val();
         var msg = '';
         var error = 0;
         $.ajax({
@@ -70,7 +87,8 @@
                 Stkcode: txtPartNo.trim(),
                 BrandId: "",
                 RowNumber: "",
-                ApiStatus: txtStatusId
+                ApiStatus: txtStatusId,
+                CallDate: txtCalldate
             },
             dataType: 'html',
             cache: false,
@@ -95,4 +113,5 @@
             }
         });
     }
+
 </script>

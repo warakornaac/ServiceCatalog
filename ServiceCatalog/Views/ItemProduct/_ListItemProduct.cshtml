@@ -1,7 +1,106 @@
 ﻿
 @{
     ViewBag.Title = "_ListItemProduct";
+    var listView = ViewBag.listSearchItemProduct;
 }
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" id="tableListProduct">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Stkcode</th>
+                                <th class="text-center">Stkdes</th>
+                                <th class="text-center">BrandName</th>
+                                <th class="text-center">ApiStatus</th>
+                                <th class="text-center">ApiCallDate</th>
+                                <th class="text-center">ApiStartDate</th>
+                                <th class="text-center">ApiEndDate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (listView != null)
+                            {
+                                foreach (var item in listView)
+                                {
+                                    <tr>
+                                        <td><span>@item.Stkcode</span></td>
+                                        <td><span>@item.Stkdesc</span></td>
+                                        <td class="text-center"><span>@item.BrandName</span></td>
+                                        <td>
+                                            @if (string.IsNullOrEmpty(item.ApiStatus))
+                                            {
+                                                <span class="badge bg-info-transparent">Pending</span>
+                                            }
+                                            else if (item.ApiStatus == "D")
+                                            {
+                                                <span class="badge bg-warning-transparent">In Process</span>
 
-<h2>_ListItemProduct</h2>
+                                            }
+                                            else if (item.ApiStatus == "Y")
+                                            {
+                                                <span class="badge bg-success-transparent">Complete</span>
 
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.ApiCallDate.Contains("01/01/1900"))
+                                            {
+                                                <span></span>
+                                            }
+                                            else
+                                            {
+                                                <span>@item.ApiCallDate</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.ApiStartDate.Contains("01/01/1900"))
+                                            {
+                                                <span></span>
+                                            }
+                                            else
+                                            {
+                                                <span>@item.ApiStartDate</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.ApiEndDate.Contains("01/01/1900"))
+                                            {
+                                                <span></span>
+                                            }
+                                            else
+                                            {
+                                                <span>@item.ApiEndDate</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#tableListProduct').dataTable({
+            paging: true,
+            pageLength: 20,
+            lengthChange: false,
+            searching: false,
+            ordering: false,
+            //scrollY: 500,
+            language: {
+                info: "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ ",
+                infoEmpty: "ไม่มีข้อมูลให้แสดง"
+            }
+        });
+    });
+</script>

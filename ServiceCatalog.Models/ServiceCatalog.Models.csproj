@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArticleDataModels.cs" />
+    <Compile Include="ImportVIOModels.cs" />
     <Compile Include="LinkageDataModels.cs" />
     <Compile Include="PartNumberNearbyModels.cs" />
     <Compile Include="ProductDescriptionModel.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="StoredSearchProductDescriptionModel.cs" />
     <Compile Include="StoredSearchProductTruByStatusModel.cs" />
     <Compile Include="StoredUpdateProductApiModel.cs" />
+    <Compile Include="VIOModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
