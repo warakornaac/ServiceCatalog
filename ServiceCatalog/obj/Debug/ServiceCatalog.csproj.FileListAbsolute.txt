@@ -122,3 +122,6 @@ D:\.net\ServiceCatalog\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.CoreCompil
 D:\.net\ServiceCatalog\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.CopyComplete
 D:\.net\ServiceCatalog\ServiceCatalog\obj\Debug\ServiceCatalog.dll
 D:\.net\ServiceCatalog\ServiceCatalog\obj\Debug\ServiceCatalog.pdb
+D:\.net\ServiceCatalog\ServiceCatalog\bin\EPPlus.dll
+D:\.net\ServiceCatalog\ServiceCatalog\bin\EPPlus.Interfaces.dll
+D:\.net\ServiceCatalog\ServiceCatalog\bin\EPPlus.xml
