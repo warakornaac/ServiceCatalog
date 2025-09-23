@@ -11,7 +11,6 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </header>
-
 <style>
     .form {
         position: relative;
@@ -121,63 +120,68 @@
             margin-bottom: 10px;
         }
 </style>
-<div class="min-h-screen bg-background p-4">
-    <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-8">
-            <div class="flex items-center justify-center mb-4">
-                <h1 class="text-3xl">Excel File Upload</h1>
-            </div>
-            <p class="text-muted-foreground">
-                Upload your Excel files to import VIO data
-            </p>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div id="myDropzone" class="dropzone dz-clickable"></div>
-    </div>
-
-    <div class="col-12">
-        <table id="excelTable" class="display" style="width:100%">
-            <thead></thead>
-            <tbody></tbody>
-        </table>
-    </div>
-    <div class="col-12 d-flex justify-content-center droparea">
-        <div class="card border-0 mt-8 col-12">
-            <div class="card-header bg-transparent">
-                <h4>Supported Features</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <h4 class="mb-2">File Formats</h4>
-                        <ul class="text-sm">
-                            <li>• Excel 2007+ (.xlsx)</li>
-                            <li>• Excel 97-2003 (.xls)</li>
-                        </ul>
+<div class="card">
+    <div class="card-body">
+        <div class="min-h-screen bg-background p-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-8">
+                    <div class="flex items-center justify-center mb-4">
+                        <h1 class="text-3xl">Excel File Upload</h1>
                     </div>
-                    <div class="col-lg-6">
-                        <h4 class="mb-2">File Requirements</h4>
-                        <ul class="text-sm ">
-                            <li>• Maximum file size: 10MB</li>
-                            <li>• Drag & drop supported</li>
-                            <li>• File validation included</li>
-                        </ul>
-                    </div>
+                    <p class="text-muted-foreground">
+                        Upload your Excel files to import VIO data
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-12 d-flex align-items-center justify-content-center d-none" id="name-upload">
-        <div id="fileName" class="d-flex align-items-center me-3" style="max-width:500px; min-width:200px">
+        <div class="row">
+            <div class="col-12">
+                <div id="myDropzone" class="dropzone dz-clickable"></div>
+            </div>
+
+            <div class="col-12">
+                <table id="excelTable" class="display" style="width:100%">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="col-12 d-flex justify-content-center droparea">
+                <div class="card border-0 mt-8 col-12">
+                    <div class="card-header bg-transparent">
+                        <h4>Supported Features</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h4 class="mb-2">File Formats</h4>
+                                <ul class="text-sm">
+                                    <li>• Excel 2007+ (.xlsx)</li>
+                                    <li>• Excel 97-2003 (.xls)</li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6">
+                                <h4 class="mb-2">File Requirements</h4>
+                                <ul class="text-sm ">
+                                    <li>• Maximum file size: 10MB</li>
+                                    <li>• Drag & drop supported</li>
+                                    <li>• File validation included</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 d-flex align-items-center justify-content-center d-none" id="name-upload">
+                <div id="fileName" class="d-flex align-items-center me-3" style="max-width:500px; min-width:200px">
+                </div>
+                <button id="uploadBtn" type="button" class="btn btn-success" onclick="clickUpload();">Upload</button>
+            </div>
         </div>
-        <button id="uploadBtn" type="button" class="btn btn-success" onclick="clickUpload();">Upload</button>
     </div>
 </div>
+
 
 @*<button id="uploadBtn-twst" type="button" class="btn btn-success" onclick="clickUpload();">Upload2</button>*@
 <script>
@@ -344,7 +348,9 @@
                     //console.log("อัพโหลดสำเร็จ:", res);
                     var pageHtml = '';
                     var i = 0;
+                    var outUpload = '';
                     if (res.success) {
+                        outUpload = res.outResult;
                         if (res.data.length > 0) {
                             let tableHtml = `
                                 <table class="table table-bordered">
@@ -357,15 +363,27 @@
                                             <th>EngineType</th>
                                             <th>YearFrom</th>
                                             <th>YearTo</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
                             `;
                             res.data.forEach(item => {
-                                if (item.KType !== '') {
-                                    i++;
-                                    tableHtml += `
+                                //if (item.KType !== '') {
+                                //    i++;
+                                //    tableHtml += `
+                                //    <tr>
+                                //        <td>${item.KType || ''}</td>
+                                //        <td>${item.Maker || ''}</td>
+                                //        <td>${item.Model || ''}</td>
+                                //        <td>${item.Body || ''}</td>
+                                //        <td>${item.EngineType || ''}</td>
+                                //        <td>${item.YearFrom || ''}</td>
+                                //        <td>${item.YearTo || ''}</td>
+
+                                //    </tr>
+                                //`;
+                                //}
+                                tableHtml += `
                                     <tr>
                                         <td>${item.KType || ''}</td>
                                         <td>${item.Maker || ''}</td>
@@ -377,7 +395,6 @@
 
                                     </tr>
                                 `;
-                                }
 
                             });//end Loop
                             tableHtml += `
@@ -388,7 +405,7 @@
                                 Swal.fire({
                                     icon: 'warning',
                                     title: 'พบเจอข้อมูลอัพโหลดไม่สำเร็จ',
-                                    html: `<div class="table-responsive">${tableHtml}</div>`,
+                                    html: 'อัพโหลดสำเร็จ : ' + outUpload + ' รายการ' + '<br>' +`<div class="table-responsive" style="text-align:left; max-height:300px; overflow-y:auto;">${tableHtml}</div> `,
                                     width: '80%',
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
@@ -399,28 +416,25 @@
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'อัพโหลดสำเร็จ',
-                                    html: res.message,
+                                    html: res.message + '<br>' + 'อัพโหลดสำเร็จ : ' + outUpload+ ' รายการ',
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
                                     allowOutsideClick: false,
                                     focusConfirm: false,
                                 });
                             }
-
                         }
                         else {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'อัพโหลดสำเร็จ',
-                                html: res.message,
+                                html: res.message + '<br>' + 'อัพโหลดสำเร็จ : ' + outUpload + ' รายการ',
                                 confirmButtonColor: '#d33',
                                 confirmButtonText: 'ปิด',
                                 allowOutsideClick: false,
                                 focusConfirm: false,
                             });
                         }
-
-
                     }
                     else {
                         Swal.fire({
@@ -445,4 +459,6 @@
     }
 
 </script>
+
+
 
