@@ -48,6 +48,8 @@
     <Compile Include="ImportVIOModels.cs" />
     <Compile Include="LinkageDataModels.cs" />
     <Compile Include="PartNumberNearbyModels.cs" />
+    <Compile Include="ProductDescriptionModel.cs" />
+    <Compile Include="ProductSpecModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoredSearchItemProductsModel.cs" />
     <Compile Include="StoredSearchProductDescriptionModel.cs" />

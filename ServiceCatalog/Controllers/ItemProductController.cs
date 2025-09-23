@@ -32,5 +32,38 @@ namespace ServiceCatalog.Controllers
                 @ViewBag.listSearchItemProduct
             });
         }
+        public ActionResult getItemProductDeatil(string Stkcode)
+        {
+            DateTime? startDate = null;
+            DateTime? endDate = null;
+
+            var ListProductDescription = new List<ProductDescriptionModel>();
+            var ListProductSpec = new List<ProductSpecModel>();
+
+            string message = string.Empty;
+            try
+            {
+
+                ListProductDescription = new GetProductDescriptionList().Get(Stkcode);
+                ListProductSpec = new GetProductSpecList().Get(Stkcode);
+               
+                ViewBag.ListProductDescription = ListProductDescription;
+                ViewBag.ListProductSpec = ListProductSpec;
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+                ViewBag.ListProductDescription = new List<object>();
+                ViewBag.ListProductSpec = new List<object>();
+
+            }
+            ViewBag.Message = message;
+            return PartialView("_DeatilItemProduct", new
+            {
+                @ViewBag.Message,
+                @ViewBag.ListProductDescription,
+                @ViewBag.ListProductSpec
+            });
+        }
     }
 }
