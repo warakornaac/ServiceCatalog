@@ -47,6 +47,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    <Reference Include="ClosedXML, Version=0.87.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.87.1\lib\net40\ClosedXML.dll</HintPath>
+    </Reference>
+>>>>>>> 15e8ad2aea43755de9475274b14a427122649852
     <Reference Include="EPPlus, Version=8.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.8.1.1\lib\net35\EPPlus.dll</HintPath>
     </Reference>
@@ -142,7 +148,10 @@
     <Compile Include="Controllers\ApiProductAutomateController.cs" />
     <Compile Include="Controllers\ApiProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+<<<<<<< HEAD
     <Compile Include="Controllers\ItemLinkageController.cs" />
+=======
+>>>>>>> 15e8ad2aea43755de9475274b14a427122649852
     <Compile Include="Controllers\ManagementController.cs" />
     <Compile Include="Controllers\UpLoadDataVIOController.cs" />
     <Compile Include="Controllers\ItemProductController.cs" />
@@ -11410,10 +11419,14 @@
     <Content Include="Views\ItemProduct\_ListItemProduct.cshtml" />
     <Content Include="Views\ItemProduct\IndexItemProduct.cshtml" />
     <Content Include="Views\ItemProduct\_DeatilItemProduct.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\ItemLinkage\Index.cshtml" />
     <Content Include="Views\ItemLinkage\_PNDetail.cshtml" />
     <Content Include="Views\ItemLinkage\_VehicleSelector.cshtml" />
     <Content Include="Views\ItemLinkage\_LinkageData.cshtml" />
+=======
+    <Content Include="Views\Home\ComingSoon.cshtml" />
+>>>>>>> 15e8ad2aea43755de9475274b14a427122649852
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

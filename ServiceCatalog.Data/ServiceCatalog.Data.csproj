@@ -47,8 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="Class1.cs" />
     <Compile Include="GetLinkage.cs" />
+=======
+>>>>>>> 15e8ad2aea43755de9475274b14a427122649852
     <Compile Include="GetProductDescriptionList.cs" />
     <Compile Include="GetProductSpecList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9082,13 +9082,13 @@ caption {
 }
 
 .coming-soon {
-  height: 100%;
-  width: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  background-image: url(../images/landing/backgrounds/2.jpg);
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-image: url(https://sprukomarket.com/products/html/bootstrap/sash/dist/assets/images/landing/backgrounds/2.jpg);
 }
 .coming-soon::before {
   content: "";
@@ -17018,7 +17018,7 @@ code[class*=language-] {
   z-index: 9;
   align-items: center;
   justify-content: center;
-  padding: 19px 17px;
+  padding: 15px 17px;
   border-inline-end: 1px solid var(--menu-border-color);
   border-block-end: 1px solid var(--menu-border-color);
   transition: left 50ms ease, width 50ms ease;
