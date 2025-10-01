@@ -86,8 +86,8 @@ namespace ServiceCatalog.Controllers
         [HttpPost]
         public async Task<ActionResult> checkApiDataByPartno(string PartNo, int BrandId)
         {
-            //var url = "https://mst.aac.co.th/APIService/Post/Articles";
-            var url = "https://localhost:44361/Post/Articles";
+            var url = "https://mst.aac.co.th/APIService/Post/Articles";
+            //var url = "https://localhost:44361/Post/Articles";
 
             string statusCode = string.Empty;
             bool statusCallApi;
@@ -145,8 +145,8 @@ namespace ServiceCatalog.Controllers
         //get part detail, description, oem
         public async Task<ActionResult> getArticlesByPartno(string PartNo, int BrandId)
         {
-            //var url = "https://mst.aac.co.th/APIService/Post/Articles";
-            var url = "https://localhost:44361/Post/Articles";
+            var url = "https://mst.aac.co.th/APIService/Post/Articles";
+            //var url = "https://localhost:44361/Post/Articles";
             string status = string.Empty;
             string dataResponse = string.Empty;
             var post = new
@@ -255,8 +255,8 @@ namespace ServiceCatalog.Controllers
         [HttpPost]
         public async Task<ActionResult> SaveProductApiToDb(string PartNo, int BrandId)
         {
-            //var url = "https://mst.aac.co.th/APIService/Post/Articles";
-            var url = "https://localhost:44361/Post/Articles";
+            var url = "https://mst.aac.co.th/APIService/Post/Articles";
+            //var url = "https://localhost:44361/Post/Articles";
             string status = string.Empty;
             string dataResponse = string.Empty;
             var post = new
@@ -504,8 +504,8 @@ namespace ServiceCatalog.Controllers
         [HttpPost]
         public async Task<ActionResult> RunTaskSaveProductApiToDb(string PartNo, int BrandId)
         {
-            //var url = "https://mst.aac.co.th/APIService/Post/Articles";
-            var url = "https://localhost:44361/Post/Articles";
+            var url = "https://mst.aac.co.th/APIService/Post/Articles";
+            //var url = "https://localhost:44361/Post/Articles";
 
             string status = string.Empty;
             string dataResponse = string.Empty;
@@ -769,8 +769,8 @@ namespace ServiceCatalog.Controllers
         //get part Competitor
         public async Task<PartNumberNearbyData> getArticlesPartNumberNearby(string Partno, int BrandId)
         {
-            //var url = "https://mst.aac.co.th/APIService/Post/ArticlesPartNumberNearby";
-            var url = "https://localhost:44361/Post/ArticlesPartNumberNearby";
+            var url = "https://mst.aac.co.th/APIService/Post/ArticlesPartNumberNearby";
+            //var url = "https://localhost:44361/Post/ArticlesPartNumberNearby";
 
             string status = string.Empty;
             string dataResponse = string.Empty;
@@ -807,8 +807,8 @@ namespace ServiceCatalog.Controllers
         //get KType
         public async Task<LinkageData> GetLinkageByArticleId(string articleId)
         {
-            //var url = "https://mst.aac.co.th/APIService/Post/ArticlesLinkedAll";
-            var url = "https://localhost:44361/Post/ArticlesLinkedAll";
+            var url = "https://mst.aac.co.th/APIService/Post/ArticlesLinkedAll";
+            //var url = "https://localhost:44361/Post/ArticlesLinkedAll";
 
             var postData = new
             {
