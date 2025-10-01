@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "Index";
 }
+
+
 <style>
     .color-dot {
         width: 8px;
@@ -139,7 +141,52 @@
         cursor: pointer;
         font-size: 13px;
     }
+
+
+    @@keyframes shake {
+        0% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform: translateX(-5px);
+        }
+
+        50% {
+            transform: translateX(5px);
+        }
+
+        75% {
+            transform: translateX(-5px);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    .is-invalid {
+        border: 2px solid red !important;
+        animation: shake 0.3s;
+    }
+
+
+
+    .swal-wide {
+        max-width: 1000px !important; /* ปรับได้ตามต้องการ */
+    }
+
+    .swal2-html-container {
+        max-height: 70vh; /* ไม่ให้ยาวเกินจอ */
+        overflow-y: auto; /* เลื่อนลงได้ */
+    }
+
+        .swal2-html-container table {
+            width: 100% !important; /* table เต็มพื้นที่ */
+            font-size: 13px; /* ปรับฟอนต์เล็กลงนิดนึง */
+        }
 </style>
+
 <div class="page-header">
     <h1 class="page-title my-auto">Management VIO</h1>
     <div>
@@ -151,512 +198,453 @@
         </ol>
     </div>
 </div>
-<div class="container ">
-    <div class="card-body">
-        <div class="row mb-3">
-            <div class="col-lg-6 ">
-                <div class="card h-100">
-                    <div class="card-header bg-white border-bottom">
-                        <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
-                            <h5 class="mb-0">Market Segment</h5>
-                            <div class="d-flex gap-2 mt-3">
-                                <button type="button" class="btn btn-success add-btn" onclick="openEntityModal('add','Market Segment','1')">ADD</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="marketsegList">
-                            @if (ViewBag.MarketSeg != null)
-                            {
-                                if (Enumerable.Count(ViewBag.MarketSeg) > 0)
-                                {
-                                    int i = 0;
-                                    foreach (var item in ViewBag.MarketSeg)
-                                    {
-                                        i++;
-                                        <div class="item-row">
-                                            <div class="color-dot color-dot-red"></div>
-                                            <input type="radio" class="form-check-input custom-checkbox"
-                                                   name="MarketSeg"
-                                                   id="Market-@item.ID"
-                                                   value="@item.ID"
-                                                   @(i == 1 ? "checked" : null)>
-                                            <label for="Market-@item.ID">@item.MarketSegment</label>
-
-                                            <div class="d-flex gap-2 ms-auto" data-marketid="@item.ID" data-marketname="@item.MarketSegment">
-                                                <button class="btn btn-outline-secondary btn-sm" onclick="openEntityModal('edit','Market Segment','1','@item.ID','@item.MarketSegment')">
-                                                    <i class="fa fa-pencil-square-o"></i>
-                                                </button>
-                                                <button class="btn btn-outline-danger btn-sm" onclick="deleteConf('Market Segment: @item.MarketSegment','1','@item.ID','','','','','','')">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                <div>
-                                    <h6>
-                                        ไม่พบข้อมูล / No Data
-                                    </h6>
-                                </div>
-                            }
+<div class="container-fluid py-4">
+    @*<div class="row">
+            <div class="col-12">
+                <h2 class="mb-4 text-dark">Management VIO Data</h2>
+            </div>
+        </div>*@
+    <div class="row mb-3">
+        <div class="col-lg-6 ">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom">
+                    <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                        <h5 class="mb-0">Market Segment</h5>
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="button" class="btn btn-success add-btn" onclick="openEntityModal('add','Market Segment','1')">Add</button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card h-100">
-                    <div class="card-header bg-white border-bottom">
-                        <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
-                            <h5 class="mb-0">Vehicle Segment</h5>
-                            <div class="d-flex gap-2 mt-3">
-                                <button type="button" class="btn btn-success add-btn" onclick="openEntityModal('add','Vehicle Segment','2')">ADD</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="vehiclesegList">
-                            @if (ViewBag.VehicleSeg != null)
+                <div class="card-body">
+                    <div id="marketsegList">
+                        @if (ViewBag.MarketSeg != null)
+                        {
+                            if (Enumerable.Count(ViewBag.MarketSeg) > 0)
                             {
-                                if (Enumerable.Count(ViewBag.VehicleSeg) > 0)
+                                int i = 0;
+                                foreach (var item in ViewBag.MarketSeg)
                                 {
-                                    int j = 0;
-                                    foreach (var item in ViewBag.VehicleSeg)
-                                    {
-                                        j++;
-                                        <div class="item-row">
-                                            <div class="color-dot color-dot-red"></div>
-                                            <input type="radio" class="form-check-input custom-checkbox"
-                                                   name="VehicleSeg"
-                                                   id="vehicle-@item.ID"
-                                                   value="@item.ID"
-                                                   @(j == 1 ? "checked" : null)>
+                                    i++;
+                                    <div class="item-row">
+                                        <div class="color-dot color-dot-red"></div>
+                                        <input type="radio" class="form-check-input custom-checkbox"
+                                               name="MarketSeg"
+                                               id="Market-@item.ID"
+                                               value="@item.ID"
+                                               @(i == 1 ? "checked" : null)
+                                               onchange="toggleParent()">
+                                        <label for="Market-@item.ID">@item.MarketSegment</label>
 
-                                            <label for="vehicle-@item.ID">@item.VehicleSegment</label>
-                                            <div class="d-flex gap-2 ms-auto" data-marketid="@item.ID" data-marketname="@item.VehicleSegment">
-                                                <button class="btn btn-outline-secondary btn-sm" onclick="openEntityModal('edit','Vehicle Segment','2','@item.ID','@item.VehicleSegment')">
-                                                    <i class="fa fa-pencil-square-o"></i>
-                                                </button>
-                                                <button class="btn btn-outline-danger btn-sm" onclick="deleteConf('Vehicle Segment: @item.VehicleSegment','2','','@item.ID','','','','','')">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </div>
+                                        <div class="d-flex gap-2 ms-auto" data-marketid="@item.ID" data-marketname="@item.MarketSegment">
+                                            <button class="btn btn-outline-secondary btn-sm" onclick="openEntityModal('edit','Market Segment','1','@item.ID','@item.MarketSegment')">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm" onclick="deleteConf('Market Segment: @item.MarketSegment','1','@item.ID','','','','','','')">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
                                         </div>
-                                    }
+                                    </div>
                                 }
                             }
-                            else
-                            {
-                                <div>
-                                    <h6>
-                                        ไม่พบข้อมูล / No Data
-                                    </h6>
-                                </div>
-                            }
-                        </div>
-
+                        }
+                        else
+                        {
+                            <div>
+                                <h6>
+                                    ไม่พบข้อมูล / No Data
+                                </h6>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row g-4">
-            <!-- Maker Panel -->
-            <div class="col-lg-3">
-                <div class="card h-100">
-                    <div class="card-header bg-white border-bottom header-fix">
-                        <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
-                            <h5 class="mb-0">Maker</h5>
-                            @*<div class="help-circle">?</div>*@
-                            <div class="d-flex gap-1 ">
-                                <button type="button" class="btn btn-success add-btn" onclick="openEntityModal('add','Maker','3')">ADD</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="makerList">
-                            <!-- Maker items will be inserted here -->
-                        </div>
-
-                        @*<div class="d-flex gap-2 mt-3">
-                                <input type="text" class="form-control form-control-sm" id="newMakerInput" placeholder="กรอกข้อมูล">
-                                <button type="button" class="btn btn-success add-btn" onclick="openEntityModal('add','Maker')">Add</button>
-                            </div>*@
-                    </div>
-                </div>
-            </div>
-            <!-- Model Rang Data -->
-            <div class="col-lg-3">
-                <div class="card h-100">
-                    <div class="card-header bg-white border-bottom">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="d-flex align-items-center gap-2">
-                                <h5 class="mb-0">Model Range</h5>
-                                <div id="modelRaBadges"></div>
-                            </div>
-                            <div id="addModelRange"></div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="modelRangeList">
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- Model Panel -->
-            <div class="col-lg-3">
-                <div class="card h-100">
-                    <div class="card-header bg-white border-bottom header-fix">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="d-flex align-items-center gap-2">
-                                <h5 class="mb-0">Model</h5>
-                                <div id="modelMakerBadges"></div>
-                            </div>
-                            <div id="addModel"></div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="modelList">
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Body Data-->
-            <div class="col-lg-3">
-                <div class="card h-100">
-                    <div class="card-header bg-white border-bottom header-fix">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="d-flex align-items-center gap-2">
-                                <h5 class="mb-0">Body</h5>
-                                <div id="bodyBadges"></div>
-                            </div>
-                            <div id="addBody"></div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="bodyList"></div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Engine Panel -->
-            <div class="col-lg-6">
-                <div class="card h-100">
-                    <div class="card-header bg-white border-bottom header-fix">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="d-flex align-items-center gap-2">
-                                <h5 class="mb-0">Engine</h5>
-                                <div id="engineBadges"></div>
-                            </div>
-                            <div id="addEngine"></div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="engineList">
-                            <!-- Engine items will be inserted here -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom">
+                    <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                        <h5 class="mb-0">Vehicle Segment</h5>
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="button" class="btn btn-success add-btn" onclick="openEntityModal('add','Vehicle Segment','2')">Add</button>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="card-body">
+                    <div id="vehiclesegList">
+                        @if (ViewBag.VehicleSeg != null)
+                        {
+                            if (Enumerable.Count(ViewBag.VehicleSeg) > 0)
+                            {
+                                int j = 0;
+                                foreach (var item in ViewBag.VehicleSeg)
+                                {
+                                    j++;
+                                    <div class="item-row">
+                                        <div class="color-dot color-dot-red"></div>
+                                        <input type="radio" class="form-check-input custom-checkbox"
+                                               name="VehicleSeg"
+                                               id="vehicle-@item.ID"
+                                               value="@item.ID"
+                                               @(j == 1 ? "checked" : null)
+                                               onchange="toggleParent()">
 
-            <!-- Info Panel -->
-            <div class="col-lg-6">
-                <div class="card h-100">
-                    <div class="card-header bg-white border-bottom header-fix">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="d-flex align-items-center gap-2">
-                                <h5 class="mb-0">Info</h5>
-                                <div id="truBadges"></div>
-                            </div>
-                            <div id="addTru"></div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="truList">
-                            <!-- Engine items will be inserted here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <!-- Modal -->
-            <!--Modal Only Text-->
-            <div class="modal fade" id="entityModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content rounded-3 shadow-lg">
-                        <!-- Header -->
-                        <div class="modal-header bg-light">
-                            <h5 class="modal-title fw-bold" id="entityModalTitle">Add Item</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-
-                        <!-- Body -->
-                        <div class="modal-body">
-                            <input type="hidden" id="entityType"> <!-- MarketSegment / VehicleSegment / Maker / ModelRange / Model -->
-                            <input type="hidden" id="entityId">   <!-- ใช้เวลา Edit -->
-                            <input type="hidden" id="entitymarketSegId">   <!-- ใช้เวลา Edit Model-->
-                            <input type="hidden" id="entitymakerId">   <!-- ใช้เวลา Edit Model-->
-                            <input type="hidden" id="entityrangeId">   <!-- ใช้เวลา Edit Model-->
-                            <input type="hidden" id="entitymodelId">   <!-- ใช้เวลา Edit Model-->
-                            <div class="row g-2 mb-2">
-                                <div class="col-12" id="form-text-market" hidden>
-                                    <label class="text-muted-small mb-1 d-block">Market Segment</label>
-                                    <select name="market" id="market-text-select" class="form-select ">
-                                        <option value="ALL">ALL</option>
-                                    </select>
-                                </div>
-                                <div class="col-12" id="form-text-vihecle" hidden>
-                                    <label class="text-muted-small mb-1 d-block">Vehicle Segment</label>
-                                    <select name="vehicle" id="vehicle-text-select" class="form-select ">
-                                        <option value="ALL">ALL</option>
-                                    </select>
-                                </div>
-                                <div class="col-12" id="form-text-maker" hidden>
-                                    <label class="text-muted-small mb-1 d-block">Maker</label>
-                                    <select name="maker" id="maker-text-select" class="form-select ">
-                                        <option value="ALL">ALL</option>
-                                    </select>
-                                </div>
-                                <div class="col-12" id="form-text-range" hidden>
-                                    <label class="text-muted-small mb-1 d-block">Model Range</label>
-                                    <select name="range" id="range-text-select" class="form-select ">
-                                        <option value="ALL">ALL</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="entityInput" class="form-label" id="entityInputLabel">Name</label>
-                                <input type="text" class="form-control" id="entityInput" placeholder="กรอกข้อมูล">
-                            </div>
-                        </div>
-
-                        <!-- Footer -->
-                        <div class="modal-footer d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
-                                <i class="fa fa-times me-1"></i> Close
-                            </button>
-                            <button type="button" class="btn btn-success px-4" id="saveEntityBtn">
-                                <i class="fa fa-plus me-1"></i> Add
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--Body Modal-->
-            <div class="modal fade" id="bodyModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content rounded-3 shadow-lg">
-                        <!-- Header -->
-                        <div class="modal-header bg-light">
-                            <h5 class="modal-title fw-bold" id="bodyModalTitle">Add Body</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-
-                        <!-- Body -->
-                        <div class="modal-body">
-                            <input type="hidden" id="bodyId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="body_marketId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="body_vehicleId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="body_makerId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="body_rangeId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="body_modelId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <div class="mb-3">
-                                <div class="add-section">
-                                    <div class="row g-2 mb-2">
-                                        <div class="col-12" id="form-body-market" hidden>
-                                            <label class="text-muted-small mb-1 d-block">Market Segment</label>
-                                            <select name="market" id="market-body-select" class="form-select ">
-                                                <option value="ALL">ALL</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12" id="form-body-vihecle" hidden>
-                                            <label class="text-muted-small mb-1 d-block">Vehicle Segment</label>
-                                            <select name="vehicle" id="vehicle-body-select" class="form-select ">
-                                                <option value="ALL">ALL</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12" id="form-body-maker" hidden>
-                                            <label class="text-muted-small mb-1 d-block">Maker</label>
-                                            <select name="maker" id="maker-body-select" class="form-select ">
-                                                <option value="ALL">ALL</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12" id="form-body-range" hidden>
-                                            <label class="text-muted-small mb-1 d-block">Model Range</label>
-                                            <select name="range" id="range-body-select" class="form-select ">
-                                                <option value="ALL">ALL</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12" id="form-body-model" hidden>
-                                            <label class="text-muted-small mb-1 d-block">Model</label>
-                                            <select name="range" id="model-body-select" class="form-select ">
-                                                <option value="ALL">ALL</option>
-                                            </select>
+                                        <label for="vehicle-@item.ID">@item.VehicleSegment</label>
+                                        <div class="d-flex gap-2 ms-auto" data-marketid="@item.ID" data-marketname="@item.VehicleSegment">
+                                            <button class="btn btn-outline-secondary btn-sm" onclick="openEntityModal('edit','Vehicle Segment','2','@item.ID','@item.VehicleSegment')">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm" onclick="deleteConf('Vehicle Segment: @item.VehicleSegment','2','','@item.ID','','','','','')">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="row g-2 mb-2">
-                                        <div class="col-12">
-                                            <label class="text-muted-small mb-1 d-block">Body</label>
-                                            <input type="text" class="form-control form-control-sm" id="bodycod-txt" placeholder="Body">
-                                        </div>
-                                    </div>
-                                    <div class="row g-2">
-                                        <div class="col">
-                                            <label class="text-muted-small mb-1 d-block">Body Type</label>
-                                            <input type="text" class="form-control form-control-sm" id="bodytype-txt" placeholder="Body type">
-                                        </div>
-                                    </div>
-                                </div>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <div>
+                                <h6>
+                                    ไม่พบข้อมูล / No Data
+                                </h6>
                             </div>
-                        </div>
-
-                        <!-- Footer -->
-                        <div class="modal-footer d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
-                                <i class="fa fa-times me-1"></i> Close
-                            </button>
-                            <button type="button" class="btn btn-success px-4" id="saveBodyBtn">
-                                <i class="fa fa-plus me-1"></i> ADD
-                            </button>
-                        </div>
+                        }
                     </div>
+
                 </div>
             </div>
-
-
-            <!--Engine Modal-->
-            <div class="modal fade" id="engineModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content rounded-3 shadow-lg">
-                        <!-- Header -->
-                        <div class="modal-header bg-light">
-                            <h5 class="modal-title fw-bold" id="engineModalTitle">ADD Engine</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-
-                        <!-- Body -->
-                        <div class="modal-body">
-                            <input type="hidden" id="engineId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="engine_makerId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="engine_rangeId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="engine_modelId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="engine_bodyId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <div class="mb-3">
-                                <div class="add-section">
-                                    <div class="row g-2 mb-2">
-                                        <div class="col-12">
-                                            <label class="text-muted-small mb-1 d-block">Engine</label>
-                                            <input type="text" class="form-control form-control-sm" id="engine-txt" placeholder="Engine">
-                                        </div>
-                                    </div>
-                                    <div class="row g-2">
-                                        <div class="col">
-                                            <label class="text-muted-small mb-1 d-block">Strokes</label>
-                                            <input type="text" class="form-control form-control-sm" id="engine-strokes" placeholder="Strokes">
-                                        </div>
-                                        <div class="col">
-                                            <label class="text-muted-small mb-1 d-block">Fuel Type</label>
-                                            <input type="text" class="form-control form-control-sm" id="engine-fuel" placeholder="Fuel Type">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Footer -->
-                        <div class="modal-footer d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
-                                <i class="fa fa-times me-1"></i> Close
-                            </button>
-                            <button type="button" class="btn btn-success px-4" id="saveEngineBtn">
-                                <i class="fa fa-plus me-1"></i> ADD
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--Info Modal-->
-            <div class="modal fade" id="truModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content rounded-3 shadow-lg">
-                        <!-- Header -->
-                        <div class="modal-header bg-light">
-                            <h5 class="modal-title fw-bold" id="infoModalTitle">ADD Trudata</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-
-                        <!-- Body -->
-                        <div class="modal-body">
-                            <input type="hidden" id="truId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="tru_makerId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="tru_rangeId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="tru_modelId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="tru_bodyId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <input type="hidden" id="tru_engineId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
-                            <div class="mb-3">
-                                <div class="editable-group">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="fw-medium text-dark" id="span-tru"></span>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <label class="text-muted-small mb-1 d-block">KType</label>
-                                            <input type="text" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-sm" placeholder="KType" id="ktype-txt">
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="text-muted-small mb-1 d-block">DriveType</label>
-                                            <input type="text" class="form-control form-control-sm" placeholder="DriveType" id="drive-txt">
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="text-muted-small mb-1 d-block">YearFrom</label>
-                                            <input type="text" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-sm" placeholder="YearFrom" id="yearfrom-txt">
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="text-muted-small mb-1 d-block">YearTo</label>
-                                            <input type="text" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-sm" placeholder="YearTo" id="yearto-txt">
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="text-muted-small mb-1 d-block">ThaiVIO</label>
-                                            <input type="text" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-sm" placeholder="ThaiVIO" id="thvio-txt">
-                                        </div>
-                                    </div>
-                                    @*<div class="row mt-3">
-                                            <div class="col-12">
-                                                <label class="text-muted-small mb-1 d-block">TruType</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="TruType" readonly>
-                                            </div>
-                                        </div>*@
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Footer -->
-                        <div class="modal-footer d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
-                                <i class="fa fa-times me-1"></i> Close
-                            </button>
-                            <button type="button" class="btn btn-success px-4" id="saveTruBtn">
-                                <i class="fa fa-plus me-1"></i> ADD
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
-</div>
+    <div class="row g-4">
+        <!-- Maker Panel -->
+        <div class="col-lg-3">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom header-fix">
+                    <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                        <h5 class="mb-0">Maker</h5>
+                        @*<div class="help-circle">?</div>*@
+                        <div class="d-flex gap-1 ">
+                            <button type="button" class="btn btn-success add-btn" onclick="openEntityModal('add','Maker','3')">Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="makerList">
+                        <!-- Maker items will be inserted here -->
+                    </div>
 
+                    @*<div class="d-flex gap-2 mt-3">
+                            <input type="text" class="form-control form-control-sm" id="newMakerInput" placeholder="กรอกข้อมูล">
+                            <button type="button" class="btn btn-success add-btn" onclick="openEntityModal('add','Maker')">Add</button>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+        <!-- Model Rang Data -->
+        <div class="col-lg-3">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <h5 class="mb-0">Model Range</h5>
+                            <div id="modelRaBadges"></div>
+                        </div>
+                        <div id="addModelRange"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="modelRangeList">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Model Panel -->
+        <div class="col-lg-3">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom header-fix">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <h5 class="mb-0">Model</h5>
+                            <div id="modelMakerBadges"></div>
+                        </div>
+                        <div id="addModel"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="modelList">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Body Data-->
+        <div class="col-lg-3">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom header-fix">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <h5 class="mb-0">Body</h5>
+                            <div id="bodyBadges"></div>
+                        </div>
+                        <div id="addBody"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="bodyList"></div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Engine Panel -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom header-fix">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <h5 class="mb-0">Engine</h5>
+                            <div id="engineBadges"></div>
+                        </div>
+                        <div id="addEngine"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="engineList">
+                        <!-- Engine items will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom header-fix">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <h5 class="mb-0">Info</h5>
+                            <div id="truBadges"></div>
+                        </div>
+                        <div id="addTru"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="truList">
+                        <!-- Engine items will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Modal -->
+        <!--Modal Only Text-->
+        <div class="modal fade" id="entityModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-3 shadow-lg">
+                    <!-- Header -->
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title fw-bold" id="entityModalTitle">Add Item</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <input type="hidden" id="entityType"> <!-- MarketSegment / VehicleSegment / Maker / ModelRange / Model -->
+                        <input type="hidden" id="entityId">   <!-- ใช้เวลา Edit -->
+                        <input type="hidden" id="marketSegId">   <!-- ใช้เวลา Edit Model-->
+                        <input type="hidden" id="makerId">   <!-- ใช้เวลา Edit Model-->
+                        <input type="hidden" id="rangeId">   <!-- ใช้เวลา Edit Model-->
+                        <div class="mb-3">
+                            <label for="entityInput" class="form-label" id="entityInputLabel">Name</label>
+                            <input type="text" class="form-control" id="entityInput" placeholder="กรอกข้อมูล">
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fa fa-times me-1"></i> Close
+                        </button>
+                        <button type="button" class="btn btn-success px-4" id="saveEntityBtn">
+                            <i class="fa fa-plus me-1"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Body Modal-->
+        <div class="modal fade" id="bodyModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-3 shadow-lg">
+                    <!-- Header -->
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title fw-bold" id="bodyModalTitle">Add Body</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <input type="hidden" id="bodyId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <div class="mb-3">
+                            <div class="add-section">
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label class="text-muted-small mb-1 d-block">Body</label>
+                                        <input type="text" class="form-control form-control-sm" id="bodycod-txt" placeholder="Body">
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col">
+                                        <label class="text-muted-small mb-1 d-block">Body Type</label>
+                                        <input type="text" class="form-control form-control-sm" id="bodytype-txt" placeholder="Body type">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fa fa-times me-1"></i> Close
+                        </button>
+                        <button type="button" class="btn btn-success px-4" id="saveBodyBtn">
+                            <i class="fa fa-plus me-1"></i> ADD
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Engine Modal-->
+        <div class="modal fade" id="engineModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-3 shadow-lg">
+                    <!-- Header -->
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title fw-bold" id="engineModalTitle">ADD Engine</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <input type="hidden" id="engineId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="engine_makerId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="engine_rangeId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="engine_modelId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="engine_bodyId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <div class="mb-3">
+                            <div class="add-section">
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label class="text-muted-small mb-1 d-block">Engine</label>
+                                        <input type="text" class="form-control form-control-sm" id="engine-txt" placeholder="Engine">
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col">
+                                        <label class="text-muted-small mb-1 d-block">Strokes</label>
+                                        <input type="text" class="form-control form-control-sm" id="engine-strokes" placeholder="Strokes">
+                                    </div>
+                                    <div class="col">
+                                        <label class="text-muted-small mb-1 d-block">Fuel Type</label>
+                                        <input type="text" class="form-control form-control-sm" id="engine-fuel" placeholder="Fuel Type">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fa fa-times me-1"></i> Close
+                        </button>
+                        <button type="button" class="btn btn-success px-4" id="saveEngineBtn">
+                            <i class="fa fa-plus me-1"></i> ADD
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Info Modal-->
+        <div class="modal fade" id="truModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-3 shadow-lg">
+                    <!-- Header -->
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title fw-bold" id="infoModalTitle">ADD Trudata</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <input type="hidden" id="truId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="tru_makerId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="tru_rangeId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="tru_modelId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="tru_bodyId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="tru_engineId"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <input type="hidden" id="tru_trutype"> <!-- ใช้เก็บ id เวลาแก้ไข -->
+                        <div class="mb-3">
+                            <div class="editable-group">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="fw-medium text-dark" id="span-tru"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="text-muted-small mb-1 d-block">KType</label>
+                                        <input type="text" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-sm" placeholder="KType" id="ktype-txt">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="text-muted-small mb-1 d-block">DriveType</label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="DriveType" id="drive-txt">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="text-muted-small mb-1 d-block">YearFrom</label>
+                                        <input type="text" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-sm" placeholder="YearFrom" id="yearfrom-txt">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="text-muted-small mb-1 d-block">YearTo</label>
+                                        <input type="text" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-sm" placeholder="YearTo" id="yearto-txt">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="text-muted-small mb-1 d-block">ThaiVIO</label>
+                                        <input type="text" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-sm" placeholder="ThaiVIO" id="thvio-txt">
+                                    </div>
+                                </div>
+                                @*<div class="row mt-3">
+                                        <div class="col-12">
+                                            <label class="text-muted-small mb-1 d-block">TruType</label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="TruType" readonly>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fa fa-times me-1"></i> Close
+                        </button>
+                        <button type="button" class="btn btn-success px-4" id="saveTruBtn">
+                            <i class="fa fa-plus me-1"></i> ADD
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <script>
     let _maker = '';
@@ -666,8 +654,15 @@
     $(document).ready(function () {
         MakerLoader();
     });
-
     ////////START TOGGLE
+    function toggleParent() {
+        $('input[name="maker-radio"]').prop('checked', false);
+        resetModelRange();
+        resetModel();
+        resetBody();
+        resetEngine();
+        resetInfo();
+    }
     function toggleMaker(makerId) {
         var headerRange = `<button type="button" class="btn btn-success add-btn" data-maker="${makerId}" onclick="openEntityModal('add','Model Range',5,'','', '${makerId}')" id="addRangebtn">ADD</button>`;
         let maker = $('input[name="maker-radio"]:checked');
@@ -679,8 +674,6 @@
         $('#addModelRange').html(headerRange);
         $('#modelList').html('');
         $('#bodyList').html('');
-
-
         modelRangeLoader(makerId);
 
     }
@@ -704,7 +697,10 @@
         var selectedTextModel = model.next('label').text();
             _model = selectedTextModel.toString();
             var badgeString = `<span class="brand-badge">${selectedTextModel}</span>`;
-            $('#bodyBadges').html(badgeString);
+        $('#bodyBadges').html(badgeString);
+        if ($('#addBody').html()) {
+            $('#addBody').html('');
+        }
         $('#addBody').html(headerBody);
         bodyLoader(makerId, modelRangeId, modelId);
     }
@@ -1014,7 +1010,7 @@
                                                 <button class="btn btn-outline-secondary btn-sm" onclick="openEngineModal('edit',{makerId:'${engine.Maker_ID}',rangeId:'${engine.ModelRange_ID}',modelId:'${engine.Model_ID}',bodyId:'${engine.Body_ID}',engineId:'${engine.ID}',engineName:'${engine.EngineType}',fuelType:'${engine.FuelType}',strokes:'${engine.Strokes}'})">
                                                     <i class="fa fa-pencil-square-o"></i>
                                                 </button>
-                                                <button class="btn btn-outline-danger btn-sm" onclick="deleteConf('Engine: ${engine.EngineType}','7','${engine.MarketSegment_ID}','${engine.VehicleSegment_ID}','${engine.Maker_ID}','${engine.ModelRange_ID}','${engine.Model_ID}','${engine.Body_ID}','${engine.ID}')">
+                                                <button class="btn btn-outline-danger btn-sm" onclick="deleteConf('Engine: ${engine.EngineType}','7','','','${engine.Maker_ID}','${engine.ModelRange_ID}','${engine.Model_ID}','${engine.Body_ID}','${engine.ID}')">
                                                     <i class="fa fa-trash-o"></i>
                                                 </button>
                                             </div>
@@ -1072,7 +1068,7 @@
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <span class="fw-medium text-dark">   ${_maker} > ${_model} >  ${_body} > ${_engine} </span>
                                         <div class="d-flex gap-2 ms-auto">
-                                            <button class="btn btn-outline-secondary btn-sm" onclick="openTruModal('edit', {marketId:'${item.MarketSegment_ID}', vehicleId:'${item.VehicleSegment_ID}', makerId: '${item.Maker_ID}',rangeId: '${item.ModelRange_ID}', modelId: '${item.Model_ID}', bodyId:'${item.Body_ID}', engineId:'${item.Engine_ID}', Ktype:'${item.KType}',drive:'${item.DriveType}',yearF:'${item.YearFrom}',yearT:'${item.YearTo}',thVIO:'${item.ThaiVIO}' })">
+                                            <button class="btn btn-outline-secondary btn-sm" onclick="openTruModal('edit', {marketId:'${item.MarketSegment_ID}', vehicleId:'${item.VehicleSegment_ID}', makerId: '${item.Maker_ID}',rangeId: '${item.ModelRange_ID}', modelId: '${item.Model_ID}', bodyId:'${item.Body_ID}', engineId:'${item.Engine_ID}', Ktype:'${item.KType}',drive:'${item.DriveType}',yearF:'${item.YearFrom}',yearT:'${item.YearTo}',thVIO:'${item.ThaiVIO}', truType:'${item.TruType}' })">
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </button>
                                             <button class="btn btn-outline-danger btn-sm" onclick="deleteConf('TruData Ktype: ${item.TruType}','8','${item.MarketSegment_ID}','${item.VehicleSegment_ID}','${item.Maker_ID}','${item.ModelRange_ID}','${item.Model_ID}','${item.Body_ID}','${item.Engine_ID}')">
@@ -1138,7 +1134,11 @@
     ////////END LOADER
 
     //Start Reset
-
+    function resetModelRange() {
+        $('#modelRaBadges').html('');
+        $('#addModelRange').html('');
+        $('#modelRangeList').html('');
+    }
     function resetModel() {
         $('#modelMakerBadges').html('');
         $('#addModel').html('');
@@ -1162,7 +1162,55 @@
 
     //End Reset
 
+    //Start Autocomplete
+    $(function () {
+        $("#drive-txt").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetDriveType", "Management")',
+                    type: 'post',
+                    dataType: 'json',
+                    data: { term: request.term },
+                    success: function (data) {
+                        //response(data.result);
+                        const mapped = data.result.map(item => ({ label: item, value: item }));
+                        response(mapped);
+                    }
+                });
+            },
+            minLength: 1,
+            autoFocus: true,
+            appendTo: "#truModal",
+            select: function (event, ui) {
+                console.log("เลือก: " + ui.item.value);
+            }
+        });
+    });
+    $(function () {
+        $("#bodytype-txt").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetBodytype", "Management")',
+                    type: 'post',
+                    dataType: 'json',
+                    data: { term: request.term },
+                    success: function (data) {
+                        //response(data.result);
+                        const mapped = data.result.map(item => ({ label: item, value: item }));
+                        response(mapped);
+                    }
+                });
+            },
+            minLength: 1,
+            autoFocus: true,
+            appendTo: "#bodyModal",
+            select: function (event, ui) {
+                console.log("เลือก: " + ui.item.value);
+            }
+        });
+    });
 
+    //end Autocomplete
     ////////START MODAL
     //Modal Management
     //Modal Management
@@ -1181,14 +1229,14 @@
 
         // ถ้าเป็น Model (4)
         if (module === 4) {
-            $('#entitymarketSegId').val(market);
-            $('#entitymakerId').val(maker);
-            $('#entityrangeId').val(range);
+            $('#marketSegId').val(market);
+            $('#makerId').val(maker);
+            $('#rangeId').val(range);
         }
 
         // ถ้าเป็น Model Range (5)
         if (module === 5) {
-            $('#entitymakerId').val(maker);
+            $('#makerId').val(maker);
             console.log('PASS MR: ' + maker);
         }
 
@@ -1257,19 +1305,20 @@
                         allowOutsideClick: false,
                         focusConfirm: false,
                     }).then(() => {
-                        if (vmodule === '1') {
+                        console.log('vmodule:' + vmodule);
+                        if (vmodule == '1') {
                             location.reload();
                         }
-                        else if (vmodule === '2') {
+                        else if (vmodule == '2') {
                             location.reload();
                         }
-                        else if (vmodule === '3') {
+                        else if (vmodule == '3') {
                             MakerLoader();
                         }
-                        else if (vmodule === '4') {
+                        else if (vmodule == '4') {
                             modelLoader(market, maker, rang);
                         }
-                        else if (vmodule === '5') {
+                        else if (vmodule == '5') {
                             modelRangeLoader(maker);
                         }
                     });
@@ -1289,12 +1338,9 @@
         });//end ajax
     }
     function editEntity(vmodule, market, vehicle, maker, rang, model, value) {
-        $('#entitymarketSegId').val();
-        $('#entitymakerId').val();
-        $('#entityrangeId').val();
-        $.ajax({
-            url: '@Url.Action("UpdateVIOText", "Management")',
-            data: { moduleID: vmodule, marketID: market, vehicleID: vehicle, makerID: maker, rangeID: rang, modelID: model, val: value },
+                $.ajax({
+                    url: '@Url.Action("UpdateVIOText", "Management")',
+                    data: { moduleID: vmodule, marketID: market, vehicleID: vehicle, makerID: maker, rangeID: rang, modelID: model, val: value },
             type: 'post',
             dataType: 'json',
             beforeSend: function () {
@@ -1357,6 +1403,7 @@
             .html(`<i class="fa ${btnIcon} me-1"></i> ${btnText}`)
             .removeClass('btn-success btn-primary')
             .addClass(btnClass)
+            .off('click')
             .on('click', function () {
                 saveBody(mode, options.makerId, options.rangeId, options.modelId);
             });
@@ -1372,43 +1419,12 @@
             $('#modelId').val(options.modelId || '');
             $('#bodycod-txt').val('');
             $('#bodytype-txt').val('');
-
-            $("[id^='form-body-']").attr('hidden',true);
         }
 
         if (mode === 'edit') {
             $('#bodyId').val(options.bodyId || '');
-            $('#body_marketId').val(options.marketSegId || '');
-            $('#body_vehicleId').val(options.vehicleSegId || '');
-            $('#body_makerId').val(options.makerId || '');
-            $('#body_rangeId').val(options.rangeId || '');
-            $('#body_modelId').val(options.modelId || '');
             $('#bodycod-txt').val(options.bodyName || '');
             $('#bodytype-txt').val(options.bodyType || '');
-
-
-            Promise.all([
-                marketLoadSelect('#market-body-select'),
-                vehicleLoadSelect('#vehicle-body-select'),
-                makerLoadSelect('#maker-body-select')
-            ]).then(function () {
-                return modelrangeLoadSelect(options.makerId, '#range-body-select');
-            }).then(function () {
-                return modelLoadSelect(options.marketSegId, options.makerId, options.rangeId, '#model-body-select');
-            }).then(function () {
-                console.log('โหลดทุก select เสร็จแล้ว');
-
-                $('#market-body-select').val(options.marketSegId).change();
-                $('#vehicle-body-select').val(options.vehicleSegId).change();
-                $('#maker-body-select').val(options.makerId).change();
-                $('#range-body-select').val(options.rangeId).change();
-                $('#model-body-select').val(options.modelId).change();
-
-                $("[id^='form-body-']").removeAttr('hidden');
-            }).catch(function (err) {
-                console.error('มี error ตอนโหลด', err);
-            });
-
 
         }
 
@@ -1510,7 +1526,7 @@
 
     //Modal Engine
     function openEngineModal(mode, options = {}) {
-        const title = mode === 'add' ? 'Add Body' : 'Edit Body';
+        const title = mode === 'add' ? 'Add Engine' : 'Edit Engine';
         const btnText = mode === 'add' ? 'Add' : 'Save';
         const btnClass = mode === 'add' ? 'btn-success' : 'btn-primary';
         const btnIcon = mode === 'add' ? 'fa-plus' : 'fa-save';
@@ -1520,6 +1536,7 @@
             .html(`<i class="fa ${btnIcon} me-1"></i> ${btnText}`)
             .removeClass('btn-success btn-primary')
             .addClass(btnClass)
+            .off('click')
             .on('click', function () {
                 //saveBody(mode, options.makerId, options.rangeId, options.modelId);
                 saveEngine(mode, options.makerId, options.rangeId, options.modelId, options.bodyId);
@@ -1562,11 +1579,12 @@
             Swal.fire({
                 title: "ยืนยันข้อมูล?",
                 text: "ยืนยันที่จะดำเนินการต่อ!",
-                icon: "warning",
+                icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
+                confirmButtonText: "ใช่",
+                cancelButtonText: "ยกเลิก"
             }).then((result) => {
                 if (result.isConfirmed) {
                     addEngine(maker, rang, model, body, xeng, xstrokes, xfuel);
@@ -1668,10 +1686,13 @@
             .html(`<i class="fa ${btnIcon} me-1"></i> ${btnText}`)
             .removeClass('btn-success btn-primary')
             .addClass(btnClass)
+            .off('click')
             .on('click', function () {
                 //saveBody(mode, options.makerId, options.rangeId, options.modelId);
                 saveTru(mode, options.makerId, options.rangeId, options.modelId, options.bodyId, options.engineId);
             });
+
+
 
         if (mode === 'add') {
             $('#tru_makerId').val(options.makerId || '');
@@ -1679,6 +1700,7 @@
             $('#tru_modelId').val(options.modelId || '');
             $('#tru_bodyId').val(options.bodyId || '');
             $('#tru_engineId').val(options.engineId || '');
+            $('#tru_trutype').val('');
             $('#ktype-txt').val('');
             $('#drive-txt').val('');
             $('#yearfrom-txt').val('');
@@ -1692,12 +1714,12 @@
             $('#tru_modelId').val(options.modelId || '');
             $('#tru_bodyId').val(options.bodyId || '');
             $('#tru_engineId').val(options.engineId || '');
+            $('#tru_trutype').val(options.truType || '');
             $('#ktype-txt').val(options.Ktype || '');
             $('#drive-txt').val(options.drive || '');
             $('#yearfrom-txt').val(options.yearF || '');
             $('#yearto-txt').val(options.yearT || '');
             $('#thvio-txt').val(options.thVIO || '');
-
         }
 
         // เปิด modal
@@ -1711,8 +1733,108 @@
         var xyearfrom = $('#yearfrom-txt').val();
         var xyearto = $('#yearto-txt').val();
         var xthvio = $('#thvio-txt').val();
+        var xtrutyp = $('#tru_trutype').val();
+        if (xyearfrom == '') {
+            let $input = $('#yearfrom-txt');
+            $input.removeClass('is-invalid');
+            void $input[0].offsetWidth;
+            $input.addClass('is-invalid');
 
+            $input.focus();
+            return false;
+        }
         if (mod === 'add') {
+
+            if (xktype != '') {
+                $.ajax({
+                    url: '@Url.Action("CheckKtype", "Management")',
+                    data: { Modul: mod, KTYPE: xktype, TruTYPE: xtrutyp },
+                    type: 'post',
+                    dataType: 'json',
+                    beforeSend: function () {
+
+                    },
+                    success: function (data) {
+                        if (data.respone == true) {
+                            if (data.message == 'N') {
+                                let tableHtml = `
+                                        <table class="table table-bordered table-sm text-nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>KType</th>
+                                                    <th>MarketSegment</th>
+                                                    <th>VehicleSegment</th>
+                                                    <th>Maker</th>
+                                                    <th>ModelRange</th>
+                                                    <th>Model</th>
+                                                    <th>Body</th>
+                                                    <th>EngineType</th>
+                                                    <th>DriveType</th>
+                                                    <th>YearFrom</th>
+                                                    <th>YearTo</th>
+                                                    <th>TruType</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                    `;
+                                if (data.result.length > 0) {
+                                    data.result.forEach(item => {
+                                        tableHtml += `
+                                            <tr>
+                                                <td>${item.KType || ''}</td>
+                                                <td>${item.MarketSegment || ''}</td>
+                                                <td>${item.VehicleSegment || ''}</td>
+                                                <td>${item.Maker || ''}</td>
+                                                <td>${item.ModelRange || ''}</td>
+                                                <td>${item.Model || ''}</td>
+                                                <td>${item.Body || ''}</td>
+                                                <td>${item.EngineType || ''}</td>
+                                                <td>${item.DriveType || ''}</td>
+                                                <td>${item.YearFrom || ''}</td>
+                                                <td>${item.YearTo || ''}</td>
+                                                <td>${item.TruType || ''}</td>
+
+                                            </tr>
+                                        `;
+                                    });//endloop
+                                    tableHtml += `
+                                              </tbody>
+                                            </table>
+                                        `;
+                                }
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'เพิ่มข้อมูลผิดพลาด',
+                                    html: 'ตรวจพบ K-type ซ้ำกับรายการ <br>' + `<div class="table-responsive" style="max-height:300px; overflow-y:auto;">${tableHtml}</div>`,
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'ปิด',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                    width: '700px',
+                                    customClass: {
+                                        popup: 'swal-wide'
+                                    }
+                                }).then(() => {
+                                    return false;
+                                });//end sw alert
+                            }
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'ปิด',
+                                allowOutsideClick: false,
+                                focusConfirm: false,
+                            });
+                            return false;
+                        }
+                    }
+                });//end ajax
+            }//end condition
 
             Swal.fire({
                 title: "ยืนยัน?",
@@ -1721,14 +1843,118 @@
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
+                confirmButtonText: "ใช่",
+                cancelButtonText: "ยกเลิก"
             }).then((result) => {
                 if (result.isConfirmed) {
                     addTrudata(_marketSeg, _vehicleSeg, maker, rang, model, body, eng, xktype, xdrive, xyearfrom, xyearto, xthvio);
                 }
             });
         } else { //Edit
-            editTrudata(_marketSeg, _vehicleSeg, maker, rang, model, body, eng, xktype, xdrive, xyearfrom, xyearto, xthvio);
+                           if (xktype != '') {
+                $.ajax({
+                    url: '@Url.Action("CheckKtype", "Management")',
+                    data: { Modul: mod, KTYPE: xktype, TruTYPE: xtrutyp },
+                    type: 'post',
+                    dataType: 'json',
+                    beforeSend: function () {
+
+                    },
+                    success: function (data) {
+                        if (data.respone == true) {
+                            if (data.message == 'N') {
+                                let tableHtml = `
+                                        <table class="table table-bordered table-sm text-nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>KType</th>
+                                                    <th>MarketSegment</th>
+                                                    <th>VehicleSegment</th>
+                                                    <th>Maker</th>
+                                                    <th>ModelRange</th>
+                                                    <th>Model</th>
+                                                    <th>Body</th>
+                                                    <th>EngineType</th>
+                                                    <th>DriveType</th>
+                                                    <th>YearFrom</th>
+                                                    <th>YearTo</th>
+                                                    <th>TruType</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                    `;
+                                if (data.result.length > 0) {
+                                    data.result.forEach(item => {
+                                        tableHtml += `
+                                            <tr>
+                                                <td>${item.KType || ''}</td>
+                                                <td>${item.MarketSegment || ''}</td>
+                                                <td>${item.VehicleSegment || ''}</td>
+                                                <td>${item.Maker || ''}</td>
+                                                <td>${item.ModelRange || ''}</td>
+                                                <td>${item.Model || ''}</td>
+                                                <td>${item.Body || ''}</td>
+                                                <td>${item.EngineType || ''}</td>
+                                                <td>${item.DriveType || ''}</td>
+                                                <td>${item.YearFrom || ''}</td>
+                                                <td>${item.YearTo || ''}</td>
+                                                <td>${item.TruType || ''}</td>
+
+                                            </tr>
+                                        `;
+                                    });//endloop
+                                    tableHtml += `
+                                              </tbody>
+                                            </table>
+                                        `;
+                                }
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'เพิ่มข้อมูลผิดพลาด',
+                                    html: 'ตรวจพบ K-type ซ้ำกับรายการ <br>' + `<div class="table-responsive" style="max-height:300px; overflow-y:auto;">${tableHtml}</div>`,
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'ปิด',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                    width: '700px',
+                                    customClass: {
+                                        popup: 'swal-wide'
+                                    }
+                                }).then(() => {
+                                    return false;
+                                });//end sw alert
+                            }
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'ปิด',
+                                allowOutsideClick: false,
+                                focusConfirm: false,
+                            });
+                            return false;
+                        }
+                    }
+                });//end ajax
+            }//end condition
+            Swal.fire({
+                title: "ยืนยัน?",
+                text: "ต้องการดำเนินการต่อหรือไม่",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "ใช่",
+                cancelButtonText: "ยกเลิก"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    editTrudata(_marketSeg, _vehicleSeg, maker, rang, model, body, eng, xktype, xdrive, xyearfrom, xyearto, xthvio);
+                }
+            });
         }
     }
     function addTrudata(market, vehicle, maker, rang, model, body, eng, ktype, drive, yearfrom, yearto, thvio) {
@@ -1767,7 +1993,6 @@
                     });
                 }//end else
             }
-
         })
     }
         function editTrudata(market, vehicle, maker, rang, model, body, eng, ktype, drive, yearfrom, yearto, thvio) {
@@ -1809,25 +2034,64 @@
 
             })
     }
-
-
+    $('#yearfrom-txt').on('input', function () {
+        if ($(this).val().trim() !== '') {
+            $(this).removeClass('is-invalid');
+        }
+    });
     //delete
-    function deleteConf(name, moduleId, marketId = '', vehicleId = '', makerId='', modelRangeId='', modelId='', bodyId='', engineId='') {9
-        Swal.fire({
-            title: "ต้องกานจะลบหรือไม่?",
-            text: name,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "ลบ",
-            cancelButtonText: "ยกเลิก"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                deleteVIO(name,moduleId, marketId, vehicleId, makerId, modelRangeId, modelId, bodyId, engineId);
+    function deleteConf(name, moduleId, marketId = '', vehicleId = '', makerId='', modelRangeId='', modelId='', bodyId='', engineId='') {
+        $.ajax({
+            url: '@Url.Action("CheckVIODataParent", "Management")',
+            data: { moduleID: moduleId, marketSegID: marketId, vehicleSegID: vehicleId, makerID: makerId, rangeID: modelRangeId, modelID: modelId, bodyID: bodyId, engineID: engineId },
+            type: 'post',
+            dataType: 'json',
+            beforeSend: function () {
+
+            },
+            success: function (data) {
+                if (data.flag == 'N') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'เกิดข้อผิดพลาด',
+                        html: data.message + '<br>' + name,
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'ปิด',
+                        allowOutsideClick: false,
+                        focusConfirm: false,
+                    });
+                }
+                else if (data.flag == 'Y') {
+                    Swal.fire({
+                        title: "ต้องการจะลบหรือไม่?",
+                        text: name,
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "ลบ",
+                        cancelButtonText: "ยกเลิก"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            deleteVIO(name, moduleId, marketId, vehicleId, makerId, modelRangeId, modelId, bodyId, engineId);
+                        }
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        html: data.message,
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'ปิด',
+                        allowOutsideClick: false,
+                        focusConfirm: false,
+                    });
+                }
             }
         });
     }
+
     function deleteVIO(name,moduleId, marketId, vehicleId, makerId, modelRangeId, modelId, bodyId, engineId) {
         $.ajax({
             url: '@Url.Action("DeleteVIO_TruData", "Management")',
@@ -1863,7 +2127,7 @@
                             modelRangeLoader(makerId);
                         }
                         else if (moduleId === '6') {
-                            bodyLoader(marketId, modelRangeId, modelId);
+                            bodyLoader(makerId, modelRangeId, modelId);
                         }
                         else if (moduleId === '7') {
                             engineLoader(makerId, modelRangeId, modelId, bodyId)
@@ -1888,131 +2152,6 @@
         })
     }
 
-
-
-    ///DropDown Edit
-
-    function marketLoadSelect(selector) {
-       return $.ajax({
-                    url: '@Url.Action("GetVIO_MarketSeg", "Management")',
-                    type: 'post',
-                    dataType: 'json',
-                    beforeSend: function () {
-                        $(selector).html('');
-
-                    },
-                    success: function (data) {
-                        if (data.respone == true) {
-                            console.log('PASS 1');
-                            var pageString = '';
-                            if (data.result.length > 0) {
-                                data.result.forEach(item => {
-                                    pageString += `<option value="${item.ID}">${item.MarketSegment}</option>`;
-                                });
-                                $(selector).html(pageString);
-                            }
-                        }
-                    }
-                });
-    }
-
-    function vehicleLoadSelect(selector) {
-        return $.ajax({
-                    url: '@Url.Action("GetVIO_VehicleSeg", "Management")',
-                    type: 'post',
-                    dataType: 'json',
-                    beforeSend: function () {
-                        $(selector).html('');
-
-                    },
-                    success: function (data) {
-                        if (data.respone == true) {
-                            console.log('PASS 2');
-                            var pageString = '';
-                            if (data.result.length > 0) {
-                                data.result.forEach(item => {
-                                    pageString += `<option value="${item.ID}">${item.VehicleSegment}</option>`;
-                                });
-                                $(selector).html(pageString);
-                            }
-                        }
-                    }
-                });
-    }
-
-    function makerLoadSelect(selector) {
-        return $.ajax({
-                    url: '@Url.Action("GetVIO_Maker", "Management")',
-                    type: 'post',
-                    dataType: 'json',
-                    beforeSend: function () {
-                        $(selector).html('');
-
-                    },
-                    success: function (data) {
-                        if (data.respone == true) {
-                            console.log('PASS 3');
-                            var pageString = '';
-                            if (data.result.length > 0) {
-                                data.result.forEach(item => {
-                                    pageString += `<option value="${item.ID}">${item.Maker}</option>`;
-                                });
-                                $(selector).html(pageString);
-                            }
-                        }
-                    }
-                });
-    }
-
-    function modelrangeLoadSelect(maker,selector) {
-        return $.ajax({
-                    url: '@Url.Action("GetVIO_ModelRange", "Management")',
-                    data: { MakerID: maker },
-                    type: 'post',
-                    dataType: 'json',
-                    beforeSend: function () {
-                        $(selector).html('');
-
-                    },
-                    success: function (data) {
-                        if (data.respone == true) {
-                            console.log('PASS 4');
-                            var pageString = '';
-                            if (data.result.length > 0) {
-                                data.result.forEach(item => {
-                                    pageString += `<option value="${item.ID}">${item.ModelRange}</option>`;
-                                });
-                                $(selector).html(pageString);
-                            }
-                        }
-                    }
-                });
-    }
-
-    function modelLoadSelect(marketId, makerId, rangeId,selector) {
-        return $.ajax({
-                    url: '@Url.Action("GetVIO_Model", "Management")',
-                    type: 'post',
-                    dataType: 'json',
-                    data: { MarketSegID: marketId ,MakerID: makerId, ModelRangID: rangeId },
-                    beforeSend: function () {
-                        $(selector).html('');
-
-                    },
-                    success: function (data) {
-                        if (data.respone == true) {
-                            console.log('PASS 5');
-                            var pageString = '';
-                            if (data.result.length > 0) {
-                                data.result.forEach(item => {
-                                    pageString += `<option value="${item.ID}">${item.Model}</option>`;
-                                });
-                                $(selector).html(pageString);
-                            }
-                        }
-                    }
-                });
-            }
 
 
 </script>

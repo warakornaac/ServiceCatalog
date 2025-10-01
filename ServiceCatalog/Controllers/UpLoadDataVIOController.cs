@@ -24,13 +24,13 @@ namespace ServiceCatalog.Controllers
         {
             List<VIO_MarketSegment> listMarketSeg = new List<VIO_MarketSegment>();
             List<VIO_VehicleSegment> listVehicelSeg = new List<VIO_VehicleSegment>();
-            string conString = ConfigurationManager.ConnectionStrings["VIO_Connectionstring"].ConnectionString;
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
             try
             {
                 using (SqlConnection conn = new SqlConnection(conString))
                 {
                     conn.Open();
-                    using (SqlCommand cmd = new SqlCommand("P_SearchVIO", conn))
+                    using (SqlCommand cmd = new SqlCommand("P_SearchVIO_Selector", conn))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@inModule", "1");
@@ -44,7 +44,7 @@ namespace ServiceCatalog.Controllers
                             });
                         }
                     }
-                    using (SqlCommand cmd = new SqlCommand("P_SearchVIO", conn))
+                    using (SqlCommand cmd = new SqlCommand("P_SearchVIO_Selector", conn))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@inModule", "2");
@@ -119,9 +119,10 @@ namespace ServiceCatalog.Controllers
 
                     SaveDataTableToSql(dt, "Test260826");
 
-                    var vehicles = await ImportStoreRun();
-
-                    return Json(new { success = true, message = "อัพโหลดสำเร็จ", data = vehicles });
+                    var result = await ImportStoreRun();
+                    var vehicles = result.Item1;
+                    var outResult = result.Item2;
+                    return Json(new { success = true, message = "อัพโหลดสำเร็จ", data = vehicles, outResult = outResult });
                 }
                 return Json(new { success = false, message = "ไม่พบไฟล์" });
             }
@@ -139,7 +140,7 @@ namespace ServiceCatalog.Controllers
 
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets["Sheet1"];
+                var worksheet = package.Workbook.Worksheets["K-Type Data"];
                 if (worksheet == null)
                     throw new Exception("ไม่พบชีทชื่อ 'K-Type Data' ในไฟล์ Excel");
 
@@ -190,7 +191,7 @@ namespace ServiceCatalog.Controllers
         //Create Table And Truncate
         private void SaveDataTableToSql(DataTable dt, string tableName)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["VIO_Connectionstring"].ConnectionString))
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString))
             {
                 conn.Open();
                 var columnDefs = new List<string>();
@@ -220,7 +221,7 @@ namespace ServiceCatalog.Controllers
                     dt.Columns.Add("flag", typeof(int));
                     foreach (DataRow row in dt.Rows)
                     {
-                        row["flag"] = 0; // หรือค่า default อื่น ๆ
+                        row["flag"] = 0;
                     }
                 }
 
@@ -260,10 +261,12 @@ namespace ServiceCatalog.Controllers
             return "NVARCHAR(MAX)";
         }
 
-        private async Task<List<VehicleInfo>> ImportStoreRun()
+        private async Task<Tuple<List<VehicleInfo>, string>> ImportStoreRun()
         {
             List<VehicleInfo> list = new List<VehicleInfo>();
-            string conString = ConfigurationManager.ConnectionStrings["VIO_Connectionstring"].ConnectionString;
+            string result = string.Empty;
+
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
 
             using (SqlConnection conn = new SqlConnection(conString))
             {
@@ -272,6 +275,10 @@ namespace ServiceCatalog.Controllers
                 using (SqlCommand cmd = new SqlCommand("P_VIOInsertUpdateExcel", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter returnValue = new SqlParameter("@outResult", SqlDbType.NVarChar, 100);
+                    returnValue.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(returnValue);
+
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -297,19 +304,327 @@ namespace ServiceCatalog.Controllers
                             });
                         }
                     }
+
+                    result = returnValue.Value?.ToString() ?? string.Empty;
                 }
             }
-            return list;
+
+            return Tuple.Create(list, result);
         }
 
+
         //End Excel
+
+        //start seletor
+        public JsonResult GetVIO_VehicleSeg()
+        {
+            string message = string.Empty;
+            List<VIO_VehicleSegment> listVehicelSeg = new List<VIO_VehicleSegment>();
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("P_SearchVIO_Selector", conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@inModule", "2");
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            listVehicelSeg.Add(new VIO_VehicleSegment()
+                            {
+                                ID = reader["ID"] != DBNull.Value ? reader["ID"].ToString() : string.Empty,
+                                VehicleSegment = reader["VehicleSegment"] != DBNull.Value ? reader["VehicleSegment"].ToString() : string.Empty
+                            });
+                        }
+                    }
+                }
+                return Json(new { respone = true, message = message, result = listVehicelSeg }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+                return Json(new { respone = false, message = e.Message, result = listVehicelSeg }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public JsonResult GetVIO_Maker()
+        {
+            List<VIO_Maker> list = new List<VIO_Maker>();
+            string message = string.Empty;
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("P_SearchVIO_Selector", conn);
+                    cmd.CommandTimeout = 0;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@inModule", "3");
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        list.Add(new VIO_Maker()
+                        {
+                            ID = reader["ID"] != DBNull.Value ? reader["ID"].ToString() : "",
+                            Maker = reader["Maker"] != DBNull.Value ? reader["Maker"].ToString() : ""
+                        });
+                    }
+                    reader.Close();
+                    cmd.Dispose();
+                }
+                return Json(new { respone = true, message = true, result = list }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+                return Json(new { respone = false, message = true, result = list }, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public JsonResult GetVIO_Model(string MarketSegID, string MakerID, string ModelRangID)
+        {
+            List<VIO_Model> list = new List<VIO_Model>();
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("P_SearchVIO_Selector", conn);
+                    cmd.CommandTimeout = 0;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@inModule", "4");
+                    cmd.Parameters.AddWithValue("@inmarketseID", MarketSegID);
+                    cmd.Parameters.AddWithValue("@inmakerID", MakerID);
+                    cmd.Parameters.AddWithValue("@inmodelrangeID", ModelRangID);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        list.Add(new VIO_Model()
+                        {
+                            ID = reader["ID"] != DBNull.Value ? reader["ID"].ToString() : "",
+                            Model = reader["Model"] != DBNull.Value ? reader["Model"].ToString() : "",
+                            Maker_ID = reader["Maker_ID"] != DBNull.Value ? reader["Maker_ID"].ToString() : "",
+                            ModelRange_ID = reader["ModelRange_ID"] != DBNull.Value ? reader["ModelRange_ID"].ToString() : "",
+                            MarketSegment_ID = reader["MarketSegment_ID"] != DBNull.Value ? reader["MarketSegment_ID"].ToString() : ""
+                        });
+                    }
+                    reader.Close();
+                    cmd.Dispose();
+                }
+                return Json(new { respone = true, result = list }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+                return Json(new { respone = false, result = list }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        public JsonResult GetVIO_ModelRange(string MakerID)
+        {
+            string message = string.Empty;
+            List<VIO_ModelRange> list = new List<VIO_ModelRange>();
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("P_SearchVIO_Selector", conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@inModule", "5");
+                        cmd.Parameters.AddWithValue("@inmakerID", MakerID);
+
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            list.Add(new VIO_ModelRange()
+                            {
+                                ID = reader["ID"] != DBNull.Value ? reader["ID"].ToString() : "",
+                                ModelRange = reader["ModelRange"] != DBNull.Value ? reader["ModelRange"].ToString() : "",
+                                Maker_ID = reader["Maker_ID"] != DBNull.Value ? reader["Maker_ID"].ToString() : ""
+                            });
+                        }
+                    }
+                }
+                return Json(new { respone = true, message = message, result = list }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+                list = null;
+                return Json(new { respone = false, message = message, result = list }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public JsonResult GetVIO_Body(string marketSeg, string vehicleSeg, string makerID, string modelID, string modelRangeID)
+        {
+            string message = string.Empty;
+            List<VIO_Body> list = new List<VIO_Body>();
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("P_SearchVIO_Selector", conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@inModule", "6");
+                        cmd.Parameters.AddWithValue("@inmarketseID", marketSeg);
+                        cmd.Parameters.AddWithValue("@invehiclesegID", vehicleSeg);
+                        cmd.Parameters.AddWithValue("@inmakerID", makerID);
+                        cmd.Parameters.AddWithValue("@inmodelID", modelID);
+                        cmd.Parameters.AddWithValue("@inmodelrangeID", modelRangeID);
+
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            list.Add(new VIO_Body()
+                            {
+                                ID = reader["ID"] != DBNull.Value ? reader["ID"].ToString() : string.Empty,
+                                Body = reader["Body"] != DBNull.Value ? reader["Body"].ToString() : string.Empty,
+                                BodyType = reader["BodyType"] != DBNull.Value ? reader["BodyType"].ToString() : string.Empty,
+                                Maker_ID = reader["Maker_ID"] != DBNull.Value ? reader["Maker_ID"].ToString() : string.Empty,
+                                ModelRange_ID = reader["ModelRange_ID"] != DBNull.Value ? reader["ModelRange_ID"].ToString() : string.Empty,
+                                Model_ID = reader["Model_ID"] != DBNull.Value ? reader["Model_ID"].ToString() : string.Empty,
+                                VehicleSegment_ID = reader["VehicleSegment_ID"] != DBNull.Value ? reader["VehicleSegment_ID"].ToString() : string.Empty,
+                                MarketSegment_ID = reader["MarketSegment_ID"] != DBNull.Value ? reader["MarketSegment_ID"].ToString() : string.Empty,
+
+                            });
+                        }
+                        return Json(new { respone = true, message = message, result = list }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+                return Json(new { respone = false, message = message, result = list }, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public JsonResult GETVIO_Engine(string makerID, string modelRangeID, string modelID, string bodyID)
+        {
+            string message = string.Empty;
+            List<VIO_Engine> list = new List<VIO_Engine>();
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("P_SearchVIO_Selector", conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@inModule", "7");
+                        cmd.Parameters.AddWithValue("@inmakerID", makerID);
+                        cmd.Parameters.AddWithValue("@inmodelID", modelID);
+                        cmd.Parameters.AddWithValue("@inmodelrangeID", modelRangeID);
+                        cmd.Parameters.AddWithValue("@inBodyID", bodyID);
+
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            list.Add(new VIO_Engine()
+                            {
+                                ID = reader["ID"] != DBNull.Value ? reader["ID"].ToString() : string.Empty,
+                                EngineType = reader["EngineType"] != DBNull.Value ? reader["EngineType"].ToString() : string.Empty,
+                                FuelType = reader["FuelType"] != DBNull.Value ? reader["FuelType"].ToString() : string.Empty,
+                                Strokes = reader["Strokes"] != DBNull.Value ? reader["Strokes"].ToString() : string.Empty,
+                                Maker_ID = reader["Maker_ID"] != DBNull.Value ? reader["Maker_ID"].ToString() : string.Empty,
+                                ModelRange_ID = reader["ModelRange_ID"] != DBNull.Value ? reader["ModelRange_ID"].ToString() : string.Empty,
+                                Model_ID = reader["Model_ID"] != DBNull.Value ? reader["Model_ID"].ToString() : string.Empty,
+                                Body_ID = reader["Body_ID"] != DBNull.Value ? reader["Body_ID"].ToString() : string.Empty
+                            });
+                        }
+                    }
+                    return Json(new { respone = true, message = message, result = list }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+                return Json(new { respone = false, message = message, result = list }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
+        public JsonResult GetVIO_TruData(string marketSegID, string vehicleSegID, string makerID, string modelRangeID, string modelID, string bodyID, string engineID)
+        {
+            string message = string.Empty;
+            List<VIO_TruData> list = new List<VIO_TruData>();
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("P_SearchVIO_Selector", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@inModule", "8");
+                        cmd.Parameters.AddWithValue("@inmarketseID", marketSegID);
+                        cmd.Parameters.AddWithValue("@invehiclesegID", vehicleSegID);
+                        cmd.Parameters.AddWithValue("@inmakerID", makerID);
+                        cmd.Parameters.AddWithValue("@inmodelrangeID", modelRangeID);
+                        cmd.Parameters.AddWithValue("@inmodelID", modelID);
+                        cmd.Parameters.AddWithValue("@inBodyID", bodyID);
+                        cmd.Parameters.AddWithValue("@inEngineID", engineID);
+
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            list.Add(new VIO_TruData()
+                            {
+                                MarketSegment_ID = reader["MarketSegment_ID"] != DBNull.Value ? reader["MarketSegment_ID"].ToString() : string.Empty,
+                                VehicleSegment_ID = reader["VehicleSegment_ID"] != DBNull.Value ? reader["VehicleSegment_ID"].ToString() : string.Empty,
+                                Maker_ID = reader["Maker_ID"] != DBNull.Value ? reader["Maker_ID"].ToString() : string.Empty,
+                                ModelRange_ID = reader["ModelRange_ID"] != DBNull.Value ? reader["ModelRange_ID"].ToString() : string.Empty,
+                                Model_ID = reader["Model_ID"] != DBNull.Value ? reader["Model_ID"].ToString() : string.Empty,
+                                Body_ID = reader["Body_ID"] != DBNull.Value ? reader["Body_ID"].ToString() : string.Empty,
+                                Engine_ID = reader["Engine_ID"] != DBNull.Value ? reader["Engine_ID"].ToString() : string.Empty,
+                                KType = reader["KType"] != DBNull.Value ? reader["KType"].ToString() : string.Empty,
+                                DriveType = reader["DriveType"] != DBNull.Value ? reader["DriveType"].ToString() : string.Empty,
+                                YearFrom = reader["YearFrom"] != DBNull.Value ? reader["YearFrom"].ToString() : string.Empty,
+                                YearTo = reader["YearTo"] != DBNull.Value ? reader["YearTo"].ToString() : string.Empty,
+                                ThaiVIO = reader["ThaiVIO"] != DBNull.Value ? reader["ThaiVIO"].ToString() : string.Empty,
+                                TruType = reader["TruType"] != DBNull.Value ? reader["TruType"].ToString() : string.Empty,
+                            });
+                        }
+                    }
+                }//conn
+                return Json(new { respone = true, message = message, result = list }, JsonRequestBehavior.AllowGet);
+            }//end try
+            catch (Exception e)
+            {
+                message = e.Message;
+                return Json(new { respone = false, message = message, result = list }, JsonRequestBehavior.AllowGet);
+            }
+
+
+        }
+
+
+        //end selector
 
         //start table
         public JsonResult GetVIOData(string marketID, string vehicleID, string maker, string rangID, string modelID, string bodyID, string engineID)
         {
             string message = string.Empty;
             List<VIO_DATA> list = new List<VIO_DATA>();
-            string conString = ConfigurationManager.ConnectionStrings["VIO_Connectionstring"].ConnectionString;
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
             try
             {
                 using (SqlConnection conn = new SqlConnection(conString))
