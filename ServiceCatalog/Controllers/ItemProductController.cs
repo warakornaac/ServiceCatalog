@@ -116,7 +116,7 @@ namespace ServiceCatalog.Controllers
                 {
                     for (int j = 0; j < listProductApi.Columns.Count; j++)
                     {
-                        worksheet1.Cell(i + 2, j + 1).Value = listProductApi.Rows[i][j];
+                        worksheet1.Cell(i + 2, j + 1).SetValue(listProductApi.Rows[i][j].ToString());
                     }
                 }
                 // ========= Sheet 2: Product_Description =========
@@ -128,7 +128,7 @@ namespace ServiceCatalog.Controllers
                 {
                     for (int j = 0; j < listProductDescription.Columns.Count; j++)
                     {
-                        worksheet2.Cell(i + 2, j + 1).Value = listProductDescription.Rows[i][j];
+                        worksheet2.Cell(i + 2, j + 1).SetValue(listProductDescription.Rows[i][j].ToString());
                     }
                 }
                 // ========= Sheet 3: Product_Spec =========
@@ -140,7 +140,7 @@ namespace ServiceCatalog.Controllers
                 {
                     for (int j = 0; j < listProductSpec.Columns.Count; j++)
                     {
-                        worksheet3.Cell(i + 2, j + 1).Value = listProductSpec.Rows[i][j];
+                        worksheet3.Cell(i + 2, j + 1).SetValue(listProductSpec.Rows[i][j].ToString());
                     }
                 }
                 // ========= Sheet 4: Product_Competitor =========
@@ -152,7 +152,7 @@ namespace ServiceCatalog.Controllers
                 {
                     for (int j = 0; j < listProductCompetitor.Columns.Count; j++)
                     {
-                        worksheet4.Cell(i + 2, j + 1).Value = listProductCompetitor.Rows[i][j];
+                        worksheet4.Cell(i + 2, j + 1).SetValue(listProductCompetitor.Rows[i][j].ToString());
                     }
                 }      
                 // ========= Sheet 5: Product_Oem =========
@@ -164,7 +164,7 @@ namespace ServiceCatalog.Controllers
                 {
                     for (int j = 0; j < listProductOem.Columns.Count; j++)
                     {
-                        worksheet5.Cell(i + 2, j + 1).Value = listProductOem.Rows[i][j];
+                        worksheet5.Cell(i + 2, j + 1).SetValue(listProductOem.Rows[i][j].ToString());
                     }
                 }
                 // ========= Sheet 6: Product_Image =========
@@ -176,7 +176,7 @@ namespace ServiceCatalog.Controllers
                 {
                     for (int j = 0; j < listProductImage.Columns.Count; j++)
                     {
-                        worksheet6.Cell(i + 2, j + 1).Value = listProductImage.Rows[i][j];
+                        worksheet6.Cell(i + 2, j + 1).SetValue(listProductImage.Rows[i][j].ToString());
                     }
                 }
                 // ========= Sheet 7: Product_Image =========
@@ -188,7 +188,7 @@ namespace ServiceCatalog.Controllers
                 {
                     for (int j = 0; j < listProductLinkage.Columns.Count; j++)
                     {
-                        worksheet7.Cell(i + 2, j + 1).Value = listProductLinkage.Rows[i][j];
+                        worksheet7.Cell(i + 2, j + 1).SetValue(listProductLinkage.Rows[i][j].ToString());
                     }
                 }
 
