@@ -1,0 +1,64 @@
+﻿@{
+    var ListLinkage = @ViewBag.ListLinkage;
+}
+<div class="card border">
+    <div class="card-header bg-primary text-dark fw-bold rounded-top">
+        Link Data
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table " id="table-show-link">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Maker</th>
+                        <th>Model</th>
+                        <th>Body</th>
+                        <th>Engine</th>
+                        <th>DriveType</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ListLinkage.Count > 0)
+                    {
+                        foreach (var item in ListLinkage)
+                        {
+                            <tr>
+                                <td>
+                                    <button class="btn bg-transparent" data-stkcod="@item.Stkcode" data-ktype="@item.KType" data-trutype="@item.TruType" data-seq="@item.SeqLinkage" data-maker="@item.Maker"
+                                            data-model="@item.Model" data-body="@item.Body" data-engine="@item.Engine"
+                                            data-drive="@item.DriveType" data-year="@item.YearFrom" id="delete-link-@item.TruType">
+                                        <span class="fw-bold">-</span>
+                                    </button>
+                                </td>
+                                <td>@item.Maker</td>
+                                <td>@item.Model</td>
+                                <td>@item.Body</td>
+                                <td>@item.Engine</td>
+                                <td>@item.DriveType</td>
+                                <td>@item.YearFrom</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#table-show-link').DataTable({
+            paging: true,
+            pageLength: 20,
+            lengthChange: false,
+            searching: false,
+            ordering: false,
+            language: {
+                info: "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ ",
+                infoEmpty: "ไม่มีข้อมูลให้แสดง"
+            }
+        });
+    });
+</script>

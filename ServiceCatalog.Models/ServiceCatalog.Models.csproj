@@ -48,6 +48,7 @@
     <Compile Include="ImportVIOModels.cs" />
     <Compile Include="LinkageDataModels.cs" />
     <Compile Include="PartNumberNearbyModels.cs" />
+    <Compile Include="PNDescripsModels.cs" />
     <Compile Include="ProductDescriptionModel.cs" />
     <Compile Include="ProductSpecModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="StoredSearchProductDescriptionModel.cs" />
     <Compile Include="StoredSearchProductTruByStatusModel.cs" />
     <Compile Include="StoredUpdateProductApiModel.cs" />
+    <Compile Include="StoreGetLinkageDataModel.cs" />
+    <Compile Include="StoreSearchVehicleLinkageModel.cs" />
     <Compile Include="VIOModels.cs" />
   </ItemGroup>
   <ItemGroup>

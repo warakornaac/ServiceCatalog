@@ -1,0 +1,315 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="page-header">
+    <h1 class="page-title my-auto">ศรืาฟเำ ญฟพะฆยำแ</h1>
+    <div>
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","Home")">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">VIO Linkage</li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-header justify-content-between"> <div class="card-title"> PartNo Specific (0242135553 | 30 | JAR134), (39070 | 101)</div> <div class="prism-toggle"> </div> </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="form-text" class="form-label fs-14 text-dark">PartNo</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-settings-5-fill"></i>
+                            </div>
+                            <input type="text" class="form-control" id="txtPartNo" value="" placeholder="Enter PartNo.">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row text-right">
+                    <div class="col-xs-12 col-md-12 text-end">
+                        <button class="btn btn-secondary" onclick="Reset();">Reset</button>
+                        <button class="btn btn-primary" onclick="SearchPnDetail();">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12">
+        <div id="pn-detail"></div>
+    </div>
+    <div class="col-xl-12">
+        <div id="linkage-data"></div>
+    </div>
+    <div class="col-xl-12">
+        <div id="selector-vehicle"></div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $.fn.dataTable.ext.errMode = 'none';
+        $('#txtPartNo').autocomplete({
+            selectFirst: true,
+            autoFocus: true,
+            source: function (request, response) {
+                var textsearch = $('#txtPartNo').val();
+                $.ajax({
+                    url: '@Url.Action("GetPartNoDes", "ItemLinkage")',
+                    data: { TxtSearch: textsearch },
+                    dataType: 'json',
+                    type: 'post',
+                    //contentType: "application/json; charset=utf-8",
+                    dataFilter: function (data) { return data; },
+                    success: function (data) {
+                        response($.map(data.slice(0, 50), function (item) {
+                            return {
+                                value: item
+                            }
+                        }))
+                    },
+                    error: function (XMLhttpsRequest, textStatus, errorThrown) {
+                        alert(textStatus);
+                    },
+                    select: function (event, ui) {
+                        var val = ui.item.value;
+                        console.log('AUTO : ' + val);
+                    },
+                    minLength: 1
+                });//end ajax
+            }
+        });
+    });// end doc
+
+    function Reset() {
+        $('#txtPartNo').val('');
+        $('#pn-detail').empty();
+        $('#linkage-data').empty();
+        $('#selector-vehicle').empty();
+
+    }
+
+    function SearchPnDetail() {
+        var TextStk = $('#txtPartNo').val();
+        if (TextStk.includes('|')) {
+            var splitStk = TextStk.split('|');
+            TextStk = splitStk[0];
+        }
+        $('#linkage-data').empty();
+        $('#selector-vehicle').empty();
+        $.ajax({
+            url: '@Url.Action("GetDetailPN", "ItemLinkage")',
+            data: { STKCOD: TextStk },
+            type: 'post',
+            dataType: 'html',
+            beforeSend: function () {
+                $('#pn-detail').empty();
+                Swal.fire({
+                    title: 'Searching...',
+                    text: 'Please wait while we search for the product.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function(data){
+                Swal.close();
+                $('#pn-detail').html(data);
+            }
+        }); //end ajax
+    }
+
+    $(document).on('click', '.clickable-partspec', function () {
+        var stkcod = $(this).data('stkcod');
+        var company = $(this).data('company');
+
+        console.log("Clicked item:", stkcod, company);
+
+        // ตรงนี้คุณจะให้ไปทำงานอะไรใน View หลักก็ใส่ได้
+        // เช่น เรียกฟังก์ชันหลัก
+        GetLinkageData(stkcod);
+        GetvehicleSelector(stkcod);
+    });
+    function GetLinkageData(stk) {
+        $.ajax({
+            url: '@Url.Action("GetLinkageData", "ItemLinkage")',
+            data: { STKCOD:stk},
+            type: 'post',
+            dataType: 'html',
+            beforeSend: function () {
+                $('#linkage-data').empty();
+                Swal.fire({
+                    title: 'Searching...',
+                    text: 'Please wait while we search for the product.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function (data) {
+                Swal.close();
+                $('#linkage-data').html(data);
+            }
+        });// end ajax
+    }
+
+
+    function GetvehicleSelector(stk) {
+        $.ajax({
+            url: '@Url.Action("GetVehicleSelector", "ItemLinkage")',
+            data: { STKCOD: stk },
+            type: 'post',
+            dataType: 'html',
+            beforeSend: function () {
+                $('#selector-vehicle').empty();
+                Swal.fire({
+                    title: 'Searching...',
+                    text: 'Please wait while we search for the product.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function (data) {
+                Swal.close();
+                $('#selector-vehicle').html(data);
+            }
+        });// end ajax
+    }
+
+    $(document).on('click', '[id^="add-link-"]', function () {
+        var stkcod = $(this).data('stkcod');
+        var ktype = $(this).data('ktype');
+        var tru = $(this).data('trutype');
+        var maker = $(this).data('maker');
+        var model = $(this).data('model');
+        var body = $(this).data('body');
+        var engine = $(this).data('engine');
+        var driv = $(this).data('drive');
+        var year = $(this).data('year');
+        Swal.fire({
+            title: "Confirm linkage Part Spec??",
+            icon:"question",
+            showCancelButton: true,
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("InsertLinkage", "ItemLinkage")',
+                    data: { STKCOD: stkcod, KTYPE: ktype, TRUTYPE: tru },
+                    type: 'post',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: 'Searching...',
+                            text: 'Please wait while we processing on the product.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                    },
+                    success: function (data) {
+                        Swal.close();
+
+                        if (data.result == 'Y') {
+                            Swal.fire({
+                                title: "Add linkage success!",
+                                confirmButtonText: "OK",
+                                icon: "success"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    GetLinkageData(stkcod);
+                                    searchVehicle();
+                                }
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                title: "Error?",
+                                text: data.message,
+                                icon: "error"
+                            });
+                        }
+                    }
+                });//end ajax
+            }
+        });
+    });
+
+    $(document).on('click', '[id^="delete-link-"]', function () {
+        var stkcod = $(this).data('stkcod');
+        var ktype = $(this).data('ktype');
+        var tru = $(this).data('trutype');
+        var seq = $(this).data('seq');
+        var maker = $(this).data('maker');
+        var model = $(this).data('model');
+        var body = $(this).data('body');
+        var engine = $(this).data('engine');
+        var driv = $(this).data('drive');
+        var year = $(this).data('year');
+        Swal.fire({
+            title: "Confirm Delete linkage Part Spec??",
+            icon:"question",
+            showCancelButton: true,
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("DeleteLinkage", "ItemLinkage")',
+                    data: { STKCOD: stkcod, KTYPE: ktype, TRUTYPE: tru, SEQLINK:seq },
+                    type: 'post',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: 'Searching...',
+                            text: 'Please wait while we processing on the product.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                    },
+                    success: function (data) {
+                        Swal.close();
+
+                        if (data.result == 'Y') {
+                            Swal.fire({
+                                title: "Delete linkage success!",
+                                confirmButtonText: "OK",
+                                icon: "success"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    GetLinkageData(stkcod);
+                                    searchVehicle();
+                                }
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                title: "Error?",
+                                text: data.message,
+                                icon: "error"
+                            });
+                        }
+                    }
+                });//end ajax
+            }
+        });
+    });
+</script>
