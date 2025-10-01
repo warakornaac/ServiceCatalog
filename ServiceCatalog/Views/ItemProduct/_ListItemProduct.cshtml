@@ -3,14 +3,40 @@
     ViewBag.Title = "_ListItemProduct";
     var listView = ViewBag.listSearchItemProduct;
 }
+<style>
+    th.text-center {
+        text-align: center !important;
+    }
+</style>
 <div class="row">
     <div class="col-xl-12">
         <div class="card custom-card">
-            <div class="card-body">
+            <div class="card-header" style="padding: 10px 20px;">
+                <div class="d-flex align-items-center w-100">
+                    <i class="fe fe-list"></i>
+                    <div class="p-1">
+                        @*<div class="fs-15 fw-semibold">Adam Smith</div>*@
+                        <p class="mb-0 fw-semibold fs-14 text-info"> @ViewBag.listSearchItemProduct.Count Item </p>
+                    </div>
+                    <div class="dropdown ms-auto">
+                        @*<a href="javascript:void(0);" class="btn btn-icon btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fe fe-more-vertical"></i>
+                            </a>
+                            <ul class="dropdown-menu" style="">
+                                <li><a class="dropdown-item" href="javascript:void(0);">Week</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);">Month</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);">Year</a></li>
+                            </ul>*@
+                        <button type="button" class="btn btn-warning btn-sm" onclick="exportItemProduct();" style="height: 35px;"><i class="bi bi-download"></i> Export Excel </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-0 p-2">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="tableListProduct">
                         <thead>
                             <tr>
+                                <th class="text-center">#</th>
                                 <th class="text-center">Stkcode</th>
                                 <th class="text-center">Stkdes</th>
                                 <th class="text-center">BrandName</th>
@@ -23,9 +49,12 @@
                         <tbody>
                             @if (listView != null)
                             {
+                                var rowItem = 0;
                                 foreach (var item in listView)
                                 {
+                                    rowItem++;
                                     <tr>
+                                        <td><span>@rowItem</span></td>
                                         <td><span>@item.Stkcode</span></td>
                                         <td><span>@item.Stkdesc</span></td>
                                         <td class="text-center"><span>@item.BrandName</span></td>
@@ -86,9 +115,28 @@
     </div>
 </div>
 
-
-
 <script>
+    //export excel
+    function exportItemProduct() {
+        Swal.fire({
+            title: 'Do you confirm export',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#00a65a',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '<i class="fa fa-check"></i> Yes',
+            cancelButtonText: '<i class="fa fa-times"></i> No',
+            allowOutsideClick: false,
+            focusConfirm: false,
+        }).then((result) => {
+            if (result.value) {
+                LoadingShow();
+                LoadingHide();
+                window.location.href = '/ItemProduct/ExportProductItem';
+            }
+        });
+    }
+
     $(document).ready(function () {
         $('#tableListProduct').dataTable({
             paging: true,

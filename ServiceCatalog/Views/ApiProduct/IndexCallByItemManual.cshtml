@@ -3,6 +3,7 @@
     List<SelectListItem> getListBrand = ViewBag.listBrand;
 }
 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <div class="page-header">
     <h1 class="page-title my-auto">Call item manual</h1>
@@ -140,7 +141,7 @@
                                 success: function (res) {
                                     Swal.close();
                                     $('#showResultArticlesByPartno').html(res);
-                                   
+
                                     //LoadingHide();
                                 }
                             });

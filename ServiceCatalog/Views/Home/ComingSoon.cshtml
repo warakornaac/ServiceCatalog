@@ -1,0 +1,59 @@
+﻿<style>
+    .authentication .authentication-cover .aunthentication-cover-content img {
+        margin: 0 auto;
+         width: 13.75rem;
+         height: auto;
+    }
+</style>
+<div class="row min-vh-100" style="margin: -20px -45px 0 -25px;">
+    <div id="loader">
+        <img src="../images/logo/logo_part_vio.png" alt="">
+    </div>
+    <!-- Loader -->
+    <div class="row authentication coming-soon justify-content-center">
+        <div class="col-xxl-8 col-xl-8 col-lg-8 col-12">
+            <div class="authentication-cover">
+                <div class="aunthentication-cover-content text-center">
+                    <div class="row justify-content-center align-items-center h-100">
+                        <div class="col-xxl-6 col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                            <div class="mb-2">
+                                <a href="index.html">
+                                    <img src="../images/logo/logo_part_vio.png" alt="">
+                                </a>
+                            </div>
+                            <h1 class="fw-bold mb-3 text-fixed-white">Coming Soon</h1>
+                            <div class="row mt-4 mb-5 gy-xxl-0 gy-3 justify-content-center" id="timer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script defer>
+    function updateTimer() {
+        future = Date.parse("Nov 01, 2025 11:30:00");
+        now = new Date();
+        diff = future - now;
+
+        days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        hours = Math.floor(diff / (1000 * 60 * 60));
+        mins = Math.floor(diff / (1000 * 60));
+        secs = Math.floor(diff / 1000);
+
+        d = days;
+        h = hours - days * 24;
+        m = mins - hours * 60;
+        s = secs - mins * 60;
+
+        document.getElementById("timer")
+            .innerHTML =
+            '<div class="col-xxl-3 col-xl-6 col-lg-6 col-md-3 col-sm-3 col-6"><div class="p-3 coming-soon-time rounded"><h3 class="fw-semibold text-fixed-white mb-0">' + d + '</h3><p class="mt-1 mb-0 fs-12 op-5">DAYS</p></div></div>' +
+            '<div class="col-xxl-3 col-xl-6 col-lg-6 col-md-3 col-sm-3 col-6"><div class="p-3 coming-soon-time rounded"><h3 class="fw-semibold text-fixed-white mb-0">' + h + '</h3><p class="mt-1 mb-0 fs-12 op-5">HOURS</p></div></div>' +
+            '<div class="col-xxl-3 col-xl-6 col-lg-6 col-md-3 col-sm-3 col-6"><div class="p-3 coming-soon-time rounded"><h3 class="fw-semibold text-fixed-white mb-0">' + m + '</h3><p class="mt-1 mb-0 fs-12 op-5">MINUTES</p></div></div>' +
+            '<div class="col-xxl-3 col-xl-6 col-lg-6 col-md-3 col-sm-3 col-6"><div class="p-3 coming-soon-time rounded"><h3 class="fw-semibold text-fixed-white mb-0">' + s + '</h3><p class="mt-1 mb-0 fs-12 op-5">SECONDS</p></div></div>'
+    }
+    setInterval('updateTimer()', 10);
+</script>

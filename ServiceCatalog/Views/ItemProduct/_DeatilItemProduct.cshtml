@@ -2,35 +2,94 @@
 @{
     ViewBag.Title = "_DeatilItemProduct";
 }
-
-<div class="row">
-    <div class="col-sm-6 col-md-6 text-left">
-        <span class="badge badge-light-secondary" style="font-size: 16px;"> ProductDescription </span>
-    </div>
-</div>
-<div class="row pt-2">
-    <div class="col-md-12">
-        <ol class="list-group list-group-numbered">
-            @if (ViewBag.ListProductDescription.Count > 0)
-            {
-                int countDes = 0;
-                foreach (var rowDes in ViewBag.ListProductDescription)
+<div class="row pt-0">
+    @*<div class="col-md-12">
+            <ol class="list-group list-group-numbered">
+                @if (ViewBag.ListProductDescription.Count > 0)
                 {
-                    @*<li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto text-muted">
-                            <div class="fw-semibold fs-14 text-default">What Happened?</div>
-                            Many experts have recently suggested may exist.
-                        </div>
-                        <span class="badge bg-primary-transparent">32 Views</span>
-                    </li>*@
+                    int countDes = 0;
+                    foreach (var rowDes in ViewBag.ListProductDescription)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto text-muted">
+                                <div class="fw-semibold fs-14 text-default">What Happened?</div>
+                                Many experts have recently suggested may exist.
+                            </div>
+                            <span class="badge bg-primary-transparent">32 Views</span>
+                        </li>
+                    }
                 }
-            }
-            else
-            {
-                <li class="list-group-item">No data.</li>
-            }
-        </ol>
-
+                else
+                {
+                    <li class="list-group-item">No data.</li>
+                }
+            </ol>
+        </div>*@
+    @*  *@
+    @*Description*@
+    <div class="col-md-12">
+        <div class="card custom-card bg-transparent shadow-none border rounded">
+            <div class="card-header justify-content-between p-2">
+                <div class="card-title">Product Description</div>
+            </div>
+            <div class="card-body p-2">
+                @if (ViewBag.ListProductDescription.Count > 0)
+                {
+                    int countDes = 0;
+                    foreach (var rowDes in ViewBag.ListProductDescription)
+                    {
+                        countDes++;
+                        <ul class="ps-3 mb-0 list-unstyled">
+                            <li class="text-muted mb-1">
+                                @*<i class="bx bxs-circle fs-7 me-2 op-5"></i>*@
+                                <b> @rowDes.Title</b> :
+                                @rowDes.Description
+                            </li>
+                        </ul>
+                    }
+                }
+                else
+                {
+                    <ul class="ps-3 mb-0 list-unstyled">
+                        <li class="text-muted">
+                            No data..
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+        @*Spec*@
+        <div class="col-md-12">
+            <div class="card custom-card bg-transparent shadow-none border rounded">
+                <div class="card-header justify-content-between p-2">
+                    <div class="card-title">Product Spec</div>
+                </div>
+                <div class="card-body p-2">
+                    @if (ViewBag.ListProductSpec.Count > 0)
+                    {
+                        int countSpc = 0;
+                        foreach (var rowSpc in ViewBag.ListProductSpec)
+                        {
+                            countSpc++;
+                            <ul class="ps-3 mb-0 list-unstyled">
+                                <li class="text-muted mb-1">
+                                    @*<i class="bx bxs-circle fs-7 me-2 op-5"></i>*@
+                                    <b>@rowSpc.Title</b> :
+                                    @rowSpc.Description
+                                </li>
+                            </ul>
+                        }
+                    }
+                    else
+                    {
+                        <ul class="ps-3 mb-0 list-unstyled">
+                            <li class="text-muted">
+                                No data..
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
