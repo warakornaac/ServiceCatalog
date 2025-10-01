@@ -115,6 +115,7 @@
 <script>
     var STK = $('#stk-cod').val();
     console.log('SSTTKK = ' + STK);
+
     //select change
     $('#maker-select').on('change', async function () {
         var makerId = $(this).val();
@@ -154,6 +155,7 @@
     });
 
     $(document).ready(async function () {
+
         refacePicker();
         await MakerLoader();
         searchVehicle();
