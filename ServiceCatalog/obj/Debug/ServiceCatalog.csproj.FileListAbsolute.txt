@@ -133,8 +133,3 @@ D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.Assem
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.CopyComplete
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.dll
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.pdb
-D:\.net\ServiceCatalog\ServiceCatalog\bin\ClosedXML.dll
-D:\.net\ServiceCatalog\ServiceCatalog\bin\DocumentFormat.OpenXml.dll
-D:\.net\ServiceCatalog\ServiceCatalog\bin\ClosedXML.pdb
-D:\.net\ServiceCatalog\ServiceCatalog\bin\ClosedXML.xml
-D:\.net\ServiceCatalog\ServiceCatalog\bin\DocumentFormat.OpenXml.xml
