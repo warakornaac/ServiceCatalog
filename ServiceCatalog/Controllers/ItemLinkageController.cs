@@ -18,6 +18,25 @@ namespace ServiceCatalog.Controllers
         // GET: ItemLinkage
         public ActionResult Index()
         {
+            List<SelectListItem> listProductName = new List<SelectListItem>();
+
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand("P_Search_Product_Name", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@inUserId", "warakorn.pra");
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    listProductName.Add(new SelectListItem
+                    {
+                        Value = reader["PROD"].ToString(),
+                        Text = $"{reader["PROD"]}/{reader["PRODNAM"]}"
+                    });
+                }
+            }
+            @ViewBag.listProductName = listProductName;
             return View();
         }
 
@@ -185,6 +204,35 @@ namespace ServiceCatalog.Controllers
                         cmd.Parameters.AddWithValue("@inKtype", KTYPE);
                         cmd.Parameters.AddWithValue("@inTruType", TRUTYPE);
                         cmd.Parameters.AddWithValue("@inSeq", SEQLINK);
+                        cmd.Parameters.AddWithValue("@inUser", "thiraphon.pra");
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                res = "Y";
+            }
+            catch (Exception ex) { message = ex.Message; res = "N"; }
+
+
+            return Json(new { message = message, result = res }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult AddLinkageMaker(string STKCOD, string Market, string Maker)
+        {
+            string message = string.Empty;
+            string res = string.Empty;
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("P_Delete_LinkageData", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@inSTKCOD", STKCOD);
+                        cmd.Parameters.AddWithValue("@inMarketSeg", Market);
+                        cmd.Parameters.AddWithValue("@inMaker", Maker);
                         cmd.Parameters.AddWithValue("@inUser", "thiraphon.pra");
 
                         cmd.ExecuteNonQuery();

@@ -1,5 +1,4 @@
 ﻿using ServiceCatalog.Models;
-using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using ClosedXML.Excel;
 
 namespace ServiceCatalog.Controllers
 {
@@ -95,6 +95,43 @@ namespace ServiceCatalog.Controllers
             return Json(new { success = false, message = "No file received." });
         }
 
+        //[HttpPost]
+        //public async Task<ActionResult> ExcelFile(HttpPostedFileBase file)
+        //{
+        //    try
+        //    {
+        //        if (file != null && file.ContentLength > 0)
+        //        {
+        //            string folderPath = Server.MapPath("~/UploadedFiles/");
+        //            string filePath = Path.Combine(folderPath, Path.GetFileName(file.FileName));
+
+        //            if (!Directory.Exists(folderPath))
+        //            {
+        //                Directory.CreateDirectory(folderPath);
+        //            }
+
+        //            using (var stream = new FileStream(filePath, FileMode.Create))
+        //            {
+        //                await file.InputStream.CopyToAsync(stream);
+        //            }
+
+        //            DataTable dt = ReadExcelToDataTable(filePath);
+
+        //            SaveDataTableToSql(dt, "VIO_PrepairData");
+
+        //            var result = await ImportStoreRun();
+        //            var vehicles = result.Item1;
+        //            var outResult = result.Item2;
+        //            return Json(new { success = true, message = "อัพโหลดสำเร็จ", data = vehicles, outResult = outResult });
+        //        }
+        //        return Json(new { success = false, message = "ไม่พบไฟล์" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message });
+        //    }
+        //}
+
         [HttpPost]
         public async Task<ActionResult> ExcelFile(HttpPostedFileBase file)
         {
@@ -106,81 +143,163 @@ namespace ServiceCatalog.Controllers
                     string filePath = Path.Combine(folderPath, Path.GetFileName(file.FileName));
 
                     if (!Directory.Exists(folderPath))
-                    {
                         Directory.CreateDirectory(folderPath);
-                    }
+
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await file.InputStream.CopyToAsync(stream);
                     }
 
+
+                    if (!System.IO.File.Exists(filePath))
+                        throw new Exception("ไม่พบไฟล์ Excel ที่อัปโหลด");
+
+                    if (Path.GetExtension(filePath).ToLower() != ".xlsx")
+                        throw new Exception("รองรับเฉพาะไฟล์ .xlsx เท่านั้น");
+
+
                     DataTable dt = ReadExcelToDataTable(filePath);
+
 
                     SaveDataTableToSql(dt, "VIO_PrepairData");
 
                     var result = await ImportStoreRun();
                     var vehicles = result.Item1;
                     var outResult = result.Item2;
-                    return Json(new { success = true, message = "อัพโหลดสำเร็จ", data = vehicles, outResult = outResult });
+
+                    return Json(new { success = true, message = "อัปโหลดสำเร็จ", data = vehicles, outResult });
                 }
-                return Json(new { success = false, message = "ไม่พบไฟล์" });
+
+                return Json(new { success = false, message = "ไม่พบไฟล์สำหรับอัปโหลด" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+
+                return Json(new { success = false, message = "เกิดข้อผิดพลาด: " + ex.Message });
             }
         }
 
 
-        //Add Data From Excel To DataTable
+
+        ////Add Data From Excel To DataTable
+        //private DataTable ReadExcelToDataTable(string path)
+        //{
+        //    var dt = new DataTable();
+
+        //    using (var workbook = new XLWorkbook(path))
+        //    {
+        //        var worksheet = workbook.Worksheet("MasterData");
+        //        if (worksheet == null)
+        //            throw new Exception("ไม่พบชีทชื่อ 'MasterData' ในไฟล์ Excel");
+
+        //        bool hasHeader = true;
+        //        var firstRow = worksheet.FirstRowUsed();
+        //        var columnCount = firstRow.CellCount();
+
+        //        // สร้างคอลัมน์
+        //        foreach (var cell in firstRow.Cells())
+        //        {
+        //            string colName = hasHeader ? cell.GetString() : $"Column {cell.Address.ColumnNumber}";
+        //            dt.Columns.Add(colName, typeof(string));
+        //        }
+
+        //        // เริ่มอ่านจากแถวที่ 2 ถ้ามี Header
+        //        int startRow = hasHeader ? 2 : 1;
+
+        //        foreach (var row in worksheet.RowsUsed().Skip(startRow - 1))
+        //        {
+        //            var dataRow = dt.NewRow();
+
+        //            for (int i = 0; i < columnCount; i++)
+        //            {
+        //                string header = dt.Columns[i].ColumnName;
+        //                string cellValue = row.Cell(i + 1).GetString();
+
+        //                if (cellValue == "NULL" || cellValue.Contains("(blank"))
+        //                {
+        //                    dataRow[i] = DBNull.Value;
+        //                }
+        //                else if (header.Equals("strokes", StringComparison.OrdinalIgnoreCase))
+        //                {
+        //                    if (decimal.TryParse(cellValue, out decimal value))
+        //                        dataRow[i] = value.ToString("F1");
+        //                    else
+        //                        dataRow[i] = DBNull.Value;
+        //                }
+        //                else
+        //                {
+        //                    dataRow[i] = cellValue;
+        //                }
+        //            }
+
+        //            dt.Rows.Add(dataRow);
+        //        }
+        //    }
+
+        //    return dt;
+        //}
         private DataTable ReadExcelToDataTable(string path)
         {
             var dt = new DataTable();
 
-            using (var package = new ExcelPackage(new FileInfo(path)))
+            using (var workbook = new XLWorkbook(path))
             {
-                var worksheet = package.Workbook.Worksheets["K-Type Data"];
+                var worksheet = workbook.Worksheet("MasterData");
                 if (worksheet == null)
-                    throw new Exception("ไม่พบชีทชื่อ 'K-Type Data' ในไฟล์ Excel");
+                    throw new Exception("ไม่พบชีทชื่อ 'MasterData' ในไฟล์ Excel");
 
                 bool hasHeader = true;
-                foreach (var firstRowCell in worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column])
+                var firstRow = worksheet.FirstRowUsed();
+                var columnCount = firstRow.LastCellUsed().Address.ColumnNumber; // ✅ ใช้ LastCellUsed เพื่อป้องกันคอลัมน์หาย
+
+                // ✅ สร้างคอลัมน์ให้ครบตามจำนวนจริง
+                for (int i = 1; i <= columnCount; i++)
                 {
-                    dt.Columns.Add(hasHeader ? firstRowCell.Text : $"Column {firstRowCell.Start.Column}", typeof(string));
+                    string colName = hasHeader ? firstRow.Cell(i).GetString().Trim() : $"Column {i}";
+                    if (string.IsNullOrEmpty(colName))
+                        colName = $"Column{i}";
+                    if (!dt.Columns.Contains(colName))
+                        dt.Columns.Add(colName, typeof(string));
                 }
-                var startRow = hasHeader ? 2 : 1;
-                for (int rowNum = startRow; rowNum <= worksheet.Dimension.End.Row; rowNum++)
+
+                // ✅ เริ่มอ่านจากแถวที่ 2 ถ้ามี Header
+                int startRow = hasHeader ? 2 : 1;
+
+                foreach (var row in worksheet.RowsUsed().Skip(startRow - 1))
                 {
-                    var wsRow = worksheet.Cells[rowNum, 1, rowNum, worksheet.Dimension.End.Column];
-                    DataRow row = dt.NewRow();
+                    var dataRow = dt.NewRow();
 
-                    foreach (var cell in wsRow)
+                    int lastCell = row.LastCellUsed()?.Address.ColumnNumber ?? 0;
+                    for (int i = 0; i < lastCell; i++)
                     {
-                        string header = dt.Columns[cell.Start.Column - 1].ColumnName;
 
-                        if (cell.Text == "NULL" || cell.Text.Contains("(blank"))
+                        if (i >= dt.Columns.Count)
                         {
-                            row[cell.Start.Column - 1] = null;
+                            dt.Columns.Add($"ExtraColumn{i + 1}", typeof(string));
+                        }
+
+                        string header = dt.Columns[i].ColumnName;
+                        string cellValue = row.Cell(i + 1).GetString().Trim();
+
+                        if (string.IsNullOrEmpty(cellValue) || cellValue == "NULL" || cellValue.Contains("(blank"))
+                        {
+                            dataRow[i] = DBNull.Value;
                         }
                         else if (header.Equals("strokes", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (decimal.TryParse(cell.Text, out decimal value))
-                            {
-
-                                row[cell.Start.Column - 1] = value.ToString("F1");
-                            }
+                            if (decimal.TryParse(cellValue, out decimal value))
+                                dataRow[i] = value.ToString("F1");
                             else
-                            {
-                                row[cell.Start.Column - 1] = null;
-                            }
+                                dataRow[i] = DBNull.Value;
                         }
                         else
                         {
-                            row[cell.Start.Column - 1] = cell.Text;
+                            dataRow[i] = cellValue;
                         }
                     }
-                    dt.Rows.Add(row);
+
+                    dt.Rows.Add(dataRow);
                 }
             }
 

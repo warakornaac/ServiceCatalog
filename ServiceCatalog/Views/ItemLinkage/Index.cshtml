@@ -1,47 +1,128 @@
 ﻿
 @{
     ViewBag.Title = "Index";
+    List<SelectListItem> getListProductName = ViewBag.listProductName;
 }
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <div class="page-header">
-    <h1 class="page-title my-auto">Linkage PartSpec</h1>
+    <h1 class="page-title my-auto">Linkage stockcode</h1>
     <div>
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
                 <a href="@Url.Action("Index","Home")">Home</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">VIO Linkage</li>
+            <li class="breadcrumb-item active" aria-current="page">Linkage stockcode</li>
         </ol>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-xl-12">
-        <div class="card custom-card">
-            <div class="card-header justify-content-between"> <div class="card-title"> PartNo Specific (0242135553 | 30 | JAR134), (39070 | 101)</div> <div class="prism-toggle"> </div> </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="form-text" class="form-label fs-14 text-dark">PartNo</label>
-                        <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="ri-settings-5-fill"></i>
+    @*head Search*@
+    @*<div class="col-xl-12">
+            <div class="card custom-card">
+                <div class="card-header justify-content-between"> <div class="card-title"> PartNo Specific (0242135553 | 30 | JAR134), (39070 | 101)</div> <div class="prism-toggle"> </div> </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="form-text" class="form-label fs-14 text-dark">PartNo</label>
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <i class="ri-settings-5-fill"></i>
+                                </div>
+                                <input type="text" class="form-control" id="txtPartNo" value="" placeholder="Enter PartNo.">
                             </div>
-                            <input type="text" class="form-control" id="txtPartNo" value="" placeholder="Enter PartNo.">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row text-right">
+                        <div class="col-xs-12 col-md-12 text-end">
+                            <button class="btn btn-secondary" onclick="Reset();">Reset</button>
+                            <button class="btn btn-primary" onclick="SearchPnDetail();">Search</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card-footer">
-                <div class="row text-right">
-                    <div class="col-xs-12 col-md-12 text-end">
-                        <button class="btn btn-secondary" onclick="Reset();">Reset</button>
-                        <button class="btn btn-primary" onclick="SearchPnDetail();">Search</button>
+        </div>*@
+    @*PartSpecific*@
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-header justify-content-between"> <div class="card-title">Linkage stockcode</div> <div class="prism-toggle"> </div> </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="form-text" class="form-label fs-14 text-dark">Product Mgr : </label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-user-search-fill"></i>
+                            </div>
+                            <select class="form-control selectpicker" id="txtProductCode" name="txtProductCode" style="width: 100%;" data-live-search="true" title="SELECT PRODUCT">
+                                <option value="ALL">SELECT PRODUCT</option>
+                                @for (var i = 0; i < getListProductName.Count; i++)
+                                {
+                                    <option value="@getListProductName[i].Value" @(getListProductName[i].Value == "30" ? "selected" : "")> @getListProductName[i].Text </option>
+                                }
+                            </select>
+                        </div>
                     </div>
+                    <div class="col-md-4">
+                        <label for="form-text" class="form-label fs-14 text-dark">Company : </label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-hotel-line"></i>
+                            </div>
+                            <select class="form-control selectpicker" id="txtCompany" name="txtCompany" style="width: 100%;" data-live-search="true" title="SELECT COMPANY">
+                                <option value="ALL">SELECT COMPANY</option>
+                                <option value="TAC"> TAC </option>
+                                <option value="AAC"> AAC </option>
+                                <option value="OMP"> OMP </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="form-text" class="form-label fs-14 text-dark">Stock Group : </label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-roadster-fill"></i>
+                            </div>
+                            <select class="form-control selectpicker" id="txtStockGroup" name="txtStockGroup" style="width: 100%;" data-live-search="true" title="SELECT STOCK GROUP">
+                                <option value="ALL">SELECT STOCK GROUP</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <label for="form-text" class="form-label fs-14 text-dark">Stock Code : </label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-settings-5-fill"></i>
+                            </div>
+                            <input type="text" class="form-control ui-autocomplete-input" id="txtStockCode" value="" placeholder="STOCK CODE" autocomplete="off">
+                            <input type="hidden" class="form-control" id="stockCodeSearch">
+                            <div class="input-group-text" onclick="resetStkcode();">
+                                <i class="ri-close-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-success d-flex align-items-center rounded-0 shadow-none " role="alert">
+                <svg class="flex-shrink-0 me-2 svg-success" xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 24 24" width="1.5rem" fill="#000000">
+                    <path d="M0 0h24v24H0V0zm0 0h24v24H0V0z" fill="none"></path>
+                    <path d="M16.59 7.58L10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>
+                </svg> <div>
+                    กรุณาเลือก StockCode
                 </div>
             </div>
         </div>
     </div>
+
+
+
+
+
+
+    @*partLink*@
     <div class="col-xl-12">
         <div id="pn-detail"></div>
     </div>
@@ -54,8 +135,16 @@
 </div>
 
 <script>
+    var prodCode = $('#txtProductCode option:selected').val();
+    var company = $('#txtCompany option:selected').val();
+    var stockGroup = $('#txtStockGroup option:selected').val();
+    var stockCodeSearch = $('#stockCodeSearch').val();
 
+    var _stkout = '';
+    var _marketout = '';
+    var _makerout = '';
     $(document).ready(function () {
+        $('#linkage-maker-btn').attr("hidden", true);
         $.fn.dataTable.ext.errMode = 'none';
         $('#txtPartNo').autocomplete({
             selectFirst: true,
@@ -90,24 +179,24 @@
     });// end doc
 
     function Reset() {
-        $('#txtPartNo').val('');
+        //$('#txtPartNo').val('');
         $('#pn-detail').empty();
         $('#linkage-data').empty();
         $('#selector-vehicle').empty();
 
     }
 
-    function SearchPnDetail() {
-        var TextStk = $('#txtPartNo').val();
-        if (TextStk.includes('|')) {
-            var splitStk = TextStk.split('|');
-            TextStk = splitStk[0];
-        }
+    function SearchPnDetail(stk) {
+        //var TextStk = $('#txtPartNo').val();
+        //if (TextStk.includes('|')) {
+        //    var splitStk = TextStk.split('|');
+        //    TextStk = splitStk[0];
+        //}
         $('#linkage-data').empty();
         $('#selector-vehicle').empty();
         $.ajax({
             url: '@Url.Action("GetDetailPN", "ItemLinkage")',
-            data: { STKCOD: TextStk },
+            data: { STKCOD: stk },
             type: 'post',
             dataType: 'html',
             beforeSend: function () {
@@ -140,6 +229,7 @@
         GetvehicleSelector(stkcod);
     });
     function GetLinkageData(stk) {
+        _stkout = stk;
         $.ajax({
             url: '@Url.Action("GetLinkageData", "ItemLinkage")',
             data: { STKCOD:stk},
@@ -199,7 +289,7 @@
         var driv = $(this).data('drive');
         var year = $(this).data('year');
         Swal.fire({
-            title: "Confirm linkage Part Spec??",
+            title: "Confirm linkage STKCOD?",
             icon:"question",
             showCancelButton: true,
             confirmButtonText: "Confirm",
@@ -262,7 +352,7 @@
         var driv = $(this).data('drive');
         var year = $(this).data('year');
         Swal.fire({
-            title: "Confirm Delete linkage Part Spec??",
+            title: "Confirm Delete linkage STKCODE?",
             icon:"question",
             showCancelButton: true,
             confirmButtonText: "Confirm",
@@ -312,4 +402,190 @@
             }
         });
     });
+
+
+
+    // ____ new search
+        //get stkcode
+    $("#txtStockCode").autocomplete({
+        selectFirst: true,
+        autoFocus: true,
+        source: function (request, response) {
+            var param = {
+                txtSearch: $("#txtStockCode").val(),
+                company: $('#txtCompany option:selected').val(),
+                stockGroup: $('#txtStockGroup option:selected').val(),
+                prodCode: $('#txtProductCode option:selected').val(),
+            };
+            $.ajax({
+                url: '@Url.Action("getStockCode", "PartSpecification")',
+                data: JSON.stringify(param),
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataFilter: function (data) { return data; },
+                success: function (data) {
+                    response($.map(data.slice(0, 50), function (item) {
+                        return {
+                            value: item
+                        }
+                    }))
+                },
+                error: function (XMLhttpsRequest, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            });
+        },
+        select: function (event, ui) {
+            var _val = ui.item.value;
+            var _splito = "";
+            _splito = _val.split(' ');
+            var splitval = _splito;
+            _scus = _splito[0].trim();
+            console.log("sub(0) = " + _splito[0].trim() + " sub(1) = " + _splito[1].trim())
+           // searchPartByStkcode(_splito[0].trim());
+            SearchPnDetail(_splito[0].trim());
+            GetLinkageData(_splito[0].trim());
+            GetvehicleSelector(_splito[0].trim());
+            if (_splito[0] != null) {
+                //$("#stockCodeSearch").val(_splito[0].trim());
+            }
+        },
+        minLength: 2
+    });
+
+    //get ProductCode
+    $('#txtProductCode').change(function () {
+        var prodCode = $(this).val();
+        var company = $('#txtCompany option:selected').val();
+        GetStockGroup(prodCode, company);
+    });
+    //get Company
+    $('#txtCompany').change(function () {
+        var company = $(this).val();
+        var prodCode = $('#txtProductCode option:selected').val();
+        GetStockGroup(prodCode, company);
+    });
+
+        //get stockGroup
+    function GetStockGroup(prodCode, company) {
+        if (prodCode == null || prodCode == '') {
+            prodCode = "ALL";
+        }
+        if (company == null || company == '') {
+            company = "ALL";
+        }
+        console.log("prodCode = " + prodCode + " company = " + company);
+       $.ajax({
+            url: '@Url.Action("getStockGroup", "PartSpecification")',
+            data: {
+                prodCode: prodCode,
+                company: company,
+            },
+            type: "POST",
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                var select = $("#txtStockGroup");
+                select.children().remove();
+                select.append($("<option>").val("ALL").text("STOCK GROUP ALL"));
+                $(data).each(function (index, item) {
+                    select.append($("<option>").val(item.STKGRP).text(item.STKGRP + "/" + item.GRPNAM));
+                });
+                $('#txtStockGroup').selectpicker('refresh');
+            }
+        });
+    }
+    function resetStkcode() {
+        $("#txtStockCode").val('');
+        $('#txtStockCode').focus();
+        //Reset();
+    }
+
+
+    $(document).on('change', '#v-select', function () {
+        var market = $(this).val();
+        var maker = $('#maker-select').val();
+        if (market != 'ALL' && maker != 'ALL') {
+            $('#linkage-maker-btn').attr("hidden", true);
+        }
+        else {
+            $('#linkage-maker-btn').attr("hidden", false);
+        }
+    });
+    $(document).on('change', '#maker-select', function () {
+        var maker = $(this).val();
+        var market = $('#market-select').val();
+        if (market != 'ALL' && maker != 'ALL') {
+            $('#linkage-maker-btn').attr("hidden", true);
+        }
+        else {
+            $('#linkage-maker-btn').attr("hidden", false);
+        }
+    });
+
+
+    $(document).on('click', '#linkage-maker-btn', function () {
+        var stkcod = $(this).data('stkcod');
+var ktype = $(this).data('ktype');
+var tru = $(this).data('trutype');
+var seq = $(this).data('seq');
+var maker = $(this).data('maker');
+var model = $(this).data('model');
+var body = $(this).data('body');
+var engine = $(this).data('engine');
+var driv = $(this).data('drive');
+var year = $(this).data('year');
+Swal.fire({
+    title: "Confirm linkage STKCODE with Maker?",
+    icon:"question",
+    showCancelButton: true,
+    confirmButtonText: "Confirm",
+    cancelButtonText: "Cancel",
+}).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+        $.ajax({
+            url: '@Url.Action("DeleteLinkage", "ItemLinkage")',
+            data: { STKCOD: _stkout, KTYPE: 'ALL', TRUTYPE: '', SEQLINK:'' },
+            type: 'post',
+            dataType: 'json',
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Searching...',
+                    text: 'Please wait while we processing on the product.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function (data) {
+                Swal.close();
+
+                if (data.result == 'Y') {
+                    Swal.fire({
+                        title: "Delete linkage success!",
+                        confirmButtonText: "OK",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            GetLinkageData(stkcod);
+                            searchVehicle();
+                        }
+                    });
+                }
+                else {
+                    Swal.fire({
+                        title: "Error?",
+                        text: data.message,
+                        icon: "error"
+                    });
+                }
+            }
+        });//end ajax
+    }
+});
+    });
+
 </script>
