@@ -1,0 +1,459 @@
+﻿@using System.Web.Helpers;
+@{
+    var ListMarket = ViewBag.MarketSeg;
+    var ListVehicle = ViewBag.VehicleSeg;
+    string STKCOD = Convert.ToString(ViewBag.STKCOD);
+}
+<style>
+    .bg-red td {
+        background-color: rgba(252, 67, 67, 0.73) !important;
+    }
+</style>
+<div class="card border">
+    <div class="card-header bg-primary text-dark fw-bold rounded-top">
+        Vehicle Selector
+    </div>
+    <input type="hidden" id="stk-cod" value="@STKCOD" />
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-12 mb-3">
+                <h5 class="mb-0">Market Segment</h5>
+                <select name="market" id="market-select" class="form-control selectpicker" data-live-search="true" onchange="clearALL().then(() => searchVehicle());">
+                    <option value="ALL" selectd>ALL</option>
+                    @if (ListMarket != null)
+                    {
+                        if (Enumerable.Count(ListMarket) > 0)
+                        {
+                            foreach (var item in ListMarket)
+                            {
+                                <option value="@item.ID">@item.MarketSegment</option>
+                            }
+                        }
+                    }
+                </select>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-12 mb-3">
+                <h5 class="mb-0">Vehicle Segment</h5>
+                <select name="vehicle" id="vehicle-select" class="form-control selectpicker" data-live-search="true" onchange="clearALL().then(() => searchVehicle());">
+                    <option value="ALL">ALL</option>
+                    @if (ListVehicle != null)
+                    {
+                        if (Enumerable.Count(ListVehicle) > 0)
+                        {
+                            foreach (var item in ListVehicle)
+                            {
+                                <option value="@item.ID">@item.VehicleSegment</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-4 col-md-4 col-12 mb-3">
+                <h5 class="mb-0">Maker</h5>
+                <select name="maker" id="maker-select" class="form-control selectpicker" data-live-search="true">
+                    <option value="ALL">ALL</option>
+                </select>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-12 mb-3">
+                <h5 class="mb-0">Model Range</h5>
+                <select name="modelrange" id="range-select" class="form-control selectpicker" data-live-search="true">
+                    <option value="ALL">ALL</option>
+                </select>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-12 mb-3">
+                <h5 class="mb-0">Model</h5>
+                <select name="model" id="model-select" class="form-control selectpicker" data-live-search="true">
+                    <option value="ALL">ALL</option>
+                </select>
+            </div>
+            <div class="col-lg-3 col-md-3 col-12 mb-3">
+                <h5 class="mb-0">Body</h5>
+
+                <select name="body" id="body-select" class="form-control selectpicker" data-live-search="true">
+                    <option value="ALL">ALL</option>
+                </select>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-12 mb-3">
+                <h5 class="mb-0">Engine</h5>
+
+                <select name="engine" id="engine-select" class="form-control selectpicker" data-live-search="true">
+                    <option value="ALL">ALL</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="row ">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped" id="table-vehicle">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Maker</th>
+                            <th>Model</th>
+                            <th>Body</th>
+                            <th>Engine</th>
+                            <th>DriveType</th>
+                            <th>Year</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7">เลือกข้อมูล VIO</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var STK = $('#stk-cod').val();
+    console.log('SSTTKK = ' + STK);
+
+    //select change
+    $('#maker-select').on('change', async function () {
+        var makerId = $(this).val();
+       // clearModelrange();
+        clearModel();
+        clearBody();
+        clearEngine();
+        await modelRangeLoader(makerId);
+        searchVehicle();
+    });
+    $('#range-select').on('change', async function () {
+        var marketId = $('#market-select').val();
+        var makerId = $('#maker-select').val();
+        //var makerId = $(this).find(':selected').data('maker');
+        var rangeId = $(this).val();
+        await modelLoader(marketId, makerId, rangeId);
+        searchVehicle();
+    });
+    $('#model-select').on('change', async function () {
+        var makerId = $('#maker-select').val();
+        var modelRangeId = $('#range-select').val();
+        var modelId = $(this).val();
+        await bodyLoader(makerId, modelRangeId, modelId);
+        searchVehicle();
+    });
+    $('#body-select').on('change', async function () {
+        var makerId = $('#maker-select').val();
+        var modelRangeId = $('#range-select').val();
+        var modelId = $('#model-select').val();
+        var bodyId = $(this).val();
+        await engineLoader(makerId, modelRangeId, modelId, bodyId);
+        searchVehicle();
+    });
+
+    $('#search-btn').on('click', function () {
+        SearchVIOData();
+    });
+
+    $(document).ready(async function () {
+
+        refacePicker();
+        await MakerLoader();
+        searchVehicle();
+    });
+
+    function refacePicker() {
+        $('#market-select').selectpicker('refresh');
+        $('#vehicle-select').selectpicker('refresh');
+        $('#range-select').selectpicker('refresh');
+        $('#model-select').selectpicker('refresh');
+        $('#body-select').selectpicker('refresh');
+        $('#engine-select').selectpicker('refresh');
+    }
+
+    //clear selecter
+    function clearALLRESET() {
+        //clearMaker();
+        MakerLoader();
+        clearModelrange();
+        clearModel();
+        clearBody();
+        clearEngine();
+    };
+
+    function clearALL() {
+        return new Promise((resolve, reject) => {
+            // เคลียร์ค่า
+            MakerLoader();
+            clearModelrange();
+            clearModel();
+            clearBody();
+            clearEngine();
+
+
+            setTimeout(() => {
+                console.log("clearALL done");
+                resolve();
+            }, 500);
+        });
+    }
+    function clearMaker() {
+        $('#maker-select').val('ALL').trigger();
+    }
+    function clearModelrange() {
+        var str = '<option value="ALL" selected>ALL</option> <option value="" >No ModelRange</option>';
+        $('#range-select').empty();
+        $('#range-select').html(str);
+
+        //$('#range-select').append('<option value="ALL" selected>ALL</option>');
+        //$('#range-select').append('<option value="" >No ModelRange</option>');
+    }
+    function clearModel() {
+        $('#model-select').empty();
+        $('#model-select').html('<option value="ALL" selected>ALL</option>').selectpicker('refresh');
+
+    }
+    function clearBody() {
+        $('#body-select').empty();
+        $('#body-select').html('<option value="ALL" selected>ALL</option>').selectpicker('refresh');
+    }
+    function clearEngine() {
+        $('#engine-select').empty();
+        $('#engine-select').html('<option value="ALL" selected>ALL</option>').selectpicker('refresh');
+    }
+
+    //loader
+    ////////START LOADER
+
+
+    function MakerLoader() {
+    return $.ajax({
+        url: '@Url.Action("GetVIO_Maker", "UpLoadDataVIO")',
+        type: 'post',
+        dataType: 'json',
+        beforeSend: function () {
+            //$('#makerList').html('');
+            $('#maker-select').empty().selectpicker('refresh');
+        },
+        success: function (data) {
+            if (data.respone == true) {
+                console.log('PASS');
+                var pageString = '';
+                var optionString = '<option value="ALL" selected>ALL</option>';
+                if (data.result.length > 0) {
+                    for (var i = 0; i < data.result.length; i++) {
+                        optionString += `<option value="${data.result[i].ID}">${data.result[i].Maker}</option>`;
+                    }
+                    $('#maker-select').html(optionString).selectpicker('refresh');
+                }
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 404) {
+                console.error("Resource not found.");
+            } else if (textStatus === "timeout") {
+                console.error("Request timed out.");
+            } else {
+                console.error("AJAX error: " + textStatus + " - " + errorThrown);
+                if (jqXHR.responseText) {
+                    console.error("Server response: " + jqXHR.responseText);
+                }
+            }
+        }
+    });
+}
+    function modelRangeLoader(makerId, callback) {
+      return  $.ajax({
+        url: '@Url.Action("GetVIO_ModelRange", "UpLoadDataVIO")',
+        type: 'post',
+        dataType: 'json',
+        data: { MakerID: makerId },
+        beforeSend: function () {
+            $('#range-select').empty().selectpicker('refresh');;
+        },
+        success: function (data) {
+            if (data.respone === true) {
+                console.log('Rang: Loaded');
+                var optionString = '<option value="ALL" selected>ALL</option>';
+                optionString += '<option value="" >No ModelRange</option>';
+                    data.result.forEach(item => {
+                        optionString += `<option data-maker="${item.Maker_ID}" value="${item.ID}">${item.ModelRange}</option>`;
+                    });
+                $('#range-select').html(optionString).selectpicker('refresh');;
+            }
+            else {
+                console.log('Range Error:' + data.message);
+                clearModelrange();
+            }
+        }
+    });
+}
+
+    function modelLoader(marketId, makerId, rangeId, callback) {
+    return $.ajax({
+        url: '@Url.Action("GetVIO_Model", "UpLoadDataVIO")',
+        type: 'post',
+        dataType: 'json',
+        data: { MarketSegID: marketId ,MakerID: makerId, ModelRangID: rangeId },
+        beforeSend: function () {
+            $('#model-select').empty().selectpicker('refresh');;
+        },
+        success: function (data) {
+            if (data.respone === true) {
+                var optionString = '<option value="ALL" selected>ALL</option>';
+                data.result.forEach(item => {
+                    optionString += `<option data-market="${item.MarketSegment_ID}" data-maker="${item.Maker_ID}" data-range="${item.ModelRange_ID}" data-model="${item.ID}" data- value="${item.ID}">${item.Model}</option>`;
+                });
+
+                $('#model-select').html(optionString).selectpicker('refresh');;
+            }
+            else {
+                console.log('Model Error:' + data.message);
+                clearModel();
+            }
+        }
+    });
+}
+
+
+    function bodyLoader(makerId, modelRangeId, modelId, callback ) {
+    const _marketSeg = $('input[name="market"]:checked').val();
+    const _vehicleSeg = $('input[name="VehicleSeg"]:checked').val();
+
+    return $.ajax({
+        url: '@Url.Action("GetVIO_Body", "UpLoadDataVIO")',
+        type: 'post',
+        dataType: 'json',
+        data: { marketSeg: _marketSeg, vehicleSeg: _vehicleSeg, makerID: makerId, modelID: modelId, modelRangeID: modelRangeId },
+        beforeSend: function () {
+            $('#body-select').empty().selectpicker('refresh');;
+        },
+        success: function (data) {
+            if (data.respone === true) {
+                var optionString = '<option value="ALL" selected>ALL</option>';
+                    data.result.forEach(item => {
+                        optionString += `<option value="${item.ID}">${item.Body}</option>`;
+                    });
+                $('#body-select').html(optionString).selectpicker('refresh');;
+            }
+            else {
+                console.log('Body Error:' + data.message)
+                clearBody();
+            }
+            if (typeof callback === "function") {
+                callback(); // ✅ เรียก callback หลัง AJAX เสร็จ
+            }
+        }
+    });
+}
+
+    function engineLoader(makerId, modelRangeId, modelId, bodyId, callback) {
+    return $.ajax({
+        url: '@Url.Action("GETVIO_Engine", "UpLoadDataVIO")',
+        data: { makerID: makerId, modelRangeID: modelRangeId, modelID: modelId, bodyID: bodyId },
+        type: 'post',
+        dataType: 'json',
+        beforeSend: function () {
+            $('#engine-select').empty().selectpicker('refresh');;
+        },
+        success: function(data){
+            if (data.respone === true) {
+                var optionString = '<option value="ALL" selected>ALL</option>';
+                data.result.forEach(engine => {
+                    optionString += `<option value="${engine.ID}">${engine.EngineType}</option>`;
+                });
+                $('#engine-select').html(optionString).selectpicker('refresh');;
+            }
+            else {
+                clearEngine();
+            } if (typeof callback === "function") {
+                callback(); // ✅ เรียก callback หลัง AJAX เสร็จ
+            }
+        }
+    });//end ajax
+
+
+    }
+
+    function searchVehicle() {
+        var market = $('#market-select').val();
+        var vehicle = $('#vehicle-select').val();
+        var maker = $('#maker-select').val();
+        var range = $('#range-select').val();
+        var model = $('#model-select').val();
+        var body = $('#body-select').val();
+        var engine = $('#engine-select').val();
+
+        $.ajax({
+            url: '@Url.Action("SearchVehicleLinkage", "ItemLinkage")',
+            data: { STKCOD: STK, marketID: market, vehicleID: vehicle, maker: maker, rangID: range, modelID: model, bodyID: body, engineID: engine },
+            type: 'post',
+            dataType: 'json',
+            beforeSend: function () {
+                $('#table-vehicle tbody').empty().html('<tr><td colspan="7">Loading...</td></tr>');
+            },
+            success: function (data) {
+                if ($.fn.DataTable.isDataTable('#table-vehicle')) {
+                    $('#table-vehicle').DataTable().clear().destroy();
+                }
+
+
+                var SubmithtmlPage = '';
+                var i = 0;
+                if (data.message == '') {
+                    if (data.result.length > 0) {
+                        data.result.forEach(item => {
+                            console.log(item.Flag, typeof item.Flag);
+                            if (item.Flag !== '1') {
+                                i++;
+                                let rowClass = (item.Flag === '1') ? ' class="bg-red"' : '';
+                                //let btnAdd = (item.Flag === '1') ? '<button type="button" class="btn btn-default btn-lg border-1" disable></button>' : `<button type="button" class="btn btn-default btn-lg border-1" data-stkcod="${STK}" data-trutype ="${item.TruType}" data-ktype="${item.KType}" id="add-link-${item.TruType}">+</button>`;
+                                let btnAdd = `<button type="button" class="btn btn-default btn-lg border-1"
+                                            data-stkcod="${STK}"
+                                            data-trutype ="${item.TruType}"
+                                            data-ktype="${item.KType}"
+                                            data-maker="${item.Maker}"
+                                            data-model="${item.Model}"
+                                            data-body="${item.Body}"
+                                            data-engine="${item.Engine}"
+                                            data-drive="${item.DriveType}"
+                                            data-year="${item.YearFrom}"
+                                            id="add-link-${item.TruType}">+</button>`;
+                                SubmithtmlPage += `<tr ${rowClass}>`;
+                                SubmithtmlPage += `<td>${btnAdd}</td>`;
+                                SubmithtmlPage += `<td>${item.Maker}</td>`;
+                                SubmithtmlPage += `<td>${item.Model}</td>`;
+                                SubmithtmlPage += `<td>${item.Body}</td>`;
+                                SubmithtmlPage += `<td>${item.Engine}</td>`;
+                                SubmithtmlPage += `<td>${item.DriveType}</td>`;
+                                SubmithtmlPage += `<td>${item.YearFrom}</td>`;
+                                SubmithtmlPage += `</tr>`;
+                            }
+                        });//end loop
+                        if (i === 0) {
+                            SubmithtmlPage = `<tr><td colspan="7">No more data link</td></tr>`;
+                        }
+
+                        $('#table-vehicle tbody').html(SubmithtmlPage);
+
+                        $('#table-vehicle').DataTable({
+                            paging: true,
+                            pageLength: 20,
+                            lengthChange: false,
+                            searching: false,
+                            ordering: false,
+                            language: {
+                                info: "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ ",
+                                infoEmpty: "ไม่มีข้อมูลให้แสดง"
+                            }
+                        });
+
+                    }
+                    else {
+                        $('#table-vehicle tbody').html('<tr><td colspan="7">No Data</td></tr>');
+                    }
+                }
+            }
+
+        });//end ajax
+    }
+</script>

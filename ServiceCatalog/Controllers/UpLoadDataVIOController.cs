@@ -117,7 +117,7 @@ namespace ServiceCatalog.Controllers
 
                     DataTable dt = ReadExcelToDataTable(filePath);
 
-                    SaveDataTableToSql(dt, "Test260826");
+                    SaveDataTableToSql(dt, "VIO_PrepairData");
 
                     var result = await ImportStoreRun();
                     var vehicles = result.Item1;

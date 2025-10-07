@@ -1,4 +1,4 @@
-﻿
+﻿<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 @{
     ViewBag.Title = "ViewVIO";
 }
@@ -41,7 +41,7 @@
                             <h5 class="mb-0">Vehicle Segment</h5>
                         </div>
                         <div class="card-body d-flex align-items-center justify-content-center">
-                            <select name="vehicle" id="vehicle-select" class="form-control selectpicker" data-live-search="true" onchange="clearALL();">
+                            <select class="form-control selectpicker" name="vehicle" id="vehicle-select" data-live-search="true" onchange="clearALL();">
                                 <option value="ALL">ALL</option>
                                 @if (ViewBag.VehicleSeg != null)
                                 {
@@ -161,36 +161,40 @@
 
 </div>
 <div class="container-fluid mt-3">
-    <div class="row">
-        <div class="col-12">
-            <button type="button" class="btn btn-secondary" id="btn-ex-table-all"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export .xlsx</button>
-            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "UpLoadDataVIO")';return false;"><i class="fe fe-upload-cloud side-menu__icon"></i> Upload VIO</button>
-        </div>
-        <div class="col-12">
-            <div class="table-responsive table-style">
-                <table class="table table-striped table-bordered table-hover" id="table-vio">
-                    <thead>
-                        <tr>
-                            <th class="text-center">KType</th>
-                            <th class="text-center">MarketSegment</th>
-                            <th class="text-center">VehicleSegment</th>
-                            <th class="text-center">Maker</th>
-                            <th class="text-center">ModelRange</th>
-                            <th class="text-center">Model</th>
-                            <th class="text-center">Body</th>
-                            <th class="text-center">BodyType</th>
-                            <th class="text-center">DriveType</th>
-                            <th class="text-center">EngineType</th>
-                            <th class="text-center">Strokes</th>
-                            <th class="text-center">FuelType</th>
-                            <th class="text-center">YearFrom</th>
-                            <th class="text-center">YearTo</th>
-                            <th class="text-center">ThaiVIO</th>
-                            <th class="text-center"> TruType</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <button type="button" class="btn btn-secondary" id="btn-ex-table-all"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export .xlsx</button>
+                    <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "UpLoadDataVIO")';return false;"><i class="fe fe-upload-cloud side-menu__icon"></i> Upload VIO</button>
+                </div>
+                <div class="col-12 mt-3">
+                    <div class="table-responsive table-style">
+                        <table class="table table-striped table-bordered table-hover" id="table-vio">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">KType</th>
+                                    <th class="text-center">MarketSegment</th>
+                                    <th class="text-center">VehicleSegment</th>
+                                    <th class="text-center">Maker</th>
+                                    <th class="text-center">ModelRange</th>
+                                    <th class="text-center">Model</th>
+                                    <th class="text-center">Body</th>
+                                    <th class="text-center">BodyType</th>
+                                    <th class="text-center">DriveType</th>
+                                    <th class="text-center">EngineType</th>
+                                    <th class="text-center">Strokes</th>
+                                    <th class="text-center">FuelType</th>
+                                    <th class="text-center">YearFrom</th>
+                                    <th class="text-center">YearTo</th>
+                                    <th class="text-center">ThaiVIO</th>
+                                    <th class="text-center"> TruType</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -235,6 +239,7 @@
     });
 
     $(document).ready(function () {
+        $('.selectpicker').selectpicker();
         MakerLoader();
         //modelRangeLoader();
         //modelLoader();
@@ -319,7 +324,7 @@ function modelRangeLoader(makerId) {
         dataType: 'json',
         data: { MakerID: makerId },
         beforeSend: function () {
-            $('#range-select').empty().selectpicker('refresh');;
+            $('#range-select').empty().selectpicker('refresh');
         },
         success: function (data) {
             if (data.respone === true) {
@@ -329,7 +334,7 @@ function modelRangeLoader(makerId) {
                     data.result.forEach(item => {
                         optionString += `<option data-maker="${item.Maker_ID}" value="${item.ID}">${item.ModelRange}</option>`;
                     });
-                $('#range-select').html(optionString).selectpicker('refresh');;
+                $('#range-select').html(optionString).selectpicker('refresh');
             }
             else {
                 console.log('Range Error:' + data.message);
@@ -346,7 +351,7 @@ function modelLoader(marketId,makerId,rangeId) {
         dataType: 'json',
         data: { MarketSegID: marketId ,MakerID: makerId, ModelRangID: rangeId },
         beforeSend: function () {
-            $('#model-select').empty().selectpicker('refresh');;
+            $('#model-select').empty().selectpicker('refresh');
         },
         success: function (data) {
             if (data.respone === true) {
@@ -355,7 +360,7 @@ function modelLoader(marketId,makerId,rangeId) {
                     optionString += `<option data-market="${item.MarketSegment_ID}" data-maker="${item.Maker_ID}" data-range="${item.ModelRange_ID}" data-model="${item.ID}" data- value="${item.ID}">${item.Model}</option>`;
                 });
 
-                $('#model-select').html(optionString).selectpicker('refresh');;
+                $('#model-select').html(optionString).selectpicker('refresh');
             }
             else {
                 console.log('Model Error:' + data.message);
@@ -376,7 +381,7 @@ function bodyLoader(makerId, modelRangeId, modelId ) {
         dataType: 'json',
         data: { marketSeg: _marketSeg, vehicleSeg: _vehicleSeg, makerID: makerId, modelID: modelId, modelRangeID: modelRangeId },
         beforeSend: function () {
-            $('#body-select').empty().selectpicker('refresh');;
+            $('#body-select').empty().selectpicker('refresh');
         },
         success: function (data) {
             if (data.respone === true) {
@@ -384,7 +389,7 @@ function bodyLoader(makerId, modelRangeId, modelId ) {
                     data.result.forEach(item => {
                         optionString += `<option value="${item.ID}">${item.Body}</option>`;
                     });
-                $('#body-select').html(optionString).selectpicker('refresh');;
+                $('#body-select').html(optionString).selectpicker('refresh');
             }
             else {
                 console.log('Body Error:' + data.message)
@@ -401,7 +406,7 @@ function engineLoader(makerId, modelRangeId, modelId, bodyId) {
         type: 'post',
         dataType: 'json',
         beforeSend: function () {
-            $('#engine-select').empty().selectpicker('refresh');;
+            $('#engine-select').empty().selectpicker('refresh');
         },
         success: function(data){
             if (data.respone === true) {
@@ -409,7 +414,7 @@ function engineLoader(makerId, modelRangeId, modelId, bodyId) {
                 data.result.forEach(engine => {
                     optionString += `<option value="${engine.ID}">${engine.EngineType}</option>`;
                 });
-                $('#engine-select').html(optionString).selectpicker('refresh');;
+                $('#engine-select').html(optionString).selectpicker('refresh');
             }
             else {
                 clearEngine();

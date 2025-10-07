@@ -652,7 +652,9 @@
     let _body = '';
     let _engine = '';
     $(document).ready(function () {
+        $('.selectpicker').selectpicker();
         MakerLoader();
+
     });
     ////////START TOGGLE
     function toggleParent() {
@@ -1100,7 +1102,7 @@
                                         <div class="col-12">
                                             <label class="text-muted-small mb-1 d-block">ThaiVIO</label>
                                             <input type="text" class="form-control form-control-sm"
-                                                value="${item.ThaiVIO}" placeholder="Enter ThaiVIO">
+                                                value="${item.ThaiVIO}" placeholder="Enter ThaiVIO" readonly>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
