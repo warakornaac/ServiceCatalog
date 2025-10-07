@@ -1,0 +1,33 @@
+﻿<div class="d-flex align-items-center w-100 pb-1">
+    <div class="ms-auto">
+        <button class="btn btn-icon btn-success btn-wave waves-effect waves-light" data-bs-toggle="tooltip" data-bs-original-title="Add"> <i class="ri-add-box-fill"></i> </button>
+    </div>
+</div>
+@if (ViewBag.ListPartDetail.Count == 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show custom-alert-icon shadow-sm" role="alert">
+        <svg class="svg-warning" xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 24 24" width="1.5rem" fill="#000000">
+            <path d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z">
+            </path>
+        </svg> ไม่พบข้อมูล..
+    </div>
+}
+else
+{
+    <ol class="list-group list-group-numbered">
+        @foreach (var rowDes in ViewBag.ListPartDetail)
+        {
+            <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto text-muted">
+                    <div class="fw-semibold fs-14 text-default">@rowDes.Title</div>
+                    @rowDes.Description
+                </div>
+                <div class="g-2">
+                    <button class="btn btn-icon btn-warning btn-wave waves-effect waves-light" data-bs-toggle="tooltip" data-bs-original-title="Edit"> <i class="ri-edit-2-line"></i> </button>
+                    <button class="btn btn-icon btn-danger btn-wave waves-effect waves-light" data-bs-toggle="tooltip" data-bs-original-title="Delete"> <i class="ri-delete-bin-5-line"></i> </button>
+                </div>
+            </li>
+        }
+    </ol>
+}

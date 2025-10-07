@@ -1,0 +1,235 @@
+﻿
+@if (ViewBag.ListProductApiCount.Count == 0)
+{
+    <div class="alert alert-danger text-center" style="font-size: 16px; font-weight: bold;">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card custom-card">
+                <div class="card-header d-md-flex d-block">
+                    <div class="h5 mb-0 d-sm-flex d-bllock align-items-center">
+                        <div class="ms-sm-2 ms-0 mt-sm-0 mt-2">
+                            <div class="h6 fw-semibold mb-0">
+                                <a aria-label="anchor" href="#" class="header-link switcher-icon" data-bs-toggle="offcanvas" data-bs-target="#switcher-canvas"> <i class="bx bx-cog header-link-icon"></i> </a>
+                                <span class="text-primary">@ViewBag.ListProductApiCount[0].Stkdes</span>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="ms-auto mt-md-0 mt-2">
+                            <button class="btn btn-sm btn-secondary me-1" onclick="javascript:window.print();">Print<i class="ri-printer-line ms-1 align-middle d-inline-block"></i></button>
+                            <button class="btn btn-sm btn-primary">Save As PDF<i class="ri-file-pdf-line ms-1 align-middle d-inline-block"></i></button>
+                        </div>*@
+                </div>
+                <div class="card-body">
+                    <div class="row gy-3">
+                        <div class="col-xl-3">
+                            <div class="fs-14 text-muted">
+                                <span class="me-2 text-default fw-semibold"> Brand : </span>
+                                @ViewBag.ListProductApiCount[0].BrandName
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <span class="me-2 text-default fw-semibold"> Api Status : </span>
+                            @{
+                                string txtStatus = string.Empty;
+                                string colorStatus = string.Empty;
+                                string iconBtnStatus = string.Empty;
+                                if (ViewBag.ListProductApiCount[0].ApiStatus == "Y")
+                                {
+                                    txtStatus = "Complete";
+                                    colorStatus = "success";
+                                    iconBtnStatus = "<i class='ri-eye-line'></i>";
+                                }
+                                else if (ViewBag.ListProductApiCount[0].ApiStatus == "D")
+                                {
+                                    txtStatus = "In Progress";
+                                    colorStatus = "warning";
+                                    iconBtnStatus = "<i class='spinner-grow spinner-grow-sm align-middle' aria-hidden='true'></i>";
+                                }
+                                else
+                                {
+                                    txtStatus = "Pending";
+                                    colorStatus = "warning";
+                                    iconBtnStatus = "<i class='ri-lock-fill'></i>";
+                                }
+                            }
+                            <span class="badge bg-@colorStatus-transparent">@txtStatus</span>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="fs-14 text-muted">
+                                <span class="me-2 text-default fw-semibold"> Api Call Date : </span>
+                                @if (ViewBag.ListProductApiCount[0].ApiCallDate.Contains("01/01/1900"))
+                                {
+                                    @:-
+                                }
+                                else
+                                {
+                                    @ViewBag.ListProductApiCount[0].ApiCallDate
+                                }
+                            </div>
+                        </div>
+                        @*Start tab*@
+                        <div class="row pt-3 pl-2">
+                            <div class="col-xl-12">
+                                <div class="card custom-card border rounded p-2">
+                                    <ul class="nav nav-tabs mb-3" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-bs-toggle="tab" role="tab" href="#tabDescription" aria-selected="true">
+                                                Description
+                                                <span class="badge bg-secondary rounded-pill fs-14" id="countDescription"> @ViewBag.ListProductApiCount[0].countProductDes </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" role="tab" href="#tabSpec" aria-selected="false">
+                                                Spec
+                                                <span class="badge bg-secondary rounded-pill fs-14" id="countSpec"> @ViewBag.ListProductApiCount[0].countProductSpec </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" role="tab" href="#tabImage" aria-selected="false">
+                                                Image
+                                                <span class="badge bg-secondary rounded-pill fs-14" id="countImage"> @ViewBag.ListProductApiCount[0].countProductImage </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" role="tab" href="#tabOem" aria-selected="false">
+                                                Oem
+                                                <span class="badge bg-secondary mt rounded-pill fs-14" id="countOem"> @ViewBag.ListProductApiCount[0].countProductOem </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" role="tab" href="#tabLinkage" aria-selected="false">
+                                                Linkage
+                                                <span class="badge bg-secondary mt rounded-pill fs-14" id="countLinkage"> @ViewBag.ListProductApiCount[0].countProductLinkage </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active text-muted" id="tabDescription" role="tabpanel"> </div>
+                                        <div class="tab-pane text-muted" id="tabSpec" role="tabpanel"> </div>
+                                        <div class="tab-pane text-muted" id="tabImage" role="tabpanel"> </div>
+                                        <div class="tab-pane text-muted" id="tabOem" role="tabpanel"> </div>
+                                        <div class="tab-pane text-muted" id="tabLinkage" role="tabpanel"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*End tab*@
+                        @*<div class="col-xl-12">
+                                <div>
+                                    <label for="invoice-note" class="form-label">Note:</label>
+                                    <textarea class="form-control form-control-light" id="invoice-note" rows="3">Once the invoice has been verified by the accounts payable team and recorded, the only task left is to send it for approval before releasing the payment</textarea>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+                @*<div class="card-footer text-end">
+                        <button class="btn btn-success">Download <i class="ri-download-2-line ms-1 align-middle"></i></button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Modal Add-->
+<div class="modal fade" id="descriptionAddModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pb-2">
+                <h4 class="modal-title" id="ModalLabel"> <i class="ri-add-box-fill"></i> Add Description </h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="form-text" class="form-label fs-14 text-dark"> Title : </label>
+                        <input type="text" class="form-control" id="txtTitle" placeholder="Title" autocomplete="off">
+                    </div> 
+                    <div class="col-md-12 pt-1">
+                        <label for="form-text" class="form-label fs-14 text-dark"> Description : </label>
+                        <textarea class="form-control" id="txtDescription" placeholder="Description" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <i class="fa fa-times"></i> ปิด
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script defer>
+    function getModalAddByTab(tabName) {
+        LoadingShow();
+        var modalAddName = "";
+        if (tabName !== "") {
+            modalAddName = tabName + "AddModal";
+        }
+
+        var modal = new bootstrap.Modal(document.getElementById(modalAddName));
+        modal.show();
+
+        setTimeout(function () {
+            LoadingHide(); 
+            $('#txtTitle').focus();
+        }, 500);
+    }
+    //default ดึงข้อมูล tab แรก
+    $(document).ready(function () {
+        getListDetailPartByStkcode("tabDescription");
+    });
+    //ดึงข้อมูลแต่ละ Tab
+    function getListDetailPartByStkcode(tabName) {
+        console.log("tabName = " + tabName);
+        var stockCodeSearch = $('#stockCodeSearch').val();
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("getListDetailPartByTab", "PartSpecification")',
+            data: {
+                tabName: tabName,
+                stkcode: stockCodeSearch
+            },
+            dataType: 'html',
+            cache: false,
+            Async: true,
+            beforeSend: function () {
+                $('#' + tabName).empty();
+                $('#' + tabName).html('<div style="padding: 30px; font-size: 14px;"> <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i> กำลังโหลดข้อมูล... </div>');
+                // LoadingShow();
+            },
+            success: function (res) {
+                // LoadingHide();
+                $('#' + tabName).html(res);
+            },
+            error: function (er) {
+                alert(er.error);
+            }
+            }).fail(function (error) {
+            Swal.fire({
+                icon: 'error',
+                title: error.status,
+                html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>tabPromotionByReq<br><br>',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+        });
+
+    }
+    $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var targetId = $(e.target).attr('href'); // e.g., "#tabDescription"
+        if (targetId) {
+            var removeFirstCharacter = targetId.substring(1);
+            getListDetailPartByStkcode(removeFirstCharacter);
+        }
+        console.log("targetId = " + targetId);
+        $('.nav-tabs li').removeClass('active');
+        $(e.target).parent('li').addClass('active');
+    });
+</script>

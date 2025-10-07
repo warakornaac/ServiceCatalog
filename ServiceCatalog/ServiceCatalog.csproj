@@ -146,6 +146,7 @@
     <Compile Include="Controllers\ApiProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagementController.cs" />
+    <Compile Include="Controllers\PartSpecificationController.cs" />
     <Compile Include="Controllers\UpLoadDataVIOController.cs" />
     <Compile Include="Controllers\ItemProductController.cs" />
     <Compile Include="Global.asax.cs">
@@ -11409,10 +11410,15 @@
     <Content Include="Views\ItemProduct\_ListItemProduct.cshtml" />
     <Content Include="Views\ItemProduct\IndexItemProduct.cshtml" />
     <Content Include="Views\UpLoadDataVIO\ViewVIO.cshtml" />
-    <Content Include="Views\ItemProduct\_ListItemProduct.cshtml" />
-    <Content Include="Views\ItemProduct\IndexItemProduct.cshtml" />
     <Content Include="Views\ItemProduct\_DeatilItemProduct.cshtml" />
     <Content Include="Views\Home\ComingSoon.cshtml" />
+    <Content Include="Views\PartSpecification\IndexManagementPart.cshtml" />
+    <Content Include="Views\PartSpecification\_DeatilPart.cshtml" />
+    <Content Include="Views\PartSpecification\_ListPartDescription.cshtml" />
+    <Content Include="Views\PartSpecification\_ListPartOem.cshtml" />
+    <Content Include="Views\PartSpecification\_ListPartImage.cshtml" />
+    <Content Include="Views\PartSpecification\_ListPartSpec.cshtml" />
+    <Content Include="Views\PartSpecification\_ListPartLinkage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

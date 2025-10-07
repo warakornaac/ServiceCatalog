@@ -1,0 +1,285 @@
+﻿@{
+    List<SelectListItem> getListProductName = ViewBag.listProductName;
+}
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<style>
+    .ui-autocomplete {
+       /* max-height: 300px;
+        overflow-y: auto;*/
+        background-color: white;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        /*z-index: 10000 !important;*/ /* Ensure it appears above other elements */
+        font-family: kanit;
+        font-style: normal;
+        font-weight: 400;
+    }
+
+    .ui-menu-item-wrapper {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .ui-menu-item-wrapper:hover {
+        /*background-color: #f0f0f0;*/
+    }
+
+</style>
+<div class="page-header">
+    <h1 class="page-title my-auto">Management Part </h1>
+    <div>
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","PartSpecification")">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Management Part </li>
+        </ol>
+    </div>
+</div>
+@*form search*@
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card custom-card">
+            <div class="card-header justify-content-between"> <div class="card-title"> Management Part </div> <div class="prism-toggle"> </div> </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="form-text" class="form-label fs-14 text-dark">Product Mgr : </label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-user-search-fill"></i>
+                            </div>
+                            <select class="form-control selectpicker" id="txtProductCode" name="txtProductCode" style="width: 100%;" data-live-search="true" title="SELECT PRODUCT">
+                                <option value="ALL">SELECT PRODUCT</option>
+                                @for (var i = 0; i < getListProductName.Count; i++)
+                                {
+                                    <option value="@getListProductName[i].Value" @(getListProductName[i].Value == "30" ? "selected" : "")> @getListProductName[i].Text </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="form-text" class="form-label fs-14 text-dark">Company : </label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-hotel-line"></i>
+                            </div>
+                            <select class="form-control selectpicker" id="txtCompany" name="txtCompany" style="width: 100%;" data-live-search="true" title="SELECT COMPANY">
+                                <option value="ALL">SELECT COMPANY</option>
+                                <option value="TAC"> TAC </option>
+                                <option value="AAC"> AAC </option>
+                                <option value="OMP"> OMP </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="form-text" class="form-label fs-14 text-dark">Stock Group : </label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-roadster-fill"></i>
+                            </div>
+                            <select class="form-control selectpicker" id="txtStockGroup" name="txtStockGroup" style="width: 100%;" data-live-search="true" title="SELECT STOCK GROUP">
+                                <option value="ALL">SELECT STOCK GROUP</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <label for="form-text" class="form-label fs-14 text-dark">Stock Code : </label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="ri-settings-5-fill"></i>
+                            </div>
+                            <input type="text" class="form-control ui-autocomplete-input" id="txtStockCode" value="" placeholder="STOCK CODE" autocomplete="off">
+                            <input type="hidden" class="form-control" id="stockCodeSearch">
+                            <div class="input-group-text" onclick="resetStkcode();">
+                                <i class="ri-close-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-success d-flex align-items-center rounded-0 shadow-none " role="alert">
+                <svg class="flex-shrink-0 me-2 svg-success" xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 24 24" width="1.5rem" fill="#000000">
+                    <path d="M0 0h24v24H0V0zm0 0h24v24H0V0z" fill="none"></path>
+                    <path d="M16.59 7.58L10 14.17l-3.59-3.58L5 12l5 5 8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>
+                </svg> <div>
+                    กรุณาเลือก StockCode
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*content responsd list*@
+<div id="showResultPart" class="pt-1 pb-1"></div>
+
+<script defer>
+    var prodCode = $('#txtProductCode option:selected').val();
+    var company = $('#txtCompany option:selected').val();
+    var stockGroup = $('#txtStockGroup option:selected').val();
+    var stockCodeSearch = $('#stockCodeSearch').val();
+        //count item
+    async function GetProductApiAutomateCount() {
+        console.log("GetProductApiAutomateCount");
+        try {
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("GetProductApiAutomateCount", "ApiProductAutomate")',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    $('#sumItemAll').text(Number(data[0].sumItemAll).toLocaleString());
+                    $('#sumItemAllSuccess').text(Number(data[0].sumItemAllSuccess).toLocaleString());
+                    $('#sumItemCurrentAll').text(Number(data[0].sumItemCurrentAll).toLocaleString());
+                    $('#sumItemCurrentAllSuccess').text(Number(data[0].sumItemCurrentAllSuccess).toLocaleString());
+                    $('#sumItemCurrentTaskPendding').text(Number(data[0].sumItemCurrentTaskPendding).toLocaleString());
+                    $('#sumItemCurrentTaskProcess').text(Number(data[0].sumItemCurrentTaskProcess).toLocaleString());
+                    $('#sumItemCurrentTaskComplete').text(Number(data[0].sumItemCurrentTaskComplete).toLocaleString());
+                }
+            }).fail(function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ระบบทำงานผิดพลาด()',
+                    html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>GetProductApiAutomateCount<br>' + error.responseText + '<br><br>',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'ปิด',
+                    allowOutsideClick: false,
+                    focusConfirm: false
+                });
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ระบบทำงานผิดพลาด()',
+                html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>GetProductApiAutomateCount<br>' + erroพ + '<br><br>',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false
+            });
+        }
+    }
+    //search part
+    function searchPartByStkcode (stkcode) {
+        var msg = '';
+        var error = 0;
+        $.ajax({
+            url: '@Url.Action("getDetailPartByStkcode", "PartSpecification")',
+            type: 'POST',
+            data: {
+                Stkcode: stkcode
+            },
+            dataType: 'html',
+            cache: false,
+            Async: true,
+            beforeSend: function () {
+                $('#showResultPart').empty();
+                Swal.fire({
+                    title: 'Searching...',
+                    text: 'Please wait search for the item.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function (res) {
+                Swal.close();
+                $('#showResultPart').html(res);
+            }
+        });
+    }
+    //get stkcode
+    $("#txtStockCode").autocomplete({
+        selectFirst: true,
+        autoFocus: true,
+        source: function (request, response) {
+            var param = {
+                txtSearch: $("#txtStockCode").val(),
+                company: $('#txtCompany option:selected').val(),
+                stockGroup: $('#txtStockGroup option:selected').val(),
+                prodCode: $('#txtProductCode option:selected').val(),
+            };
+            $.ajax({
+                url: '@Url.Action("getStockCode", "PartSpecification")',
+                data: JSON.stringify(param),
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataFilter: function (data) { return data; },
+                success: function (data) {
+                    response($.map(data.slice(0, 50), function (item) {
+                        return {
+                            value: item
+                        }
+                    }))
+                },
+                error: function (XMLhttpsRequest, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            });
+        },
+        select: function (event, ui) {
+            var _val = ui.item.value;
+            var _splito = "";
+            _splito = _val.split(' ');
+            var splitval = _splito;
+            _scus = _splito[0].trim();
+            console.log("sub(0) = " + _splito[0].trim() + " sub(1) = " + _splito[1].trim())
+            searchPartByStkcode(_splito[0].trim());
+            if (_splito[0] != null) {
+                $("#stockCodeSearch").val(_splito[0].trim());
+            }
+        },
+        minLength: 2
+    });
+    //get ProductCode
+    $('#txtProductCode').change(function () {
+        var prodCode = $(this).val();
+        var company = $('#txtCompany option:selected').val();
+        GetStockGroup(prodCode, company);
+    });
+    //get Company
+    $('#txtCompany').change(function () {
+        var company = $(this).val();
+        var prodCode = $('#txtProductCode option:selected').val();
+        GetStockGroup(prodCode, company);
+    });
+    //get stockGroup
+    function GetStockGroup(prodCode, company) {
+        if (prodCode == null || prodCode == '') {
+            prodCode = "ALL";
+        }
+        if (company == null || company == '') {
+            company = "ALL";
+        }
+        console.log("prodCode = " + prodCode + " company = " + company);
+       $.ajax({
+            url: '@Url.Action("getStockGroup", "PartSpecification")',
+            data: {
+                prodCode: prodCode,
+                company: company,
+            },
+            type: "POST",
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                var select = $("#txtStockGroup");
+                select.children().remove();
+                select.append($("<option>").val("ALL").text("STOCK GROUP ALL"));
+                $(data).each(function (index, item) {
+                    select.append($("<option>").val(item.STKGRP).text(item.STKGRP + "/" + item.GRPNAM));
+                });
+                $('#txtStockGroup').selectpicker('refresh');
+            }
+        });
+    }
+    $('#txtStockCode').on('click', function () {
+        $(this).select();
+    });
+    function resetStkcode() {
+        $("#txtStockCode").val('');
+        $('#txtStockCode').focus();
+    }
+</script>

@@ -20,8 +20,8 @@ namespace ServiceCatalog.Data
             var p = new SqlParameters();
             p.AddParams("@inStkcode", Stkcode);
 
-            var table = GetData(CmdStore("P_Get_Spec_Description", p));
-            return ConvertExtension.ConvertDataTable<ProductSpecModel>(GetData(CmdStore("P_Get_Spec_Description", p)));
+            var table = GetData(CmdStore("P_Get_Product_Spec", p));
+            return ConvertExtension.ConvertDataTable<ProductSpecModel>(GetData(CmdStore("P_Get_Product_Spec", p)));
         }
     }
 }

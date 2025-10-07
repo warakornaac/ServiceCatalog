@@ -15,3 +15,4 @@ D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Model
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.csproj.CopyComplete
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.dll
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.pdb
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Models\obj\Debug\ServiceCatalog.Models.csproj.AssemblyReference.cache
