@@ -80,19 +80,19 @@ else
                                         <li class="nav-item">
                                             <a class="nav-link active" data-bs-toggle="tab" role="tab" href="#tabDescription" aria-selected="true">
                                                 Description
-                                                <span class="badge bg-secondary rounded-pill fs-14" id="countDescription"> @ViewBag.ListProductApiCount[0].countProductDes </span>
+                                                <span class="badge bg-secondary rounded-pill fs-14" id="rowDescription"> @ViewBag.ListProductApiCount[0].countProductDes </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" role="tab" href="#tabSpec" aria-selected="false">
                                                 Spec
-                                                <span class="badge bg-secondary rounded-pill fs-14" id="countSpec"> @ViewBag.ListProductApiCount[0].countProductSpec </span>
+                                                <span class="badge bg-secondary rounded-pill fs-14" id="rowSpec"> @ViewBag.ListProductApiCount[0].countProductSpec </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" role="tab" href="#tabImage" aria-selected="false">
                                                 Image
-                                                <span class="badge bg-secondary rounded-pill fs-14" id="countImage"> @ViewBag.ListProductApiCount[0].countProductImage </span>
+                                                <span class="badge bg-secondary rounded-pill fs-14" id="rowImage"> @ViewBag.ListProductApiCount[0].countProductImage </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -102,9 +102,15 @@ else
                                             </a>
                                         </li>
                                         <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" role="tab" href="#tabCompetitor" aria-selected="false">
+                                                Competitor
+                                                <span class="badge bg-secondary mt rounded-pill fs-14" id="countCompetitor"> @ViewBag.ListProductApiCount[0].countProductCom </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" role="tab" href="#tabLinkage" aria-selected="false">
-                                                Linkage
-                                                <span class="badge bg-secondary mt rounded-pill fs-14" id="countLinkage"> @ViewBag.ListProductApiCount[0].countProductLinkage </span>
+                                                Vehicle linkage
+                                                <span class="badge bg-secondary mt rounded-pill fs-14" id="rowLinkage"> @ViewBag.ListProductApiCount[0].countProductLinkage </span>
                                             </a>
                                         </li>
                                     </ul>
@@ -113,30 +119,22 @@ else
                                         <div class="tab-pane text-muted" id="tabSpec" role="tabpanel"> </div>
                                         <div class="tab-pane text-muted" id="tabImage" role="tabpanel"> </div>
                                         <div class="tab-pane text-muted" id="tabOem" role="tabpanel"> </div>
+                                        <div class="tab-pane text-muted" id="tabCompetitor" role="tabpanel"> </div>
                                         <div class="tab-pane text-muted" id="tabLinkage" role="tabpanel"> </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         @*End tab*@
-                        @*<div class="col-xl-12">
-                                <div>
-                                    <label for="invoice-note" class="form-label">Note:</label>
-                                    <textarea class="form-control form-control-light" id="invoice-note" rows="3">Once the invoice has been verified by the accounts payable team and recorded, the only task left is to send it for approval before releasing the payment</textarea>
-                                </div>
-                            </div>*@
                     </div>
                 </div>
-                @*<div class="card-footer text-end">
-                        <button class="btn btn-success">Download <i class="ri-download-2-line ms-1 align-middle"></i></button>
-                    </div>*@
             </div>
         </div>
     </div>
 }
 
-<!-- Modal Add-->
-<div class="modal fade" id="descriptionAddModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+<!-- Modal Add&Update Description-->
+<div class="modal fade" id="DescriptionAddModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header pb-2">
@@ -145,10 +143,14 @@ else
             </div>
             <div class="modal-body">
                 <div class="row">
+                    <div class="col-md-2">
+                        <label for="form-text" class="form-label fs-14 text-dark"> Row : <u><span class="text-danger fw-semibold fs-16" id="labelRow"> </span></u> </label>
+                        <input type="hidden" class="form-control" id="txtRow" placeholder="Row" readonly>
+                    </div>
                     <div class="col-md-12">
                         <label for="form-text" class="form-label fs-14 text-dark"> Title : </label>
                         <input type="text" class="form-control" id="txtTitle" placeholder="Title" autocomplete="off">
-                    </div> 
+                    </div>
                     <div class="col-md-12 pt-1">
                         <label for="form-text" class="form-label fs-14 text-dark"> Description : </label>
                         <textarea class="form-control" id="txtDescription" placeholder="Description" rows="2"></textarea>
@@ -156,27 +158,357 @@ else
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">
-                    <i class="fa fa-times"></i> ปิด
-                </button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"> <i class="fa fa-times"></i> ปิด </button>
+                <button type="button" class="btn btn-success" onclick="savePartDescription('Description');"> <i class="fa fa-save"></i> บันทึก </button>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal Add&Update Spec-->
+<div class="modal fade" id="SpecAddModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pb-2">
+                <h4 class="modal-title" id="ModalLabel"> <i class="ri-add-box-fill"></i> Add Spec </h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="form-text" class="form-label fs-14 text-dark"> Row : <u><span class="text-danger fw-semibold fs-16" id="labelRow"> </span></u> </label>
+                        <input type="hidden" class="form-control" id="txtRow" placeholder="Row" readonly>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="form-text" class="form-label fs-14 text-dark"> Title : </label>
+                        <input type="text" class="form-control" id="txtTitle" placeholder="Title" autocomplete="off">
+                    </div>
+                    <div class="col-md-12 pt-1">
+                        <label for="form-text" class="form-label fs-14 text-dark"> Description : </label>
+                        <textarea class="form-control" id="txtDescription" placeholder="Description" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"> <i class="fa fa-times"></i> ปิด </button>
+                <button type="button" class="btn btn-success" onclick="savePartDescription('Spec');"> <i class="fa fa-save"></i> บันทึก </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Add&Update Image-->
+<div class="modal fade" id="ImageAddModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header pb-2">
+                <h4 class="modal-title" id="ModalLabel"> <i class="ri-add-box-fill"></i> Add Image </h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="form-text" class="form-label fs-14 text-dark"> Row : <u><span class="text-danger fw-semibold fs-16" id="labelRow"> </span></u> </label>
+                        <input type="hidden" class="form-control" id="txtRow" placeholder="Row" readonly>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="form-text" class="form-label fs-14 text-dark"> Filename : </label>
+                        <input type="text" class="form-control" id="txtTitle" placeholder="Filename" autocomplete="off">
+                    </div>
+                    <div class="col-md-12 pt-1">
+                        <label for="form-text" class="form-label fs-14 text-dark"> PathImage : </label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtDescription" placeholder="PathImage" autocomplete="off">
+                            <div class="input-group-text bg-info text-white" onclick="checkPartImage();">
+                                <i class="ri-file-info-line"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 pt-3" id="divPreviewImage" style="display: none;">
+                        <figcaption class="figure-caption"><u>Preview Image</u> </figcaption>
+                        <div class="text-center"> <img id="previewImage" src="" class="img-thumbnail" alt="..."> </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"> <i class="fa fa-times"></i> ปิด </button>
+                <button type="button" class="btn btn-success" onclick="savePartDescription('Image');"> <i class="fa fa-save"></i> บันทึก </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script defer>
-    function getModalAddByTab(tabName) {
+    function checkPartImage() {
+        LoadingShow();
+        const url = $('#ImageAddModal #txtDescription').val();
+        if (!url) {
+            $("#ImageAddModal #divPreviewImage").css('display', 'none');
+            LoadingHide();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Empty URL',
+                text: 'Please enter an image URL before checking.',
+            });
+            return;
+        }
+        // Create a new image to test
+        const img = new Image();
+        img.onload = function () {
+            LoadingHide();
+            // Image loaded successfully
+            $("#ImageAddModal #divPreviewImage").css('display', 'block');
+            $('#ImageAddModal #previewImage').attr('src', url).show();
+        };
+        img.onerror = function () {
+            $("#ImageAddModal #divPreviewImage").css('display', 'none');
+            LoadingHide();
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Image URL',
+                text: 'The image does not exist or the URL is incorrect.',
+            });
+        };
+        img.src = url;
+    }
+    //delete part spec by stkcode
+    function deletePartSpecByStkcode(tableName, txtSeq) {
+        let stockCodeSearch = $("#stockCodeSearch").val();
+        Swal.fire({
+            icon: 'question',
+            title: 'ต้องการลบใช่หรือไม่?',
+            html: '',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'ใช่',
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'ไม่ใช่',
+            allowOutsideClick: false,
+            focusConfirm: false,
+        }).then(async (result) => {
+            if (result.value) {
+                 $.ajax({
+                    url: '@Url.Action("deletePartByStkcode", "PartSpecification")',
+                    type: 'post',
+                     data: {
+                         tableName: 'Product_' + tableName,
+                         stkcode: stockCodeSearch,
+                         seq: txtSeq,
+                     },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        LoadingShow();
+                    },
+                    success: function (result) {
+                        console.log("result.status = " + result.status);
+                        if (result.status == "success") {
+                            LoadingHide();
+                            Swal.fire({
+                                title: 'Deleted successfully',
+                                icon: 'success',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Close',
+                                allowOutsideClick: false,
+                                focusConfirm: false,
+                                timer: 5000,
+                                timerProgressBar: true,
+                                didClose: () => {
+                                    setTimeout(function () {
+                                        $('#' + tableName + 'AddModal').removeClass('show').removeAttr('aria-modal').css('display', 'none');
+                                        $('body').removeClass('modal-open');
+                                        $('.modal-backdrop').remove();
+                                        //refresh list by tab
+                                        getListDetailPartByStkcode("tab" + tableName);
+                                        updateNumberRowByTab("delete", tableName);
+                                    }, 500);
+                                }
+                            });
+
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'ระบบทำงานผิดพลาด',
+                                html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้ savePartDescription.<br> ' + result.message + '<br><br>',
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'ปิด | Close',
+                                allowOutsideClick: false,
+                                focusConfirm: false,
+                            });
+                        }
+                    },
+                    complete: function () {
+                        LoadingHide();
+                    },
+                }).fail(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ระบบทำงานผิดพลาด',
+                        html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้ savePartDescription.<br> ' + error + '<br><br>',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'ปิด | Close',
+                        allowOutsideClick: false,
+                        focusConfirm: false,
+                    });
+                });
+            }
+        });
+    }
+    //update Num row by tab
+    function updateNumberRowByTab(flag, tabName) {
+        if (flag != "" && tabName != "") {
+            const rowId = '#row' + tabName;
+            let currentCount = parseInt($(rowId).text()) || 0;
+            let newCount = (flag === "add") ? currentCount + 1 : currentCount - 1;
+            newCount = Math.max(0, newCount);
+            $(rowId).text(newCount);
+        }
+    }
+    //save Description
+    function savePartDescription(tabName) {
+        var modalAddName = "";
+        modalAddName = tabName + "AddModal";
+        let txtSeq = $('#' + modalAddName + ' #txtRow').val();
+        let txtTitle = $('#' + modalAddName + ' #txtTitle').val();
+        let txtDescription = $('#' + modalAddName + ' #txtDescription').val();
+        let stockCodeSearch = $("#stockCodeSearch").val();
+        let Error = 0;
+        let TextMsg = "";
+        if (txtDescription == "") {
+            Error++;
+            TextMsg += Error + '. กรุณากรอกข้อมูล Description.<br/>';
+        }
+        if (Error > 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'กรุณาตรวจสอบข้อมูลดังต่อไปนี้ ',
+                html: '<div class="text-left">' + TextMsg + '</div>',
+            });
+            return false;
+        }
+        Swal.fire({
+            icon: 'question',
+            title: 'ต้องการบันทึกใช่หรือไม่?',
+            html: '',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'ใช่',
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'ไม่ใช่',
+            allowOutsideClick: false,
+            focusConfirm: false,
+        }).then(async (result) => {
+            if (result.value) {
+                 $.ajax({
+                    url: '@Url.Action("savePartDescription", "PartSpecification")',
+                    type: 'post',
+                     data: {
+                         tableName: 'Product_' + tabName,
+                         stkcode: stockCodeSearch,
+                         seq: txtSeq,
+                         title: txtTitle,
+                         description: txtDescription,
+                         userName: 'Product Team'
+                     },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        LoadingShow();
+                    },
+                    success: function (result) {
+                        console.log("result.status = " + result.status);
+                        if (result.status == "success") {
+                            LoadingHide();
+                            Swal.fire({
+                                title: 'Saved successfully',
+                                icon: 'success',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Close',
+                                allowOutsideClick: false,
+                                focusConfirm: false,
+                                timer: 5000,
+                                timerProgressBar: true,
+                                didClose: () => {
+                                    setTimeout(function () {
+                                        $('#' + modalAddName).removeClass('show').removeAttr('aria-modal').css('display', 'none');
+                                        $('body').removeClass('modal-open');
+                                        $('.modal-backdrop').remove();
+                                        getListDetailPartByStkcode("tab" + tabName);
+                                        updateNumberRowByTab("add", tabName);
+                                    }, 500);
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'ระบบทำงานผิดพลาด',
+                                html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้ savePartDescription.<br> ' + result.message + '<br><br>',
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'ปิด | Close',
+                                allowOutsideClick: false,
+                                focusConfirm: false,
+                            });
+                        }
+                    },
+                    complete: function () {
+                        LoadingHide();
+                    },
+                }).fail(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ระบบทำงานผิดพลาด',
+                        html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้ savePartDescription.<br> ' + error + '<br><br>',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'ปิด | Close',
+                        allowOutsideClick: false,
+                        focusConfirm: false,
+                    });
+                });
+            }
+        });
+    }
+    //get modal by tab
+    function getModalAddByTab(flag, tabName, txtRow, txtTitle, txtDescription) {
         LoadingShow();
         var modalAddName = "";
+        const tagOlByTab = document.getElementById('ol' + tabName);
+        let countTagOlByTab = 0;
+        let countByFlag = 0;
+
+        if (tagOlByTab) {
+            countTagOlByTab = tagOlByTab.querySelectorAll('li').length;
+        } else {
+            console.warn(`Element with id 'ol${tabName}' not found. Defaulting to 0 rows.`);
+        }
+        //ถ้า Flag = add +1
+        if (flag == "add") {
+            txtRow = countTagOlByTab + 1
+        } else {
+            txtRow = txtRow;
+        }
+
         if (tabName !== "") {
             modalAddName = tabName + "AddModal";
         }
-
-        var modal = new bootstrap.Modal(document.getElementById(modalAddName));
+        const modalEl = document.getElementById(modalAddName);
+        if (!modalEl) {
+            console.error(`Modal with id '${modalAddName}' not found.`);
+            LoadingHide();
+            return;
+        }
+        var modal = new bootstrap.Modal(modalEl);
         modal.show();
 
+        console.log("txtRow = " + txtRow);
+
         setTimeout(function () {
-            LoadingHide(); 
-            $('#txtTitle').focus();
+            LoadingHide();
+            $('#' + modalAddName + ' #txtTitle').focus();
+            //update get value to textbox
+            $('#' + modalAddName + ' #txtRow').val(txtRow);
+            $('#' + modalAddName + ' #labelRow').html(txtRow);
+
+            $('#' + modalAddName + ' #txtTitle').val(txtTitle);
+            $('#' + modalAddName + ' #txtDescription').val(txtDescription);
         }, 500);
     }
     //default ดึงข้อมูล tab แรก
@@ -213,7 +545,7 @@ else
             Swal.fire({
                 icon: 'error',
                 title: error.status,
-                html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>tabPromotionByReq<br><br>',
+                html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>getListDetailPartByTab<br><br>',
                 confirmButtonColor: '#d33',
                 confirmButtonText: 'ปิด',
                 allowOutsideClick: false,
@@ -232,4 +564,46 @@ else
         $('.nav-tabs li').removeClass('active');
         $(e.target).parent('li').addClass('active');
     });
+
+    //count item
+    async function GetProductApiAutomateCount() {
+        console.log("GetProductApiAutomateCount");
+        try {
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("GetProductApiAutomateCount", "ApiProductAutomate")',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    $('#sumItemAll').text(Number(data[0].sumItemAll).toLocaleString());
+                    $('#sumItemAllSuccess').text(Number(data[0].sumItemAllSuccess).toLocaleString());
+                    $('#sumItemCurrentAll').text(Number(data[0].sumItemCurrentAll).toLocaleString());
+                    $('#sumItemCurrentAllSuccess').text(Number(data[0].sumItemCurrentAllSuccess).toLocaleString());
+                    $('#sumItemCurrentTaskPendding').text(Number(data[0].sumItemCurrentTaskPendding).toLocaleString());
+                    $('#sumItemCurrentTaskProcess').text(Number(data[0].sumItemCurrentTaskProcess).toLocaleString());
+                    $('#sumItemCurrentTaskComplete').text(Number(data[0].sumItemCurrentTaskComplete).toLocaleString());
+                }
+            }).fail(function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ระบบทำงานผิดพลาด()',
+                    html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>GetProductApiAutomateCount<br>' + error.responseText + '<br><br>',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'ปิด',
+                    allowOutsideClick: false,
+                    focusConfirm: false
+                });
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ระบบทำงานผิดพลาด()',
+                html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>GetProductApiAutomateCount<br>' + erroพ + '<br><br>',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false
+            });
+        }
+    }
 </script>

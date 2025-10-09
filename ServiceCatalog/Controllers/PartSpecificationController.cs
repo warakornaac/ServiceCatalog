@@ -53,6 +53,37 @@ namespace ServiceCatalog.Controllers
                 @ViewBag.listProductName
             });
         }
+        //Save&Update PartDescription
+        [HttpPost]
+        public ActionResult savePartDescription(string tableName, string stkcode, int seq, string title, string description, string userName)
+        {
+            var SaveProductDescription = new List<StoredSaveProductDescriptionModel>();
+            try
+            {
+                SaveProductDescription = new SaveProductDescription().Save(tableName, stkcode, seq, title, description, userName);
+                return Json(new { status = "success", message = "SaveProductDescription complete", getStkcode = stkcode });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = ex.Message, getStkcode = stkcode });
+            }
+        }
+        //delete PartDescription
+        [HttpPost]
+        public ActionResult deletePartByStkcode(string tableName, string stkcode, int seq)
+        {
+            var SaveProductDescription = new List<object>();
+            try
+            {
+                SaveProductDescription = new DeleteProductSpecByStkcode().Delete(tableName, stkcode, seq);
+                return Json(new { status = "success", message = "DeletePartSpec complete", getStkcode = stkcode });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = ex.Message, getStkcode = stkcode });
+            }
+        }
+        //get page management part
         public ActionResult getDetailPartByStkcode(string Stkcode)
         {
             var ListProductApiCount = new List<StoredProductApiCountModel>();
@@ -84,6 +115,7 @@ namespace ServiceCatalog.Controllers
             var listProductSpec = new List<ProductSpecModel>();
             var listProductImage = new List<ProductImageModel>();
             var listProductOem = new List<ProductOemModel>();
+            var listProductCompetitor = new List<ProductCompetitorModel>();
             var listProductLinkage = new List<StoredGetLinkageDataModel>();
             //listProductApiCount = new SearchProductApiCount().Get(Stkcode);
             try
@@ -111,7 +143,12 @@ namespace ServiceCatalog.Controllers
                             filePartName = "_ListPartOem";
                             listProductOem = new GetProductOemList().Get(Stkcode);
                             ViewBag.ListPartDetail = listProductOem;
-                            break;  
+                            break;
+                        case "tabCompetitor":
+                            filePartName = "_ListPartCompetitor";
+                            listProductCompetitor = new GetProductCompetitorList().Get(Stkcode);
+                            ViewBag.ListPartDetail = listProductCompetitor;
+                            break;
                         case "tabLinkage":
                             filePartName = "_ListPartLinkage";
                             listProductLinkage = new GetLinkageDataList().Get(Stkcode);
