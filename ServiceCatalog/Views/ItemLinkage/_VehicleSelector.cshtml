@@ -88,13 +88,23 @@
         </div>
         <div class="row ">
             <div class="col-12">
-                @*<button class="btn btn-secondary" id="linkage-maker-btn" hidden>Link by Maker</button>*@
+                <button class="btn btn-warning" id="linkage-by-selector">Linkage selector</button>
+                <button class="btn btn-secondary" id="linkage-by-filter">Linkage filter</button>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped" id="table-vehicle">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           value=""
+                                           id="select-all"
+                                           title="Select All in Page"
+                                           style="width: 20px; height: 20px;" />
+                                </div>
+                            </th>
                             <th>Maker</th>
                             <th>Model</th>
                             <th>Body</th>
@@ -419,8 +429,29 @@
                                             data-drive="${item.DriveType}"
                                             data-year="${item.YearFrom}"
                                             id="add-link-${item.TruType}">+</button>`;
+
+                                let rdoAdd = `<div class="form-check">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    value="${item.TruType}"
+                                                    id="chk-link-${item.TruType}"
+                                                    data-stkcod="${STK}"
+                                                    data-trutype ="${item.TruType}"
+                                                    data-ktype="${item.KType}"
+                                                    data-market="${item.MarketSegment}"
+                                                    data-maker="${item.Maker}"
+                                                    data-model="${item.Model}"
+                                                    data-body="${item.Body}"
+                                                    data-engine="${item.Engine}"
+                                                    data-drive="${item.DriveType}"
+                                                    data-year="${item.YearFrom}"
+                                                    id="add-link-${item.TruType}"
+                                                    style="width: 20px; height: 20px;"
+                                                />
+                                            </div>`;
                                 SubmithtmlPage += `<tr ${rowClass}>`;
-                                SubmithtmlPage += `<td>${btnAdd}</td>`;
+                                SubmithtmlPage += `<td>${rdoAdd}</td>`;
                                 SubmithtmlPage += `<td>${item.Maker}</td>`;
                                 SubmithtmlPage += `<td>${item.Model}</td>`;
                                 SubmithtmlPage += `<td>${item.Body}</td>`;
@@ -457,8 +488,6 @@
 
         });//end ajax
     }
-
-
 
 
 

@@ -158,7 +158,7 @@ namespace ServiceCatalog.Controllers
             return Json(new { message = message, result = list }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult InsertLinkage(string STKCOD, string KTYPE, string TRUTYPE)
+        public JsonResult InsertLinkage(string STKCOD, string KTYPE, string TRUTYPE, string MARKETSEG)
         {
             string message = string.Empty;
             string res = string.Empty;
@@ -168,12 +168,47 @@ namespace ServiceCatalog.Controllers
                 using (SqlConnection conn = new SqlConnection(conString))
                 {
                     conn.Open();
-                    using (SqlCommand cmd = new SqlCommand("P_Add_LinkageData", conn))
+                    using (SqlCommand cmd = new SqlCommand("P_Add_LinkageData_dev", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@inSTKCOD", STKCOD);
                         cmd.Parameters.AddWithValue("@inKtype", KTYPE);
                         cmd.Parameters.AddWithValue("@inTruType", TRUTYPE);
+                        cmd.Parameters.AddWithValue("@inMarketSeg", MARKETSEG);
+                        cmd.Parameters.AddWithValue("@inUser", "thiraphon.pra");
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                res = "Y";
+            }
+            catch (Exception ex) { message = ex.Message; res = "N"; }
+
+
+            return Json(new { message = message, result = res }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult InsertLinkageFilter(string STKCOD, string MARKET, string VEHICLE, string MAKER, string RANGE, string MODEL, string BODY, string ENGINE)
+        {
+            string message = string.Empty;
+            string res = string.Empty;
+            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(conString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("P_Add_LinkageData_Filter", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@inSTKCOD", STKCOD);
+                        cmd.Parameters.AddWithValue("@inMarketSeg", MARKET);
+                        cmd.Parameters.AddWithValue("@inVehicleSeg", VEHICLE);
+                        cmd.Parameters.AddWithValue("@inMaker", MAKER);
+                        cmd.Parameters.AddWithValue("@inRange", RANGE);
+                        cmd.Parameters.AddWithValue("@inModel", MODEL);
+                        cmd.Parameters.AddWithValue("@inBody", BODY);
+                        cmd.Parameters.AddWithValue("@inEngine", ENGINE);
                         cmd.Parameters.AddWithValue("@inUser", "thiraphon.pra");
 
                         cmd.ExecuteNonQuery();
@@ -204,35 +239,6 @@ namespace ServiceCatalog.Controllers
                         cmd.Parameters.AddWithValue("@inKtype", KTYPE);
                         cmd.Parameters.AddWithValue("@inTruType", TRUTYPE);
                         cmd.Parameters.AddWithValue("@inSeq", SEQLINK);
-                        cmd.Parameters.AddWithValue("@inUser", "thiraphon.pra");
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                res = "Y";
-            }
-            catch (Exception ex) { message = ex.Message; res = "N"; }
-
-
-            return Json(new { message = message, result = res }, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult AddLinkageMaker(string STKCOD, string Market, string Maker)
-        {
-            string message = string.Empty;
-            string res = string.Empty;
-            string conString = ConfigurationManager.ConnectionStrings["ServiceCatalogDB"].ConnectionString;
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(conString))
-                {
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand("P_Delete_LinkageData", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@inSTKCOD", STKCOD);
-                        cmd.Parameters.AddWithValue("@inMarketSeg", Market);
-                        cmd.Parameters.AddWithValue("@inMaker", Maker);
                         cmd.Parameters.AddWithValue("@inUser", "thiraphon.pra");
 
                         cmd.ExecuteNonQuery();

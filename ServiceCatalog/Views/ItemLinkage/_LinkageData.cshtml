@@ -6,11 +6,23 @@
         Link Data
     </div>
     <div class="card-body">
+        <div class="col-12 d-flex">
+            <button class="btn btn-danger ms-auto" id="linkage-delete">Delete linkage</button>
+        </div>
         <div class="table-responsive">
             <table class="table " id="table-show-link">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       value=""
+                                       id="select-all-delete"
+                                       title="Select All in Page"
+                                       style="width: 20px; height: 20px;" />
+                            </div>
+                        </th>
                         <th>Maker</th>
                         <th>Model</th>
                         <th>Body</th>
@@ -26,11 +38,22 @@
                         {
                             <tr>
                                 <td>
-                                    <button class="btn bg-transparent" data-stkcod="@item.Stkcode" data-ktype="@item.KType" data-trutype="@item.TruType" data-seq="@item.SeqLinkage" data-maker="@item.Maker"
-                                            data-model="@item.Model" data-body="@item.Body" data-engine="@item.Engine"
-                                            data-drive="@item.DriveType" data-year="@item.YearFrom" id="delete-link-@item.TruType">
-                                        <span class="fw-bold">-</span>
-                                    </button>
+                                    @*<button class="btn bg-transparent" data-stkcod="@item.Stkcode" data-ktype="@item.KType" data-trutype="@item.TruType" data-seq="@item.SeqLinkage" data-maker="@item.Maker"
+                                                data-model="@item.Model" data-body="@item.Body" data-engine="@item.Engine"
+                                                data-drive="@item.DriveType" data-year="@item.YearFrom" id="delete-link-@item.TruType">
+                                            <span class="fw-bold">-</span>
+                                        </button>*@
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               value="@item.Stkcode"
+                                               data-stkcod="@item.Stkcode" data-ktype="@item.KType" data-trutype="@item.TruType" data-seq="@item.SeqLinkage" data-maker="@item.Maker"
+                                               data-model="@item.Model" data-body="@item.Body" data-engine="@item.Engine"
+                                               data-drive="@item.DriveType" data-year="@item.YearFrom"
+                                               id="delete-link-@item.TruType"
+                                               style="width: 20px; height: 20px;" />
+                                    </div>
+
                                 </td>
                                 <td>@item.Maker</td>
                                 <td>@item.Model</td>
@@ -45,6 +68,7 @@
             </table>
         </div>
     </div>
+
 </div>
 
 <script>
