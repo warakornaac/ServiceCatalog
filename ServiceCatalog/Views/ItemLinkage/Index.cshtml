@@ -616,6 +616,7 @@
         var body = $('#body-select option:selected').text();
         var engine = $('#engine-select option:selected').text();
 
+<<<<<<< HEAD
         if (market == 'ALL' && vehicle == 'ALL' && maker == 'ALL' && range == 'ALL' && model == 'ALL' && body == 'ALL' && engine == 'ALL') {
             Swal.fire({
                 title: "Please select filter to link.",
@@ -636,7 +637,20 @@
             });
         }
 
+=======
+>>>>>>> parent of 9180039 ([bin&controller&view] add productid)
 
+        Swal.fire({
+            title: "Confirm linkage by filter?",
+            icon:"question",
+            showCancelButton: true,
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                insertLainkageFilter(market, vehicle, maker, range, model, body, engine);
+            }
+        });
 
     });
     function insertLainkageFilter(market, vehicle, maker, range, model, body, engine) {
