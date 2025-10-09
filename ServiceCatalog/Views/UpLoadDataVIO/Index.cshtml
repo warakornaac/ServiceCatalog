@@ -296,7 +296,7 @@
             swal.fire({
                 title: 'ยืนยันการนำเข้าข้อมูล',
                 html: '',
-                icon: 'warning',
+                icon: 'question',
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'ยืนยัน',
                 showCancelButton: true,
@@ -344,7 +344,18 @@
                 data: formData,
                 processData: false,
                 contentType: false,
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Searching...',
+                        text: 'Please wait while we processing on the product.',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
                 success: function (res) {
+                    Swal.close();
                     //console.log("อัพโหลดสำเร็จ:", res);
                     var pageHtml = '';
                     var i = 0;
@@ -383,6 +394,7 @@
                                 //    </tr>
                                 //`;
                                 //}
+                                i++;
                                 tableHtml += `
                                     <tr>
                                         <td>${item.KType || ''}</td>

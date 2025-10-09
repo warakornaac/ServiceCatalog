@@ -1,121 +1,87 @@
-﻿<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+﻿
 @{
     ViewBag.Title = "ViewVIO";
 }
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <style>
     .table-style {
         height: 500px;
         overflow-y: auto;
     }
 </style>
-<h2>ViewVIO</h2>
+<h2>VIO Inquiry</h2>
 <div class="container-fluid mt-3">
     <div class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-12 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Market Segment</h5>
-                        </div>
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <select name="market" id="market-select" class="form-control selectpicker" data-live-search="true" onchange="clearALL();">
-                                <option value="ALL" selectd>ALL</option>
-                                @if (ViewBag.MarketSeg != null)
+
+                    <h5 class="mb-0">Market Segment:</h5>
+                    <select name="market" id="market-select" class="form-control selectpicker" data-live-search="true" onchange="clearALL();">
+
+                        <option value="ALL" selectd>ALL</option>
+                        @if (ViewBag.MarketSeg != null)
+                        {
+                            if (Enumerable.Count(ViewBag.MarketSeg) > 0)
+                            {
+                                foreach (var item in ViewBag.MarketSeg)
                                 {
-                                    if (Enumerable.Count(ViewBag.MarketSeg) > 0)
-                                    {
-                                        foreach (var item in ViewBag.MarketSeg)
-                                        {
-                                            <option value="@item.ID">@item.MarketSegment</option>
-                                        }
-                                    }
+                                    <option value="@item.ID">@item.MarketSegment</option>
                                 }
-                            </select>
-                        </div>
-                    </div>
+                            }
+                        }
+                    </select>
                 </div>
                 <div class="col-lg-4 col-md-4 col-12 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Vehicle Segment</h5>
-                        </div>
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <select class="form-control selectpicker" name="vehicle" id="vehicle-select" data-live-search="true" onchange="clearALL();">
-                                <option value="ALL">ALL</option>
-                                @if (ViewBag.VehicleSeg != null)
+
+                    <h5 class="mb-0">Vehicle Segment:</h5>
+
+                    <select name="vehicle" id="vehicle-select" class="form-control selectpicker" data-live-search="true" onchange="clearALL();">
+                        <option value="ALL">ALL</option>
+                        @if (ViewBag.VehicleSeg != null)
+                        {
+                            if (Enumerable.Count(ViewBag.VehicleSeg) > 0)
+                            {
+                                foreach (var item in ViewBag.VehicleSeg)
                                 {
-                                    if (Enumerable.Count(ViewBag.VehicleSeg) > 0)
-                                    {
-                                        foreach (var item in ViewBag.VehicleSeg)
-                                        {
-                                            <option value="@item.ID">@item.VehicleSegment</option>
-                                        }
-                                    }
+                                    <option value="@item.ID">@item.VehicleSegment</option>
                                 }
-                            </select>
-                        </div>
-                    </div>
+                            }
+                        }
+                    </select>
                 </div>
                 <div class="col-lg-4 col-md-4 col-12 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Maker</h5>
-                        </div>
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <select name="maker" id="maker-select" class="form-control selectpicker" data-live-search="true">
-                                <option value="ALL">ALL</option>
-                            </select>
-                        </div>
-                    </div>
+                    <h5 class="mb-0">Maker:</h5>
+                    <select name="maker" id="maker-select" class="form-control selectpicker" data-live-search="true">
+                        <option value="ALL">ALL</option>
+                    </select>
+
                 </div>
                 <div class="col-lg-3 col-md-3 col-12 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Model Range</h5>
-                        </div>
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <select name="modelrange" id="range-select" class="form-control selectpicker" data-live-search="true">
-                                <option value="ALL">ALL</option>
-                            </select>
-                        </div>
-                    </div>
+
+                    <h5 class="mb-0">Model Range:</h5>
+                    <select name="modelrange" id="range-select" class="form-control selectpicker" data-live-search="true">
+                        <option value="ALL">ALL</option>
+                    </select>
                 </div>
                 <div class="col-lg-3 col-md-3 col-12 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Model</h5>
-                        </div>
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <select name="model" id="model-select" class="form-control selectpicker" data-live-search="true">
-                                <option value="ALL">ALL</option>
-                            </select>
-                        </div>
-                    </div>
+                    <h5 class="mb-0">Model:</h5>
+                    <select name="model" id="model-select" class="form-control selectpicker" data-live-search="true">
+                        <option value="ALL">ALL</option>
+                    </select>
                 </div>
                 <div class="col-lg-3 col-md-3 col-12 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Body</h5>
-                        </div>
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <select name="body" id="body-select" class="form-control selectpicker" data-live-search="true">
-                                <option value="ALL">ALL</option>
-                            </select>
-                        </div>
-                    </div>
+                    <h5 class="mb-0">Body:</h5>
+                    <select name="body" id="body-select" class="form-control selectpicker" data-live-search="true">
+                        <option value="ALL">ALL</option>
+                    </select>
                 </div>
                 <div class="col-lg-3 col-md-3 col-12 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Engine</h5>
-                        </div>
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <select name="engine" id="engine-select" class="form-control selectpicker" data-live-search="true">
-                                <option value="ALL">ALL</option>
-                            </select>
-                        </div>
-                    </div>
+
+                    <h5 class="mb-0">Engine:</h5>
+                    <select name="engine" id="engine-select" class="form-control selectpicker" data-live-search="true">
+                        <option value="ALL">ALL</option>
+                    </select>
                 </div>
             </div>
             @*<div class="row mt-3 justify-content-center">
@@ -147,8 +113,8 @@
         </div>
         <div class="card-footer bg-white d-flex justify-content-end">
             <div class="d-flex gap-2 ms-auto">
-                <button class="btn btn-outline-success btn-sm" id="search-btn">
-                    <span>Search</span> <i class="fa fa-pencil-square-o"></i>
+                <button class="btn btn-primary btn-sm" id="search-btn">
+                    <i class="fa fa-pencil-square-o"></i> <span>Search</span>
                 </button>
                 @*<button class="btn btn-outline-danger btn-sm">
                         <i class="fa fa-trash-o"></i>
@@ -164,9 +130,18 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-12">
-                    <button type="button" class="btn btn-secondary" id="btn-ex-table-all"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export .xlsx</button>
-                    <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "UpLoadDataVIO")';return false;"><i class="fe fe-upload-cloud side-menu__icon"></i> Upload VIO</button>
+                <div class="col-12 d-flex justify-content-between">
+                    <div class="g-1">
+
+                        <div class="p-1">
+                            <i class="fe fe-list"></i>
+                            <span class="mb-0 fw-semibold fs-14 text-info" id="item-count">0 Item </span>
+                        </div>
+                    </div>
+                    <div class="g-2">
+                        <button type="button" class="btn btn-secondary me-2" id="btn-ex-table-all"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export .xlsx</button>
+                        <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Index", "UpLoadDataVIO")';return false;"><i class="fe fe-upload-cloud side-menu__icon"></i> Page Upload VIO</button>
+                    </div>
                 </div>
                 <div class="col-12 mt-3">
                     <div class="table-responsive table-style">
@@ -239,7 +214,6 @@
     });
 
     $(document).ready(function () {
-        $('.selectpicker').selectpicker();
         MakerLoader();
         //modelRangeLoader();
         //modelLoader();
@@ -257,7 +231,6 @@
         clearEngine();
     };
     function clearMaker() {
-        $('#maker-select').val('').trigger();
     }
     function clearModelrange() {
         $('#range-select').empty();
@@ -324,7 +297,7 @@ function modelRangeLoader(makerId) {
         dataType: 'json',
         data: { MakerID: makerId },
         beforeSend: function () {
-            $('#range-select').empty().selectpicker('refresh');
+            $('#range-select').empty().selectpicker('refresh');;
         },
         success: function (data) {
             if (data.respone === true) {
@@ -334,7 +307,7 @@ function modelRangeLoader(makerId) {
                     data.result.forEach(item => {
                         optionString += `<option data-maker="${item.Maker_ID}" value="${item.ID}">${item.ModelRange}</option>`;
                     });
-                $('#range-select').html(optionString).selectpicker('refresh');
+                $('#range-select').html(optionString).selectpicker('refresh');;
             }
             else {
                 console.log('Range Error:' + data.message);
@@ -351,7 +324,7 @@ function modelLoader(marketId,makerId,rangeId) {
         dataType: 'json',
         data: { MarketSegID: marketId ,MakerID: makerId, ModelRangID: rangeId },
         beforeSend: function () {
-            $('#model-select').empty().selectpicker('refresh');
+            $('#model-select').empty().selectpicker('refresh');;
         },
         success: function (data) {
             if (data.respone === true) {
@@ -360,7 +333,7 @@ function modelLoader(marketId,makerId,rangeId) {
                     optionString += `<option data-market="${item.MarketSegment_ID}" data-maker="${item.Maker_ID}" data-range="${item.ModelRange_ID}" data-model="${item.ID}" data- value="${item.ID}">${item.Model}</option>`;
                 });
 
-                $('#model-select').html(optionString).selectpicker('refresh');
+                $('#model-select').html(optionString).selectpicker('refresh');;
             }
             else {
                 console.log('Model Error:' + data.message);
@@ -381,7 +354,7 @@ function bodyLoader(makerId, modelRangeId, modelId ) {
         dataType: 'json',
         data: { marketSeg: _marketSeg, vehicleSeg: _vehicleSeg, makerID: makerId, modelID: modelId, modelRangeID: modelRangeId },
         beforeSend: function () {
-            $('#body-select').empty().selectpicker('refresh');
+            $('#body-select').empty().selectpicker('refresh');;
         },
         success: function (data) {
             if (data.respone === true) {
@@ -389,7 +362,7 @@ function bodyLoader(makerId, modelRangeId, modelId ) {
                     data.result.forEach(item => {
                         optionString += `<option value="${item.ID}">${item.Body}</option>`;
                     });
-                $('#body-select').html(optionString).selectpicker('refresh');
+                $('#body-select').html(optionString).selectpicker('refresh');;
             }
             else {
                 console.log('Body Error:' + data.message)
@@ -406,7 +379,7 @@ function engineLoader(makerId, modelRangeId, modelId, bodyId) {
         type: 'post',
         dataType: 'json',
         beforeSend: function () {
-            $('#engine-select').empty().selectpicker('refresh');
+            $('#engine-select').empty().selectpicker('refresh');;
         },
         success: function(data){
             if (data.respone === true) {
@@ -414,7 +387,7 @@ function engineLoader(makerId, modelRangeId, modelId, bodyId) {
                 data.result.forEach(engine => {
                     optionString += `<option value="${engine.ID}">${engine.EngineType}</option>`;
                 });
-                $('#engine-select').html(optionString).selectpicker('refresh');
+                $('#engine-select').html(optionString).selectpicker('refresh');;
             }
             else {
                 clearEngine();
@@ -445,6 +418,7 @@ function LoadVIOData() {
             var SubmithtmlPage = '';
             $('#table-vio tbody').html('');
             if (data.respone === true) {
+                $('#item-count').text(data.result.length + ' Item')
                 if (data.result.length > 0) {
                     if ($.fn.DataTable.isDataTable('#table-vio')) {
                         $('#table-vio').DataTable().clear().destroy();
@@ -507,6 +481,14 @@ function SearchVIOData() {
         type: 'post',
         dataType: 'json',
         beforeSend: function () {
+            Swal.fire({
+                title: 'Searching...',
+                text: 'Please wait while we processing on the product.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
             $('#table-vio tbody').html('');
             var SubmithtmlPage = '';
             SubmithtmlPage += '<tr>';
@@ -515,12 +497,15 @@ function SearchVIOData() {
             $('#table-vio tbody').append(SubmithtmlPage);
         },
         success: function (data) {
+            Swal.close();
             var SubmithtmlPage = '';
             $('#table-vio tbody').html('');
             if (data.respone === true) {
+                $('#item-count').text(data.result.length + ' Item')
                 if (data.result.length > 0) {
                     if ($.fn.DataTable.isDataTable('#table-vio')) {
                         $('#table-vio').DataTable().clear().destroy();
+
                     }
                     data.result.forEach(item => {
                         SubmithtmlPage += '<tr>';

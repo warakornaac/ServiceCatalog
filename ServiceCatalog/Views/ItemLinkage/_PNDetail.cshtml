@@ -4,21 +4,21 @@
 <style>
     /* hover effect */
     .list-group-item:hover {
-        background-color: #f0f8ff; /* ฟ้าอ่อน */
+        background-color: #f0f8ff;
         cursor: pointer;
         transition: background-color 0.2s ease-in-out;
     }
 
-        /* ขยายขึ้นนิดหน่อยเวลา hover */
+
         .list-group-item:hover .fw-bold {
-            color: #0d6efd; /* เปลี่ยนสีชื่อ PN */
+            color: #0d6efd;
         }
 </style>
 
 <div class="card border">
     <!-- Header -->
     <div class="card-header bg-primary text-dark fw-bold rounded-top">
-        PN Description
+        Stock Description
     </div>
 
 
@@ -63,12 +63,10 @@
                         <div class="bg-light border d-flex align-items-center justify-content-center"
                              style="width:80px; height:80px;">
                             <span class="fw-bold">NO DATA</span>
-                            @*<img src="@item.Image" style="width:80px; height:80px;" />*@
                         </div>
                     </div>
                     <div>
-                        <h6 class="fw-bold mb-1">NO PN DATA</h6>
-                        @*<small>@item.STKDES</small>*@
+                        <h6 class="fw-bold mb-1">NO STOCK DATA</h6>
                     </div>
                 </div>
                 @*@if (item.Company == "TAC")
@@ -81,55 +79,6 @@
                     }*@
             </li>
         }
-        <!-- Item 1 -->
-        <!--<li class="list-group-item d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <div class="me-3 text-center">
-                    <div class="bg-light border d-flex align-items-center justify-content-center"
-                         style="width:80px; height:80px;">
-                        <span class="fw-bold">PICTURE</span>
-                    </div>
-                </div>
-                <div>
-                    <h6 class="fw-bold mb-1">DF3027</h6>
-                    <small>จานเบรกรถหน้า TOYOTA LANDCRUISER 80 (FJ80, HZJ80)</small>
-                </div>
-            </div>
-            <span class="badge bg-danger px-3 py-2">TAC</span>
-        </li>-->
-        <!-- Item 2 -->
-        <!--<li class="list-group-item d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <div class="me-3 text-center">
-                    <div class="bg-light border d-flex align-items-center justify-content-center"
-                         style="width:80px; height:80px;">
-                        <span class="fw-bold">PICTURE</span>
-                    </div>
-                </div>
-                <div>
-                    <h6 class="fw-bold mb-1">DF30215</h6>
-                    <small>จานเบรคหน้า HONDA CIVIC EK, ES, City GM 07-14, Jazz GE (ใช้แทน DF3021)</small>
-                </div>
-            </div>
-            <span class="badge bg-danger px-3 py-2">TAC</span>
-        </li>-->
-        <!-- Item 3 -->
-        <!--<li class="list-group-item d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <div class="me-3 text-center">
-                    <div class="bg-light border d-flex align-items-center justify-content-center"
-                         style="width:80px; height:80px;">
-                        <span class="fw-bold">PICTURE</span>
-                    </div>
-                </div>
-                <div>
-                    <h6 class="fw-bold mb-1">DF3021XSS</h6>
-                    <small>จานเบรคหน้า XPS HONDA CIVIC EK, ES, City GM 07-14, Jazz GE</small>
-                </div>
-            </div>
-            <span class="badge bg-danger px-3 py-2">TAC</span>
-        </li>-->
-
     </ul>
 
 </div>

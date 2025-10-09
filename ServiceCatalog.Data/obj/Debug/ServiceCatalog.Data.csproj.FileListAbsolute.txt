@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Data.dll
 D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Data.pdb
 D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\MyLib.dll
@@ -12,6 +13,10 @@ D:\.net\ServiceCatalog\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.csproj.
 D:\.net\ServiceCatalog\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.csproj.CopyComplete
 D:\.net\ServiceCatalog\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.dll
 D:\.net\ServiceCatalog\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.pdb
+=======
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.csproj.AssemblyReference.cache
+D:\dotnet\ServiceCatalogGit\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.csproj.CoreCompileInputs.cache
+>>>>>>> dbeb298b69e57b00acd4801c55086adbb8655ad0
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Data.dll
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Data.pdb
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Data\bin\Debug\MyLib.dll
@@ -26,3 +31,17 @@ D:\dotnet\ServiceCatalogGit\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.cs
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.csproj.CopyComplete
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.dll
 D:\dotnet\ServiceCatalogGit\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.pdb
+D:\.net\ServiceCatalog\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.csproj.AssemblyReference.cache
+D:\.net\ServiceCatalog\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.csproj.CoreCompileInputs.cache
+D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Data.dll
+D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Data.pdb
+D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\MyLib.dll
+D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\Newtonsoft.Json.dll
+D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Library.dll
+D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Models.dll
+D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Library.pdb
+D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\ServiceCatalog.Models.pdb
+D:\.net\ServiceCatalog\ServiceCatalog.Data\bin\Debug\Newtonsoft.Json.xml
+D:\.net\ServiceCatalog\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.csproj.CopyComplete
+D:\.net\ServiceCatalog\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.dll
+D:\.net\ServiceCatalog\ServiceCatalog.Data\obj\Debug\ServiceCatalog.Data.pdb

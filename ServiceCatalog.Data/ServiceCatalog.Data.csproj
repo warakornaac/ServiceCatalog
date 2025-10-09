@@ -47,10 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="DeleteProductSpecByStkcode.cs" />
     <Compile Include="GetLinkageDataList.cs" />
     <Compile Include="GetProductCompetitorList.cs" />
     <Compile Include="GetLinkage.cs" />
+=======
+    <Compile Include="GetLinkageDataList.cs" />
+    <Compile Include="GetProductCompetitorList.cs" />
+    <Compile Include="GetLinkage.cs" />
+    <Compile Include="GetLinkage.cs" />
+>>>>>>> dbeb298b69e57b00acd4801c55086adbb8655ad0
     <Compile Include="GetProductDescriptionList.cs" />
     <Compile Include="GetProductImageList.cs" />
     <Compile Include="GetProductLinkageList.cs" />

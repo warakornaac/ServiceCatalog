@@ -50,6 +50,10 @@
     <Compile Include="PartNumberNearbyModels.cs" />
     <Compile Include="ProductApiModel.cs" />
     <Compile Include="ProductCompetitorModel.cs" />
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbeb298b69e57b00acd4801c55086adbb8655ad0
     <Compile Include="PNDescripsModels.cs" />
     <Compile Include="ProductDescriptionModel.cs" />
     <Compile Include="ProductImageModel.cs" />
