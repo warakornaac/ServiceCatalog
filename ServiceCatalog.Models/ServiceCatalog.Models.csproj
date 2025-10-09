@@ -48,12 +48,9 @@
     <Compile Include="ImportVIOModels.cs" />
     <Compile Include="LinkageDataModels.cs" />
     <Compile Include="PartNumberNearbyModels.cs" />
-<<<<<<< HEAD
     <Compile Include="ProductApiModel.cs" />
     <Compile Include="ProductCompetitorModel.cs" />
-=======
     <Compile Include="PNDescripsModels.cs" />
->>>>>>> 5eb8a1cc0c3f60f01e04a10f03c2bb4c9d00048b
     <Compile Include="ProductDescriptionModel.cs" />
     <Compile Include="ProductImageModel.cs" />
     <Compile Include="ProductLinkageModel.cs" />
@@ -63,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoredGetLinkageDataModel.cs" />
     <Compile Include="StoredProductApiCountModel.cs" />
+    <Compile Include="StoredSaveProductDescriptionModel.cs" />
     <Compile Include="StoredSearchItemProductsModel.cs" />
     <Compile Include="StoredSearchProductDescriptionModel.cs" />
     <Compile Include="StoredSearchProductTruByStatusModel.cs" />

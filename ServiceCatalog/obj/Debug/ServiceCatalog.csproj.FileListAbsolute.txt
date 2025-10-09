@@ -63,7 +63,11 @@ D:\.net\ServiceCatalog\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.CoreCompil
 D:\.net\ServiceCatalog\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.CopyComplete
 D:\.net\ServiceCatalog\ServiceCatalog\obj\Debug\ServiceCatalog.dll
 D:\.net\ServiceCatalog\ServiceCatalog\obj\Debug\ServiceCatalog.pdb
-D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.CoreCompileInputs.cache
+D:\.net\ServiceCatalog\ServiceCatalog\bin\ClosedXML.dll
+D:\.net\ServiceCatalog\ServiceCatalog\bin\DocumentFormat.OpenXml.dll
+D:\.net\ServiceCatalog\ServiceCatalog\bin\ClosedXML.pdb
+D:\.net\ServiceCatalog\ServiceCatalog\bin\ClosedXML.xml
+D:\.net\ServiceCatalog\ServiceCatalog\bin\DocumentFormat.OpenXml.xml
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\bin\ServiceCatalog.dll.config
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\bin\ServiceCatalog.dll
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\bin\ServiceCatalog.pdb
@@ -130,11 +134,7 @@ D:\dotnet\ServiceCatalogGit\ServiceCatalog\bin\Antlr3.Runtime.pdb
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\bin\DocumentFormat.OpenXml.xml
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.AssemblyReference.cache
+D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.CoreCompileInputs.cache
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.csproj.CopyComplete
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.dll
 D:\dotnet\ServiceCatalogGit\ServiceCatalog\obj\Debug\ServiceCatalog.pdb
-D:\.net\ServiceCatalog\ServiceCatalog\bin\ClosedXML.dll
-D:\.net\ServiceCatalog\ServiceCatalog\bin\DocumentFormat.OpenXml.dll
-D:\.net\ServiceCatalog\ServiceCatalog\bin\ClosedXML.pdb
-D:\.net\ServiceCatalog\ServiceCatalog\bin\ClosedXML.xml
-D:\.net\ServiceCatalog\ServiceCatalog\bin\DocumentFormat.OpenXml.xml

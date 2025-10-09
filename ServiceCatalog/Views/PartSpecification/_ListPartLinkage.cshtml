@@ -1,5 +1,10 @@
 ﻿<div class="d-flex align-items-center w-100 pb-1">
-    <i class="ri-links-line"></i> &nbsp; <label class="form-check-label text-success fs-12" for="invalidCheck1"> ต้องการเพิ่ม Linkage คลิกที่นี่ </label>
+    <a href="#" id="buttonAddLinkage">
+        <i class="ri-links-line"></i>&nbsp;
+        <label class="form-check-label text-success fs-14" style="cursor: pointer">
+            ต้องการเพิ่ม Linkage คลิกที่นี่
+        </label>
+    </a>
     <div class="ms-auto">
         <button class="btn btn-icon btn-success btn-wave waves-effect waves-light" data-bs-toggle="tooltip" data-bs-original-title="Add"> <i class="ri-add-box-fill"></i> </button>
     </div>
@@ -26,24 +31,41 @@ else
                         |
                         @if (string.IsNullOrEmpty(@rowDes.TruType))
                         {
-                            <span class="fs-12 fw-semibold bg-secondary-transparent p-1 rounded"> null </span>
+                            <span class="fs-12 fw-semibold bg-warning-transparent p-1 rounded"> TruType Empty </span>
                         }
                         else
                         {
                             @rowDes.TruType
                         }
                     </div>
-                    <span class="fs-12 fw-semibold bg-primary-transparent p-1 rounded">@rowDes.Maker /  @rowDes.Model / @rowDes.Body / @rowDes.Engine </span>
-                    <span class="fs-12 fw-semibold bg-warning-transparent p-1 rounded">@rowDes.DriveType </span>
+                    <span class="fs-12 fw-semibold bg-primary-transparent p-1 rounded">
+                        @(string.IsNullOrWhiteSpace(rowDes.Maker) ? "-" : rowDes.Maker) /
+                        @(string.IsNullOrWhiteSpace(rowDes.Model) ? "-" : rowDes.Model) /
+                        @(string.IsNullOrWhiteSpace(rowDes.Body) ? "-" : rowDes.Body) /
+                        @(string.IsNullOrWhiteSpace(rowDes.Engine) ? "-" : rowDes.Engine)
+                    </span>
+                    <span class="fs-12 fw-semibold bg-secondary-transparent p-1 rounded">@rowDes.DriveType </span>
                     <span class="fs-12 fw-semibold bg-info-transparent p-1 rounded">@rowDes.YearFrom </span>
 
                 </div>
-                @*<div class="g-2">
-                        <button class="btn btn-icon btn-warning btn-wave waves-effect waves-light" data-bs-toggle="tooltip" data-bs-original-title="Edit"> <i class="ri-edit-2-line"></i> </button>
+                <div class="g-2">
+                    @if (string.IsNullOrEmpty(@rowDes.TruType))
+                    {
                         <button class="btn btn-icon btn-danger btn-wave waves-effect waves-light" data-bs-toggle="tooltip" data-bs-original-title="Delete"> <i class="ri-delete-bin-5-line"></i> </button>
-                    </div>*@
+                    }
+                    @*<button class="btn btn-icon btn-warning btn-wave waves-effect waves-light" data-bs-toggle="tooltip" data-bs-original-title="Edit"> <i class="ri-edit-2-line"></i> </button>*@
+                </div>
             </li>
         }
     </ol>
-
 }
+<script defer>
+    $('#buttonAddLinkage').click(function (e) {
+        e.preventDefault();
+
+        let stockCodeSearch = $("#stockCodeSearch").val();
+        var url = '@Url.Action("Index", "ItemLinkage")' + '?stkcode=' + encodeURIComponent(stockCodeSearch);
+
+        window.location.href = url; // Redirect to new URL
+    });
+</script>

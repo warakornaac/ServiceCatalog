@@ -1,14 +1,13 @@
 ﻿<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.th.min.js"></script>
 
 <div class="page-header">
-    <h1 class="page-title my-auto">Item Inquiry</h1>
+    <h1 class="page-title my-auto">Item tru</h1>
     <div>
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
                 <a href="@Url.Action("Index","Home")">Home</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Item Inquiry </li>
+            <li class="breadcrumb-item active" aria-current="page">Item tru </li>
         </ol>
     </div>
 </div>
@@ -20,12 +19,12 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="form-text" class="form-label fs-14 text-dark">Stock Code</label>
+                        <label for="form-text" class="form-label fs-14 text-dark">PartNo</label>
                         <div class="input-group">
                             <div class="input-group-text">
                                 <i class="ri-settings-5-fill"></i>
                             </div>
-                            <input type="text" class="form-control" id="txtPartNo" value="" placeholder="Stock Code">
+                            <input type="text" class="form-control" id="txtPartNo" value="" placeholder="">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -43,7 +42,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label for="form-text" class="form-label fs-14 text-dark">Api Call Date</label>
+                        <label for="form-text" class="form-label fs-14 text-dark">Call Date</label>
                         <div class="input-group">
                             <div class="input-group-text">
                                 <i class="ri-calendar-fill"></i>
@@ -74,7 +73,6 @@
     $('.datepicker').datepicker('destroy');
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy',
-        language: 'th',
         autoclose: true  // Optional: closes the calendar after selecting a date
     }).datepicker('setDate', new Date());
 
