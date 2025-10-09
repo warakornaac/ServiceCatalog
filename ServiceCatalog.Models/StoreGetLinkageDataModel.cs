@@ -11,6 +11,7 @@ namespace ServiceCatalog.Models
         public string Stkcode { get; set; }
         public int SeqLinkage { get; set; }
         public string KType { get; set; }
+        public string ProductId { get; set; }
         public string TruType { get; set; }
         public string Maker { get; set; }
         public string Model { get; set; }

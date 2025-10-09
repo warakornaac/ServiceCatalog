@@ -417,7 +417,7 @@
                                 Swal.fire({
                                     icon: 'warning',
                                     title: 'พบเจอข้อมูลอัพโหลดไม่สำเร็จ',
-                                    html: 'อัพโหลดสำเร็จ : ' + outUpload + ' รายการ' + '<br>' +`<div class="table-responsive" style="text-align:left; max-height:300px; overflow-y:auto;">${tableHtml}</div> `,
+                                    html: 'อัพโหลดสำเร็จ : ' + outUpload + ' รายการ<br> อัพโหลดทั้งหมด : ' + (Number(outUpload) + Number(i)) + ' รายการ' + '<br>' + `<div class="table-responsive" style="text-align:left; max-height:300px; overflow-y:auto;">${tableHtml}</div> `,
                                     width: '80%',
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
@@ -428,7 +428,7 @@
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'อัพโหลดสำเร็จ',
-                                    html: res.message + '<br>' + 'อัพโหลดสำเร็จ : ' + outUpload+ ' รายการ',
+                                    html: res.message + '<br>' + 'อัพโหลดสำเร็จ : ' + outUpload + '<br> อัพโหลดทั้งหมด : '  + outUpload + ' รายการ',
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
                                     allowOutsideClick: false,
@@ -440,7 +440,7 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'อัพโหลดสำเร็จ',
-                                html: res.message + '<br>' + 'อัพโหลดสำเร็จ : ' + outUpload + ' รายการ',
+                                html: res.message + '<br>' + 'อัพโหลดสำเร็จ : ' + outUpload + '<br> อัพโหลดทั้งหมด : '  + outUpload + ' รายการ',
                                 confirmButtonColor: '#d33',
                                 confirmButtonText: 'ปิด',
                                 allowOutsideClick: false,
